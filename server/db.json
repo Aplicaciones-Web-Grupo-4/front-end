@@ -1,0 +1,42 @@
+{
+  "fairs": [
+    {
+      "id": 1,
+      "name": "Feria de Primavera"
+    },
+    {
+      "id": 2,
+      "name": "Gastronomía en Plaza"
+    }
+  ],
+  "stands": [
+    {
+      "id": 1,
+      "name": "Ana Rodríguez",
+      "category": "Artesanías",
+      "fairId": 1,
+      "code": "A1"
+    },
+    {
+      "id": 2,
+      "name": "Carlos Pérez",
+      "category": "Gastronomía",
+      "fairId": 2,
+      "code": "B1"
+    },
+    {
+      "id": 3,
+      "name": "hbgfds",
+      "category": "Artesanías",
+      "fairId": 1,
+      "code": "A2"
+    },
+    {
+      "id": 4,
+      "name": "gfdsgb",
+      "category": "Gastronomía",
+      "fairId": 2,
+      "code": "B2"
+    }
+  ]
+}

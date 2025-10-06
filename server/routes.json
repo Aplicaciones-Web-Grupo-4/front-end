@@ -1,0 +1,6 @@
+{
+  "/api/fairs": "/fairs",
+  "/api/fairs/:id": "/fairs/:id",
+  "/api/stands": "/stands",
+  "/api/stands/:id": "/stands/:id"
+}
