@@ -1,11 +1,10 @@
-<script setup>
-
-</script>
-
 <template>
-
+  <div class="min-h-screen surface-ground text-color">
+    <HeaderNav />
+    <router-view />
+  </div>
 </template>
 
-<style scoped>
-
-</style>
+<script setup>
+import HeaderNav from './components/HeaderNav.vue';
+</script>

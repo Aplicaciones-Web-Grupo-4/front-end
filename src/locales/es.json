@@ -1,0 +1,38 @@
+{
+  "nav": { "dashboard": "Dashboard", "stands": "Stands" },
+  "home": { "title": "Inicio", "msg": "Landing básica temporal." },
+  "entrepreneur": {
+    "title": "Panel de organizador",
+    "summary": "Resumen de tus ferias",
+    "fairTitle": "Feria de Artesanías de Primavera",
+    "fairDates": "15 de mayo - 17 de mayo",
+    "views": "Visualizaciones",
+    "saved": "Guardados",
+    "create": "Crear evento"
+  },
+  "common": {
+    "all": "Todas",
+    "save": "Guardar",
+    "update": "Actualizar",
+    "cancel": "Cancelar"
+  },
+  "stands": {
+    "title": "Registro de Stands",
+    "desc": "Agrega y gestiona los emprendedores y sus perfiles dentro de una feria específica.",
+    "selectFair": "Seleccionar Feria",
+    "chooseFair": "Elige una feria",
+    "addEntrepreneur": "Agregar Emprendedor",
+    "name": "Nombre",
+    "category": "Categoría",
+    "stand": "Stand",
+    "actions": "Acciones",
+    "edit": "Editar",
+    "newTitle": "Nuevo Stand",
+    "editTitle": "Editar Stand",
+    "errors": {
+      "nameRequired": "Nombre es obligatorio.",
+      "categoryRequired": "Seleccione una categoría.",
+      "noFairForCategory": "No hay una feria asociada a esta categoría aún."
+    }
+  }
+}
