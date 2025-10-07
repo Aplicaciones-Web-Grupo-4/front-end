@@ -1,9 +1,11 @@
 <template>
   <div>
+    <!-- Header fijo -->
     <OrganizerHeader />
 
+    <!-- Aquí se muestran las vistas del router -->
     <main class="p-3">
-      <h1>Probando header</h1>
+      <router-view />
     </main>
   </div>
 </template>
@@ -13,7 +15,8 @@ import OrganizerHeader from './organizer/presentation/components/organizer-heade
 </script>
 
 <style>
-body{
+body {
   margin: 0;
+  font-family: 'Inter', sans-serif;
 }
 </style>
