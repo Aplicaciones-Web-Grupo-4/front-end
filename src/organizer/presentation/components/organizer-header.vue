@@ -8,10 +8,10 @@
 
     <!-- Nav links -->
     <nav class="nav-links">
-      <RouterLink to="/org/dashboard">Dashboard</RouterLink>
-      <RouterLink to="/org/stands">Stands</RouterLink>
-      <RouterLink to="/org/events/new">Create Event</RouterLink>
-      <RouterLink to="/org/events">Events</RouterLink>
+      <RouterLink to="/dashboard">Dashboard</RouterLink>
+      <RouterLink to="/stands">Stands</RouterLink>
+      <RouterLink to="/create-event">Create Event</RouterLink>
+      <RouterLink to="/events">Events</RouterLink>
     </nav>
 
     <!-- Right side -->
