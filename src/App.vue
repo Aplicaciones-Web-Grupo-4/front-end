@@ -1,7 +1,9 @@
 <template>
   <div class="min-h-screen surface-ground text-color">
     <HeaderNav />
-    <router-view />
+    <main class="p-3">
+      <router-view />
+    </main>
   </div>
 </template>
 

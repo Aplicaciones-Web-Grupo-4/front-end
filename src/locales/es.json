@@ -1,6 +1,15 @@
 {
-  "nav": { "dashboard": "Dashboard", "stands": "Stands" },
-  "home": { "title": "Inicio", "msg": "Landing básica temporal." },
+  "nav": {
+    "dashboard": "Dashboard",
+    "stands": "Stands",
+    "events": "Eventos"
+  },
+
+  "home": {
+    "title": "Inicio",
+    "msg": "Landing básica temporal."
+  },
+
   "entrepreneur": {
     "title": "Panel de organizador",
     "summary": "Resumen de tus ferias",
@@ -10,12 +19,18 @@
     "saved": "Guardados",
     "create": "Crear evento"
   },
+
   "common": {
     "all": "Todas",
     "save": "Guardar",
     "update": "Actualizar",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "back": "Volver",
+    "loading": "Cargando…",
+    "empty": "Sin datos para mostrar",
+    "viewMore": "Ver más"
   },
+
   "stands": {
     "title": "Registro de Stands",
     "desc": "Agrega y gestiona los emprendedores y sus perfiles dentro de una feria específica.",
@@ -33,6 +48,46 @@
       "nameRequired": "Nombre es obligatorio.",
       "categoryRequired": "Seleccione una categoría.",
       "noFairForCategory": "No hay una feria asociada a esta categoría aún."
+    }
+  },
+
+  "events": {
+    "title": "Eventos",
+    "search": "Buscar ferias o stands…",
+
+    "details": {
+      "about": "Descripción",
+      "schedule": "Horarios",
+      "location": "Ubicación",
+      "registeredStands": "Stands Registrados",
+      "viewAllStands": "Ver todos los stands",
+      "noStands": "Aún no hay stands registrados.",
+      "openInMaps": "Abrir en Google Maps",
+      "coords": "Coordenadas",
+      "actions": {
+        "addFavorite": "Agregar a favoritos",
+        "share": "Compartir en redes",
+        "copyLink": "Copiar enlace"
+      },
+      "toasts": {
+        "favoriteAdded": "Evento agregado a tus favoritos.",
+        "linkCopied": "Enlace copiado al portapapeles."
+      }
+    },
+
+    "map": {
+      "notAvailable": "Mapa no disponible",
+      "loadError": "No se pudo cargar el mapa."
+    },
+
+    "labels": {
+      "saturday": "Sábado",
+      "sunday": "Domingo",
+      "monday": "Lunes",
+      "tuesday": "Martes",
+      "wednesday": "Miércoles",
+      "thursday": "Jueves",
+      "friday": "Viernes"
     }
   }
 }

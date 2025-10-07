@@ -27,6 +27,7 @@ const { t } = useI18n();
 
 const items = computed(() => ([
   { label: t('nav.dashboard'), icon: 'pi pi-home',  command: () => router.push({ name: 'entrepreneur' }) },
-  { label: t('nav.stands'),    icon: 'pi pi-table', command: () => router.push({ name: 'register-stands' }) }
+  { label: t('nav.stands'),    icon: 'pi pi-table', command: () => router.push({ name: 'register-stands' }) },
+  { label: t('nav.events'),    icon: 'pi pi-calendar', command: () => router.push({ name: 'events' }) }
 ]));
 </script>

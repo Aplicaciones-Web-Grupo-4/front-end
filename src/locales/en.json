@@ -1,6 +1,15 @@
 {
-  "nav": { "dashboard": "Dashboard", "stands": "Stands" },
-  "home": { "title": "Home", "msg": "Temporary basic landing." },
+  "nav": {
+    "dashboard": "Dashboard",
+    "stands": "Stands",
+    "events": "Events"
+  },
+
+  "home": {
+    "title": "Home",
+    "msg": "Temporary basic landing."
+  },
+
   "entrepreneur": {
     "title": "Organizer panel",
     "summary": "Your fairs summary",
@@ -10,12 +19,18 @@
     "saved": "Saved",
     "create": "Create event"
   },
+
   "common": {
     "all": "All",
     "save": "Save",
     "update": "Update",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "back": "Back",
+    "loading": "Loading…",
+    "empty": "No data to display",
+    "viewMore": "View more"
   },
+
   "stands": {
     "title": "Register Stands",
     "desc": "Add and manage entrepreneurs and their profiles within a specific fair.",
@@ -33,6 +48,46 @@
       "nameRequired": "Name is required.",
       "categoryRequired": "Select a category.",
       "noFairForCategory": "There is no fair associated with this category yet."
+    }
+  },
+
+  "events": {
+    "title": "Events",
+    "search": "Search fairs or stands…",
+
+    "details": {
+      "about": "About",
+      "schedule": "Schedule",
+      "location": "Location",
+      "registeredStands": "Registered Stands",
+      "viewAllStands": "View all stands",
+      "noStands": "No stands registered yet.",
+      "openInMaps": "Open in Google Maps",
+      "coords": "Coordinates",
+      "actions": {
+        "addFavorite": "Add to favorites",
+        "share": "Share on social media",
+        "copyLink": "Copy link"
+      },
+      "toasts": {
+        "favoriteAdded": "Event added to your favorites.",
+        "linkCopied": "Link copied to clipboard."
+      }
+    },
+
+    "map": {
+      "notAvailable": "Map not available",
+      "loadError": "Could not load the map."
+    },
+
+    "labels": {
+      "saturday": "Saturday",
+      "sunday": "Sunday",
+      "monday": "Monday",
+      "tuesday": "Tuesday",
+      "wednesday": "Wednesday",
+      "thursday": "Thursday",
+      "friday": "Friday"
     }
   }
 }
