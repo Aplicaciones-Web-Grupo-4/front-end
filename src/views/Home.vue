@@ -1,46 +1,79 @@
 <template>
   <div class="page container">
-    <div class="search-container">
-      <input
-           v-model="query"
-          @input="filterEvents"
-          placeholder="Search for events, locations, or keywords"
-          class="search-input"
-      />
-      <div class="events-grid">
-        <EventCard
-            v-for="event in filteredEvents"
-            :key="event.id"
-            :event="event"
-        />
-      </div>
-    </div>
     <h1 class="page-title">Featured Events</h1>
+
     <section class="events">
-      <EventCard v-for="e in events" :key="e.id" :event="e" @save="onSave" :showSave="true" />
+      <EventCard
+          v-for="e in filteredEvents"
+          :key="e.id"
+          :event="e"
+          :showSave="true"
+          @save="onSave"
+      />
     </section>
   </div>
 </template>
 
 <script setup>
 import EventCard from '../components/EventCard.vue'
-import { ref } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
 
-const events = ref([
-  { id: 1, title: 'RetroFair', desc: 'A nostagical trip back in time with vintage goods and classic games.', img: '/src/assets/event1.png' },
-  { id: 2, title: 'Food Truck Fiesta', desc: 'A culinary adventure with a variety of gourmet food trucks.', img: '/src/assets/event2.png' },
-  { id: 3, title: 'Artisanal Market', desc: 'Discover unique handmade crafts and  meet local artisans.', img: '/src/assets/event3.png' },
-  { id: 4, title: 'Pop-up Shop', desc: 'Exclusive pop-up shops features limited- edition items.', img: '/src/assets/event3.png' }
-])
+// estado reactivo
+const query = ref('')
+const events = ref([])      // todos los eventos
+const savedIds = ref([])    // ids de eventos guardados
 
-function onSave(id){
-  const key = 'nh_saved'
-  const raw = localStorage.getItem(key)
-  const arr = raw ? JSON.parse(raw) : []
-  if(!arr.includes(id)) arr.push(id)
-  localStorage.setItem(key, JSON.stringify(arr))
-  alert('Evento guardado')
+// obtener los eventos del backend JSON Server
+onMounted(async () => {
+  try {
+    // obtener todos los eventos
+    const resEvents = await axios.get('http://localhost:3000/events')
+    events.value = resEvents.data.map(e => ({
+      ...e,
+      image: e.image.startsWith('http') ? e.image : `${window.location.origin}${e.image}`
+    }))
+    // obtener todos los guardados
+    const resSaved = await axios.get('http://localhost:3000/saved')
+    savedIds.value = resSaved.data.map(e => e.title)
+
+    console.log('Guardados:', savedIds.value)
+  } catch (err) {
+    console.error('Error cargando eventos:', err)
+  }
+})
+
+// filtrar por búsqueda (opcional)
+const filteredEvents = computed(() =>
+    events.value.filter(e =>
+        e.title.toLowerCase().includes(query.value.toLowerCase())
+    )
+)
+
+async function onSave(id) {
+  try {
+    const key = 'nh_saved'
+    const raw = localStorage.getItem(key)
+    const arr = raw ? JSON.parse(raw) : []
+
+    if (!arr.includes(id)) {
+      arr.push(id)
+      localStorage.setItem(key, JSON.stringify(arr))
+
+      // buscar el evento en la lista actual
+      const eventToSave = { ...events.value.find(e => e.id === id) }
+      delete eventToSave.id // evita conflicto de id duplicado en JSON Server
+
+      // guardar también en el backend
+      const res = await axios.post('http://localhost:3000/saved', eventToSave)
+      console.log('Evento guardado en backend:', res.data)
+
+      alert('✅ Evento guardado en backend y localStorage')
+    } else {
+      alert('⚠️ Este evento ya está guardado')
+    }
+  } catch (error) {
+    console.error('❌ Error al guardar evento:', error)
+  }
 }
 </script>
-
-

@@ -1,33 +1,50 @@
 <template>
   <div class="saved-container">
-    <nav class="events-nav">
-      <h1 class="logo">NextHappen</h1>
-      <ul class="nav-links">
-        <li><router-link to="/home">Home</router-link></li>
-        <li><router-link to="/explore">Explore</router-link></li>
-        <li><router-link to="/tickets">Tickets</router-link></li>
-        <li><router-link to="/following">Following</router-link></li>
-      </ul>
-      <div class="nav-actions">
-        <input type="text" class="search-bar" placeholder="🔍 Search" />
-      </div>
-    </nav>
-
     <div class="saved-content">
       <h2>Saved Events</h2>
-      <p class="no-saved-title">No saved events yet</p>
-      <p class="no-saved-desc">
-        Explore events and tap the heart icon to save them for later.
-      </p>
-      <button class="explore-btn">Explore</button>
+
+      <div v-if="filteredEvents.length === 0">
+        <p class="no-saved-title">No saved events yet</p>
+        <p class="no-saved-desc">
+          Explore events and tap the heart icon to save them for later.
+        </p>
+        <RouterLink to="/home">
+          <button class="explore-btn">Explore</button>
+        </RouterLink>
+      </div>
+
+      <div v-else class="events-grid">
+        <EventCard v-for="e in filteredEvents" :key="e.id" :event="e" :showSave="false" />
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-export default {
-  name: "Events",
-};
+<script setup>
+import { ref, computed, onMounted } from 'vue'
+import axios from 'axios'
+import EventCard from '../components/EventCard.vue'
+
+const events = ref([])
+const query = ref('')
+
+// obtener eventos guardados del backend
+onMounted(async () => {
+  try {
+    const res = await axios.get('http://localhost:3000/saved')
+    events.value = res.data
+    console.log('🟢 Eventos guardados cargados:', events.value)
+  } catch (err) {
+    console.error('❌ Error cargando eventos:', err)
+  }
+})
+
+// filtro de búsqueda
+const filteredEvents = computed(() =>
+    events.value.filter(e =>
+        e.title.toLowerCase().includes(query.value.toLowerCase())
+    )
+)
 </script>
 
 <style scoped>
@@ -116,5 +133,13 @@ export default {
   margin: 40px auto;
   width: 180px;
   opacity: 0.8;
+}
+
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+  margin-top: 32px;
+  padding: 0 48px;
 }
 </style>

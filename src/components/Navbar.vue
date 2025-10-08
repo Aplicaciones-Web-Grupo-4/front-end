@@ -1,66 +1,121 @@
 <template>
-  <nav class="navbar">
-    <div class="logo">NextHappen</div>
-    <ul class="nav-links">
-      <li><router-link to="/">Home</router-link></li>
-      <li><router-link to="/events">Events</router-link></li>
-      <li><a href="#">About</a></li>
-      <li><a href="#">Contact</a></li>
-    </ul>
-    <div class="nav-right">
-      <input type="text" placeholder="Search" class="search-input" />
-      <router-link to="/signup">
-        <button class="signup-btn">Sign Up</button>
-      </router-link>
+  <header class="main-header">
+    <!-- 🔸 Logo -->
+    <div class="logo">
+      <img src="../assets/happi_logo.png" alt="NextHappen Logo" class="logo-img" />
+      <span>NextHappen</span>
     </div>
-  </nav>
+
+    <!-- 🔸 Navigation links -->
+    <nav class="nav-links">
+      <RouterLink to="/home">Home</RouterLink>
+      <RouterLink to="/events">Events</RouterLink>
+      <RouterLink to="/explore">Explore</RouterLink>
+      <RouterLink to="/tickets">Tickets</RouterLink>
+      <RouterLink to="/following">Following</RouterLink>
+    </nav>
+
+    <!-- 🔸 Right side actions -->
+    <div class="actions">
+      <div class="search-container">
+        <i class="pi pi-search search-icon"></i>
+        <input type="text" placeholder="Search" class="search-input" />
+      </div>
+
+      <RouterLink to="/signup">
+        <button class="signup-btn">Sign Up</button>
+      </RouterLink>
+    </div>
+  </header>
 </template>
 
-<style>
-.navbar {
+<script setup>
+import { RouterLink } from 'vue-router'
+</script>
+
+<style scoped>
+/* === Contenedor principal === */
+.main-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 40px;
-  border-bottom: 1px solid #e0e0e0;
   background-color: #fffdf8;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 14px 40px;
+  font-family: 'Inter', sans-serif;
 }
 
+/* === Logo === */
 .logo {
-  font-weight: 700;
-  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: bold;
+  font-size: 22px;
+  color: #222;
 }
 
+.logo-img {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
+}
+
+/* === Navegación === */
 .nav-links {
   display: flex;
+  align-items: center;
   gap: 24px;
-  list-style: none;
 }
 
 .nav-links a {
   text-decoration: none;
   color: #333;
   font-weight: 500;
+  font-size: 17px;
+  transition: color 0.2s ease;
+}
+
+.nav-links a:hover {
+  color: #f59e0b; /* Amarillo suave */
 }
 
 .nav-links a.router-link-active {
-  color: #e6b800;
+  color: #f59e0b;
+  font-weight: 600;
 }
 
-.nav-right {
+/* === Acciones (lado derecho) === */
+.actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
+}
+
+/* === Search input === */
+.search-container {
+  display: flex;
+  align-items: center;
+  background-color: #f9f4e8;
+  border-radius: 8px;
+  padding: 6px 10px;
 }
 
 .search-input {
-  background-color: #f9f4e8;
   border: none;
-  padding: 8px 12px;
-  border-radius: 8px;
-  width: 180px;
+  background: transparent;
+  outline: none;
+  font-size: 14px;
+  width: 160px;
 }
 
+.search-icon {
+  color: #bfa14a;
+  font-size: 16px;
+  margin-right: 8px;
+}
+
+/* === Botón Sign Up === */
 .signup-btn {
   background-color: #ffcd00;
   border: none;
@@ -68,5 +123,10 @@
   border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.signup-btn:hover {
+  background-color: #f5c000;
 }
 </style>

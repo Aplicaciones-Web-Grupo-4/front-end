@@ -8,7 +8,7 @@ import Events from '../views/Events.vue'
 const routes = [
   { path: '/', redirect: '/home' },
   { path: '/home', component: Home },
-  { path: '/saved', component: Saved },
+  { path: '/events', component: Events },
     { path: "/search", component: Search },
     { path: "/signup", component: SignUp },
     {
