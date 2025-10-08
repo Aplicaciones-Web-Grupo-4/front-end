@@ -17,19 +17,19 @@ import './styles/nh-theme.css';
 // Estilos Leaflet (solo si usas mapas)
 import "leaflet/dist/leaflet.css";
 
-import {
-    Button,
-    Card,
-    DataTable,
-    Column,
-    Dropdown,
-    Avatar,
-    Menubar,
-    Toast,
-    Dialog,
-    ConfirmDialog
-} from 'primevue';
+// ✅ Importaciones correctas de PrimeVue (una por una)
+import Button from 'primevue/button';
+import Card from 'primevue/card';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Dropdown from 'primevue/dropdown';
+import Avatar from 'primevue/avatar';
+import Menubar from 'primevue/menubar';
+import Toast from 'primevue/toast';
+import Dialog from 'primevue/dialog';
+import ConfirmDialog from 'primevue/confirmdialog';
 
+// Servicios
 import ToastService from 'primevue/toastservice';
 import DialogService from 'primevue/dialogservice';
 import ConfirmationService from 'primevue/confirmationservice';
