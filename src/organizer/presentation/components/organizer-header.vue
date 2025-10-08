@@ -12,6 +12,7 @@
       <RouterLink to="/org/register-stands">{{ $t('organizerHeader.nav.stands') }}</RouterLink>
       <RouterLink to="/org/create-event">{{ $t('organizerHeader.nav.createEvent') }}</RouterLink>
       <RouterLink to="/org/events">{{ $t('organizerHeader.nav.events') }}</RouterLink>
+      <RouterLink to="/user/home"> Admin </RouterLink>
     </nav>
 
     <!-- 🌐 Switcher -->

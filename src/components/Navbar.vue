@@ -13,6 +13,7 @@
       <RouterLink to="/user/explore">{{ $t('header.nav.explore') }}</RouterLink>
       <RouterLink to="/user/tickets">{{ $t('header.nav.tickets') }}</RouterLink>
       <RouterLink to="/user/following">{{ $t('header.nav.following') }}</RouterLink>
+
     </nav>
 
     <!-- 🔸 Right side actions -->
