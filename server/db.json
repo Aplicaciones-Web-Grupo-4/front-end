@@ -26,5 +26,21 @@
     }
   ],
   "saved": [
+    {
+      "title": "Retro Fair",
+      "description": "A nostalgic trip back in time with vintage goods and classic games.",
+      "image": "http://localhost:5173/images/retro.png",
+      "date": "2025-10-15",
+      "location": "Central Park",
+      "id": 1
+    },
+    {
+      "title": "Food Truck Fiesta",
+      "description": "A culinary adventure with a variety of gourmet food trucks.",
+      "image": "http://localhost:5173/images/food_truck.png",
+      "date": "2025-10-12",
+      "location": "Downtown Square",
+      "id": 2
+    }
   ]
 }

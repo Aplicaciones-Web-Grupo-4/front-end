@@ -8,11 +8,11 @@
 
     <!-- 🔸 Navigation links -->
     <nav class="nav-links">
-      <RouterLink to="/home">Home</RouterLink>
-      <RouterLink to="/events">Events</RouterLink>
-      <RouterLink to="/explore">Explore</RouterLink>
-      <RouterLink to="/tickets">Tickets</RouterLink>
-      <RouterLink to="/following">Following</RouterLink>
+      <RouterLink to="/user/home">Home</RouterLink>
+      <RouterLink to="/user/events">Events</RouterLink>
+      <RouterLink to="/user/explore">Explore</RouterLink>
+      <RouterLink to="/user/tickets">Tickets</RouterLink>
+      <RouterLink to="/user/following">Following</RouterLink>
     </nav>
 
     <!-- 🔸 Right side actions -->
