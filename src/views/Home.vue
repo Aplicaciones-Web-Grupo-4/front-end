@@ -11,7 +11,7 @@
       />
     </div>
 
-    <p v-else>{{ $t('home.noEvents') }}</p>
+    <p v-else>{{ $t('home.eventsPage.noEvents') }}</p>
   </div>
 </template>
 
