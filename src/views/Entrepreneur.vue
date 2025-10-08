@@ -1,39 +1,50 @@
 <template>
-  <div class="p-4">
-    <h2 class="h-title mb-2">{{ $t('entrepreneur.title') }}</h2>
-    <p class="mb-4 p-muted">{{ $t('entrepreneur.summary') }}</p>
+  <div class="p-6">
+    <!-- Título y resumen -->
+    <h1 class="text-3xl font-bold mb-2">{{ $t('entrepreneur.title') }}</h1>
+    <p class="text-gray-600 mb-6">{{ $t('entrepreneur.summary') }}</p>
 
+    <!-- Fila principal: tarjeta de feria (izquierda) + bloque acciones/espacio (derecha) -->
     <div class="grid">
       <div class="col-12 md:col-6">
-        <pv-card>
-          <template #title>{{ $t('entrepreneur.fairTitle') }}</template>
-          <template #content>
-            <p class="p-muted">{{ $t('entrepreneur.fairDates') }}</p>
-          </template>
-        </pv-card>
+        <div class="surface-card p-4 border-1 border-200 border-round">
+          <h3 class="text-xl font-semibold mb-1">{{ $t('entrepreneur.fairTitle') }}</h3>
+          <p class="text-gray-600 mb-3">{{ $t('entrepreneur.fairDates') }}</p>
+
+          <div class="flex align-items-center justify-content-between">
+            <div class="text-gray-600">
+              <span class="mr-1">{{ $t('entrepreneur.views') }}:</span>
+              <span class="font-medium">1,240</span>
+            </div>
+            <pv-button class="nh-btn" :label="$t('entrepreneur.create')" icon="pi pi-plus" />
+          </div>
+        </div>
       </div>
 
       <div class="col-12 md:col-6">
-        <div class="grid">
-          <div class="col-6">
-            <div class="nh-stat">
-              <div class="nh-stat__label">{{ $t('entrepreneur.views') }}</div>
-              <div class="nh-stat__value">1,240</div>
-            </div>
-          </div>
-          <div class="col-6">
-            <div class="nh-stat">
-              <div class="nh-stat__label">{{ $t('entrepreneur.saved') }}</div>
-              <div class="nh-stat__value">312</div>
-            </div>
-          </div>
+        <!-- espacio reservado para futuras tarjetas/acciones; vacío para conservar layout -->
+      </div>
+    </div>
+
+    <!-- Métricas básicas -->
+    <h2 class="text-2xl font-semibold mt-6 mb-3">Métricas básicas</h2>
+    <div class="grid">
+      <div class="col-12 md:col-6">
+        <div class="surface-card p-4 border-1 border-200 border-round">
+          <div class="text-gray-600 mb-2">{{ $t('entrepreneur.views') }}</div>
+          <div class="text-4xl font-bold leading-none">1,234</div>
         </div>
-        <pv-button class="mt-3 nh-btn" :label="$t('entrepreneur.create')" icon="pi pi-plus" />
+      </div>
+      <div class="col-12 md:col-6">
+        <div class="surface-card p-4 border-1 border-200 border-round">
+          <div class="text-gray-600 mb-2">{{ $t('entrepreneur.saved') }}</div>
+          <div class="text-4xl font-bold leading-none">567</div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-// si no usabas todavía i18n en este componente, no necesitas importar nada extra: $t está disponible
+// No logic needed here; solo usamos $t en template.
 </script>
