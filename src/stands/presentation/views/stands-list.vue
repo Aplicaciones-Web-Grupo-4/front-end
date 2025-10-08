@@ -15,7 +15,7 @@
         />
       </div>
       <div class="col-12 md:col-6 flex align-items-end justify-content-end">
-        <router-link :to="{ name: 'stand-new' }">
+        <router-link :to="{ name: 'org-stand-new' }">
           <pv-button class="nh-btn" :label="$t('stands.addEntrepreneur')" icon="pi pi-plus" />
         </router-link>
       </div>
@@ -52,7 +52,7 @@ import { useRouter } from 'vue-router';
 import { useStandsStore } from '../../application/stands.store.js';
 
 const store = useStandsStore();
-const router = useRouter();
+const useRoutes = useRouter();
 const { t } = useI18n();
 
 // Sentinel reactivo para "Todas"
@@ -77,7 +77,7 @@ const filtered = computed(() => {
 });
 
 function goEdit(id) {
-  router.push({ name: 'stand-edit', params: { id } });
+  organizerRoutes.push({ name: 'stand-edit', params: { id } });
 }
 
 async function onDelete(row) {

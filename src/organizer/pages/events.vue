@@ -1,11 +1,10 @@
 <template>
   <div class="my-fairs-page">
-    <h2 class="page-title">Mis ferias publicadas</h2>
+    <h2 class="page-title">{{ $t('myFairs.title') }}</h2>
 
     <div class="table-container">
       <DataTable :value="fairs" class="custom-table" responsiveLayout="scroll">
-        <!-- 📷 Imagen -->
-        <Column header="Imagen" style="width: 120px">
+        <Column :header="$t('myFairs.columns.image')" style="width: 120px">
           <template #body="{ data }">
             <img
                 v-if="data.photos && data.photos.length"
@@ -13,39 +12,34 @@
                 alt="Evento"
                 class="event-thumb"
             />
-            <div v-else class="no-image">Sin imagen</div>
+            <div v-else class="no-image">{{ $t('myFairs.noImage') }}</div>
           </template>
         </Column>
 
-        <!-- 🏷️ Nombre -->
-        <Column field="title" header="Nombre"></Column>
+        <Column field="title" :header="$t('myFairs.columns.name')" />
 
-        <!-- 🔸 Estado -->
-        <Column header="Estado">
+        <Column :header="$t('myFairs.columns.status')">
           <template #body="{ data }">
             <span class="status-badge">{{ data.status }}</span>
           </template>
         </Column>
 
-        <!-- 📅 Fecha -->
-        <Column field="date" header="Fecha">
+        <Column field="date" :header="$t('myFairs.columns.date')">
           <template #body="{ data }">
             <span class="date-text">{{ data.date }}</span>
           </template>
         </Column>
 
-        <!-- 📍 Ubicación -->
-        <Column field="location" header="Ubicación">
+        <Column field="location" :header="$t('myFairs.columns.location')">
           <template #body="{ data }">
             <span class="location-text">{{ data.location }}</span>
           </template>
         </Column>
 
-        <!-- ⚙️ Acciones -->
-        <Column header="Acciones">
+        <Column :header="$t('myFairs.columns.actions')">
           <template #body="{ data }">
             <Button
-                label="Editar"
+                :label="$t('myFairs.edit')"
                 text
                 class="edit-btn"
                 @click="editFair(data)"
@@ -59,33 +53,33 @@
 
 <script setup>
 import { ref, onMounted, onActivated } from "vue";
+import { useI18n } from "vue-i18n";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 import Button from "primevue/button";
 
-// 🌐 Estado reactivo
+const { t } = useI18n();
+
 const fairs = ref([]);
 
-// 📡 Cargar los eventos desde db.json
 const loadFairs = async () => {
   try {
     const res = await fetch("http://localhost:3000/events");
-    if (!res.ok) throw new Error("Error al cargar eventos");
+    if (!res.ok) throw new Error(t("myFairs.errors.load"));
     fairs.value = await res.json();
   } catch (err) {
-    console.error("❌ Error:", err);
+    console.error("❌", err);
   }
 };
 
-// 🔁 Cargar al entrar y al volver desde otra vista
 onMounted(loadFairs);
 onActivated(loadFairs);
 
 const editFair = (fair) => {
   console.log("Editar feria:", fair.title);
-  // aquí podrías hacer router.push(`/org/events/edit/${fair.id}`)
 };
 </script>
+
 
 <style>
 .my-fairs-page {
@@ -104,7 +98,6 @@ const editFair = (fair) => {
   color: #1d1d1d;
 }
 
-/* 📋 Tabla */
 .custom-table {
   background: white;
   border-radius: 10px;
@@ -134,7 +127,6 @@ const editFair = (fair) => {
   background-color: #fffdf9;
 }
 
-/* 🟡 Estado */
 .status-badge {
   background-color: #fff4d6;
   color: #1d1d1d;
@@ -148,13 +140,11 @@ const editFair = (fair) => {
   white-space: nowrap;
 }
 
-/* 🗓️ Fecha */
 .date-text {
   color: #d19700;
   font-weight: 600;
 }
 
-/* 📍 Ubicación */
 .location-text {
   color: #007b83;
   font-weight: 600;
@@ -165,7 +155,6 @@ const editFair = (fair) => {
   text-decoration: underline;
 }
 
-/* ✏️ Botón Editar */
 .edit-btn {
   color: #111 !important;
   font-weight: 700 !important;
@@ -177,7 +166,6 @@ const editFair = (fair) => {
   color: #d19700 !important;
 }
 
-/* 🖼️ Miniatura */
 .event-thumb {
   width: 70px;
   height: 70px;

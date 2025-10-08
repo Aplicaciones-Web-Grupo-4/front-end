@@ -1,15 +1,13 @@
 <template>
   <div class="saved-container">
     <div class="saved-content">
-      <h2>Saved Events</h2>
+      <h2>{{ $t('saved.title') }}</h2>
 
       <div v-if="filteredEvents.length === 0">
-        <p class="no-saved-title">No saved events yet</p>
-        <p class="no-saved-desc">
-          Explore events and tap the heart icon to save them for later.
-        </p>
+        <p class="no-saved-title">{{ $t('saved.emptyTitle') }}</p>
+        <p class="no-saved-desc">{{ $t('saved.emptyDesc') }}</p>
         <RouterLink to="/home">
-          <button class="explore-btn">Explore</button>
+          <button class="explore-btn">{{ $t('saved.explore') }}</button>
         </RouterLink>
       </div>
 
@@ -22,9 +20,11 @@
 
 <script setup>
 import { ref, computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import EventCard from '../components/EventCard.vue'
 
+const { t } = useI18n()
 const events = ref([])
 const query = ref('')
 
@@ -32,10 +32,13 @@ const query = ref('')
 onMounted(async () => {
   try {
     const res = await axios.get('http://localhost:3000/saved')
-    events.value = res.data
-    console.log('🟢 Eventos guardados cargados:', events.value)
+    events.value = res.data.map(e => ({
+      ...e,
+      image: e.photos?.[0] || "https://via.placeholder.com/400x200?text=No+Image"
+    }))
+    console.log('Eventos guardados cargados:', events.value)
   } catch (err) {
-    console.error('❌ Error cargando eventos:', err)
+    console.error('Error cargando eventos:', err)
   }
 })
 

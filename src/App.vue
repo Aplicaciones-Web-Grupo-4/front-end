@@ -1,33 +1,39 @@
 <template>
   <div>
-    <!-- 👤 Header de usuario -->
-    <header v-if="isUser" class="main-header">
+    <OrganizerHeader v-if="isOrganizer" />
+
+    <header v-else-if="isUser" class="main-header">
       <div class="logo">
         <img src="../src/assets/happi_logo.png" alt="NextHappen Logo" class="logo-img" />
-        <span>NextHappen</span>
+        <span>{{ $t('header.logo') }}</span>
       </div>
 
       <nav class="nav-links">
-        <RouterLink to="/user/home">Home</RouterLink>
-        <RouterLink to="/user/events">Events</RouterLink>
-        <RouterLink to="/user/explore">Explore</RouterLink>
-        <RouterLink to="/user/tickets">Tickets</RouterLink>
-        <RouterLink to="/user/following">Following</RouterLink>
+        <RouterLink to="/user/home">{{ $t('header.nav.home') }}</RouterLink>
+        <RouterLink to="/user/events">{{ $t('header.nav.events') }}</RouterLink>
+        <RouterLink to="/user/explore">{{ $t('header.nav.explore') }}</RouterLink>
+        <RouterLink to="/user/tickets">{{ $t('header.nav.tickets') }}</RouterLink>
+        <RouterLink to="/user/following">{{ $t('header.nav.following') }}</RouterLink>
       </nav>
+
+      <!-- 🌐 Switcher -->
+      <LanguageSwitcher />
 
       <div class="actions">
         <div class="search-container">
           <i class="pi pi-search search-icon"></i>
-          <input type="text" placeholder="Search" class="search-input" />
+          <input
+              type="text"
+              :placeholder="$t('header.search.placeholder')"
+              class="search-input"
+          />
         </div>
-        <RouterLink to="/signup">
-          <button class="signup-btn">Sign Up</button>
+        <RouterLink to="/user/signup">
+          <button class="signup-btn">{{ $t('header.signup') }}</button>
         </RouterLink>
       </div>
     </header>
 
-    <!-- 🧑‍💼 Header del organizador -->
-    <OrganizerHeader v-if="isOrganizer" />
 
     <!-- Contenido dinámico -->
     <main class="p-3">
@@ -41,8 +47,9 @@ import { computed } from 'vue'
 import { useRoute, RouterView, RouterLink } from 'vue-router'
 import OrganizerHeader from './organizer/presentation/components/organizer-header.vue'
 import 'primeicons/primeicons.css'
+import LanguageSwitcher from "./organizer/presentation/components/LanguageSwitcher.vue";
 
-// Detecta el tipo de panel según la ruta
+// Detecta tipo de panel según la ruta
 const route = useRoute()
 const isOrganizer = computed(() => route.path.startsWith('/org'))
 const isUser = computed(() => route.path.startsWith('/user'))
@@ -62,7 +69,6 @@ body {
   background-color: #fffdf8;
   border-bottom: 1px solid #e0e0e0;
   padding: 14px 40px;
-  font-family: 'Inter', sans-serif;
 }
 
 .logo {
@@ -145,7 +151,6 @@ body {
   background-color: #f5c000;
 }
 
-/* ===== Contenido ===== */
 main {
   padding: 16px;
 }

@@ -1,32 +1,36 @@
 <template>
   <div class="create-event-page">
-    <h1 class="page-title">Publicar Feria</h1>
+    <h1 class="page-title">{{ $t('createEvent.titlePage') }}</h1>
 
     <div class="form-container">
       <!-- Título -->
       <div class="field">
-        <label for="title">Título</label>
-        <InputText id="title" v-model="form.title" placeholder="Nombre de la feria" />
+        <label for="title">{{ $t('createEvent.fields.title') }}</label>
+        <InputText
+            id="title"
+            v-model="form.title"
+            :placeholder="$t('createEvent.fields.titlePlaceholder')"
+        />
       </div>
 
       <!-- Descripción -->
       <div class="field">
-        <label for="description">Descripción</label>
+        <label for="description">{{ $t('createEvent.fields.description') }}</label>
         <Textarea
             id="description"
             v-model="form.description"
             rows="4"
-            placeholder="Describe brevemente la feria"
+            :placeholder="$t('createEvent.fields.descriptionPlaceholder')"
             autoResize
         />
       </div>
 
       <!-- Subir fotos -->
       <div class="field">
-        <label>Fotos</label>
+        <label>{{ $t('createEvent.fields.photos') }}</label>
         <div class="upload-area" @dragover.prevent @drop.prevent="handleDrop">
           <i class="pi pi-images upload-icon"></i>
-          <p>Arrastra tus fotos aquí o haz clic para seleccionarlas</p>
+          <p>{{ $t('createEvent.fields.dragText') }}</p>
           <input
               type="file"
               accept="image/*"
@@ -36,7 +40,7 @@
               class="hidden-input"
           />
           <Button
-              label="Seleccionar Fotos"
+              :label="$t('createEvent.buttons.selectPhotos')"
               icon="pi pi-upload"
               class="upload-button"
               @click="$refs.fileInput.click()"
@@ -60,17 +64,17 @@
 
       <!-- Buscar dirección -->
       <div class="field">
-        <label for="address">Buscar dirección</label>
+        <label for="address">{{ $t('createEvent.fields.address') }}</label>
         <div class="address-search">
           <InputText
               id="address"
               v-model="form.address"
-              placeholder="Ej: Av. Arequipa 1234, Lima"
+              :placeholder="$t('createEvent.fields.addressPlaceholder')"
               @keyup.enter="searchAddress"
           />
           <Button
               icon="pi pi-search"
-              label="Buscar"
+              :label="$t('createEvent.buttons.search')"
               class="search-button"
               @click="searchAddress"
           />
@@ -79,20 +83,20 @@
 
       <!-- Mapa -->
       <div class="field">
-        <label>Ubicación</label>
+        <label>{{ $t('createEvent.fields.location') }}</label>
         <div id="map" class="map"></div>
-        <small v-if="form.location">📍 {{ form.location }}</small>
+        <small v-if="form.location">{{ $t('createEvent.mapMarker') }} {{ form.location }}</small>
       </div>
 
       <!-- Fechas -->
       <div class="field">
-        <label>Fechas</label>
+        <label>{{ $t('createEvent.fields.dates') }}</label>
         <Calendar
             v-model="form.dates"
             selectionMode="range"
             showIcon
             dateFormat="dd/mm/yy"
-            placeholder="Selecciona un rango o una sola fecha"
+            :placeholder="$t('createEvent.fields.dates')"
             class="calendar-custom"
         />
       </div>
@@ -100,7 +104,7 @@
       <!-- Botón -->
       <div class="button-container">
         <Button
-            label="Publicar"
+            :label="$t('createEvent.buttons.publish')"
             icon="pi pi-check"
             class="publish-button"
             @click="publishEvent"
@@ -116,8 +120,9 @@ import InputText from "primevue/inputtext";
 import Textarea from "primevue/textarea";
 import Calendar from "primevue/calendar";
 import Button from "primevue/button";
+import { useI18n } from "vue-i18n";
+const { t } = useI18n();
 
-// 🧾 Datos del formulario
 const form = ref({
   title: "",
   description: "",
@@ -135,7 +140,6 @@ const fileInput = ref(null);
 let map, marker, geocoder;
 const GOOGLE_API_KEY = "AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0";
 
-// 🖼️ Manejo de imágenes
 const onFileChange = (e) => {
   const files = Array.from(e.target.files);
   files.forEach((file) => {
@@ -161,10 +165,9 @@ const removeImage = (index) => {
   previewImages.value.splice(index, 1);
 };
 
-// 🚀 Publicar evento en db.json
 const publishEvent = async () => {
   if (!form.value.title || !form.value.dates || !form.value.location) {
-    alert("Por favor completa todos los campos obligatorios.");
+    alert("createEvent.messages.missingFields");
     return;
   }
 
@@ -192,7 +195,7 @@ const publishEvent = async () => {
 
     if (!res.ok) throw new Error("Error al guardar el evento");
 
-    alert("✅ Evento publicado correctamente");
+    alert("createEvent.messages.success");
     form.value = {
       title: "",
       description: "",
@@ -206,14 +209,14 @@ const publishEvent = async () => {
     previewImages.value = [];
   } catch (err) {
     console.error("❌ Error al publicar el evento:", err);
-    alert("Ocurrió un error al guardar el evento.");
+    alert("createEvent.messages.error");
   }
 };
 
 // 🗺️ Google Maps
 const searchAddress = async () => {
   if (!form.value.address) {
-    alert("Por favor, ingresa una dirección.");
+    alert("createEvent.messages.addressRequired");
     return;
   }
 
@@ -236,7 +239,7 @@ const searchAddress = async () => {
       form.value.lng = location.lng();
       form.value.location = result.formatted_address;
     } else {
-      alert("No se encontró la dirección. Intenta con más detalle.");
+      alert("createEvent.messages.addressNotFound");
     }
   });
 };

@@ -34,5 +34,96 @@
       "categoryRequired": "Select a category.",
       "noFairForCategory": "There is no fair associated with this category yet."
     }
+  },
+  "header": {
+    "logo": "NextHappen",
+    "nav": {
+      "home": "Home",
+      "events": "Events",
+      "explore": "Explore",
+      "tickets": "Tickets",
+      "following": "Following"
+    },
+    "search": {
+      "placeholder": "Search"
+    },
+    "signup": "Sign Up"
+  },
+
+  "createEvent": {
+    "titlePage": "Publish Fair",
+    "fields": {
+      "title": "Title",
+      "titlePlaceholder": "Fair name",
+      "description": "Description",
+      "descriptionPlaceholder": "Briefly describe the fair",
+      "photos": "Photos",
+      "dragText": "Drag your photos here or click to select them",
+      "address": "Search address",
+      "addressPlaceholder": "E.g.: 1234 Arequipa Ave, Lima",
+      "location": "Location",
+      "dates": "Dates"
+    },
+    "buttons": {
+      "selectPhotos": "Select Photos",
+      "search": "Search",
+      "publish": "Publish"
+    },
+    "messages": {
+      "missingFields": "Please fill in all required fields.",
+      "success": "Event published successfully",
+      "error": "An error occurred while saving the event.",
+      "addressNotFound": "Address not found. Try being more specific.",
+      "addressRequired": "Please enter an address."
+    },
+    "mapMarker": "📍"
+  },
+
+  "myFairs": {
+    "title": "My Published Fairs",
+    "columns": {
+      "image": "Image",
+      "name": "Name",
+      "status": "Status",
+      "date": "Date",
+      "location": "Location",
+      "actions": "Actions"
+    },
+    "noImage": "No image",
+    "edit": "Edit",
+    "errors": {
+      "load": "Error loading events"
+    }
+  },
+
+  "organizerHeader": {
+    "logo": "NextHappen",
+    "nav": {
+      "dashboard": "Dashboard",
+      "stands": "Stands",
+      "createEvent": "Create Event",
+      "events": "Events"
+    }
+  },
+
+  "home": {
+    "title": "Home",
+    "msg": "Welcome to NextHappen",
+    "eventsPage": {
+      "title": "Available Events",
+      "noEvents": "No events available",
+      "alerts": {
+        "saved": "Event saved successfully",
+        "alreadySaved": "This event is already saved",
+        "error": "Error saving the event"
+      }
+    }
+  },
+
+  "saved": {
+    "title": "Saved Events",
+    "emptyTitle": "No saved events yet",
+    "emptyDesc": "Explore events and tap the save bottom to save them for later.",
+    "explore": "Explore"
   }
 }

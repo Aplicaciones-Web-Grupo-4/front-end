@@ -1,20 +1,23 @@
 <template>
   <header class="organizer-header">
-    <!-- Logo -->
+    <!-- 🔸 Logo -->
     <div class="logo">
       <img src="../../../assets/happi_logo.png" alt="happi-logo" class="logo-img" />
-      <span>NextHappen</span>
+      <span>{{ $t('organizerHeader.logo') }}</span>
     </div>
 
-    <!-- Nav links -->
+    <!-- 🔸 Nav links -->
     <nav class="nav-links">
-      <RouterLink to="/entrepreneur">Dashboard</RouterLink>
-      <RouterLink to="/register-stands">Stands</RouterLink>
-      <RouterLink to="/create-event">Create Event</RouterLink>
-      <RouterLink to="/events">Events</RouterLink>
+      <RouterLink to="/org/entrepreneur">{{ $t('organizerHeader.nav.dashboard') }}</RouterLink>
+      <RouterLink to="/org/register-stands">{{ $t('organizerHeader.nav.stands') }}</RouterLink>
+      <RouterLink to="/org/create-event">{{ $t('organizerHeader.nav.createEvent') }}</RouterLink>
+      <RouterLink to="/org/events">{{ $t('organizerHeader.nav.events') }}</RouterLink>
     </nav>
 
-    <!-- Right side -->
+    <!-- 🌐 Switcher -->
+    <LanguageSwitcher />
+
+    <!-- 🔔 Right side -->
     <div class="actions">
       <Button icon="pi pi-bell" class="p-button-rounded p-button-text" />
       <Avatar image="https://i.pravatar.cc/40" shape="circle" size="large" />
@@ -26,6 +29,7 @@
 import { RouterLink } from 'vue-router'
 import Button from 'primevue/button'
 import Avatar from 'primevue/avatar'
+import LanguageSwitcher from './LanguageSwitcher.vue'
 </script>
 
 <style scoped>
@@ -40,7 +44,6 @@ import Avatar from 'primevue/avatar'
   align-items: center;
   justify-content: space-between;
   background-color: #fafafa;
-  width: 100%;
   border-bottom: 1px solid #ddd;
   padding: 12px 24px;
 }

@@ -3,34 +3,51 @@
     <!-- 🔸 Logo -->
     <div class="logo">
       <img src="../assets/happi_logo.png" alt="NextHappen Logo" class="logo-img" />
-      <span>NextHappen</span>
+      <span>{{ $t('header.logo') }}</span>
     </div>
 
     <!-- 🔸 Navigation links -->
     <nav class="nav-links">
-      <RouterLink to="/user/home">Home</RouterLink>
-      <RouterLink to="/user/events">Events</RouterLink>
-      <RouterLink to="/user/explore">Explore</RouterLink>
-      <RouterLink to="/user/tickets">Tickets</RouterLink>
-      <RouterLink to="/user/following">Following</RouterLink>
+      <RouterLink to="/user/home">{{ $t('header.nav.home') }}</RouterLink>
+      <RouterLink to="/user/events">{{ $t('header.nav.events') }}</RouterLink>
+      <RouterLink to="/user/explore">{{ $t('header.nav.explore') }}</RouterLink>
+      <RouterLink to="/user/tickets">{{ $t('header.nav.tickets') }}</RouterLink>
+      <RouterLink to="/user/following">{{ $t('header.nav.following') }}</RouterLink>
     </nav>
 
     <!-- 🔸 Right side actions -->
     <div class="actions">
       <div class="search-container">
         <i class="pi pi-search search-icon"></i>
-        <input type="text" placeholder="Search" class="search-input" />
+        <input
+            type="text"
+            :placeholder="$t('header.search.placeholder')"
+            class="search-input"
+        />
       </div>
 
       <RouterLink to="/signup">
-        <button class="signup-btn">Sign Up</button>
+        <button class="signup-btn">{{ $t('header.signup') }}</button>
       </RouterLink>
     </div>
   </header>
 </template>
 
 <script setup>
+import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { RouterLink } from 'vue-router'
+import LanguageSwitcher from "../organizer/presentation/components/LanguageSwitcher.vue";
+
+const { t, locale } = useI18n()
+
+const isEs = computed(() => locale.value === 'es')
+
+function setLang(lang) {
+  locale.value = lang
+  localStorage.setItem('nh-locale', lang) // ✅ se guarda para próximos reloads
+}
+
 </script>
 
 <style scoped>
@@ -129,4 +146,20 @@ import { RouterLink } from 'vue-router'
 .signup-btn:hover {
   background-color: #f5c000;
 }
+
+.lang-switch button {
+  background: transparent;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.lang-switch button.active {
+  background-color: #f59e0b;
+  color: white;
+  border-color: #f59e0b;
+}
+
 </style>

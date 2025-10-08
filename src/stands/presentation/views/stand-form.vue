@@ -26,7 +26,7 @@
 
     <div class="mt-3 flex gap-2">
       <pv-button class="nh-btn" :label="isEdit ? $t('common.update') : $t('common.save')" icon="pi pi-check" @click="onSubmit" />
-      <router-link :to="{ name: 'register-stands' }">
+      <router-link :to="{ name: 'org-register-stands' }">
         <pv-button :label="$t('common.cancel')" class="p-button-text" />
       </router-link>
     </div>
@@ -42,7 +42,7 @@ import { useStandsStore } from '../../application/stands.store.js';
 const { t } = useI18n();
 const store = useStandsStore();
 const route = useRoute();
-const router = useRouter();
+const useRoutes = useRouter();
 
 const isEdit = computed(() => Boolean(route.params.id));
 const categories = computed(() => {
@@ -60,7 +60,7 @@ onMounted(async () => {
     const current = store.getById(Number(route.params.id));
     if (!current) {
       alert(t('stands.errors.notFound') || 'Registro no encontrado');
-      router.push({ name: 'register-stands' });
+      organizerRoutes.push({ name: 'register-stands' });
       return;
     }
     Object.assign(form, { id: current.id, name: current.name, category: current.category });
@@ -92,6 +92,6 @@ async function onSubmit() {
   } else {
     await store.add({ name: form.name.trim(), category: form.category, fairId });
   }
-  router.push({ name: 'register-stands' });
+  organizerRoutes.push({ name: 'register-stands' });
 }
 </script>

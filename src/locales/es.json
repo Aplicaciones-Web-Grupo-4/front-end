@@ -34,5 +34,93 @@
       "categoryRequired": "Seleccione una categoría.",
       "noFairForCategory": "No hay una feria asociada a esta categoría aún."
     }
+  },
+  "header": {
+    "logo": "NextHappen",
+    "nav": {
+      "home": "Inicio",
+      "events": "Eventos",
+      "explore": "Explorar",
+      "tickets": "Entradas",
+      "following": "Siguiendo"
+    },
+    "search": {
+      "placeholder": "Buscar"
+    },
+    "signup": "Registrarse"
+  },
+  "createEvent": {
+    "titlePage": "Publicar Feria",
+    "fields": {
+      "title": "Título",
+      "titlePlaceholder": "Nombre de la feria",
+      "description": "Descripción",
+      "descriptionPlaceholder": "Describe brevemente la feria",
+      "photos": "Fotos",
+      "dragText": "Arrastra tus fotos aquí o haz clic para seleccionarlas",
+      "address": "Buscar dirección",
+      "addressPlaceholder": "Ej: Av. Arequipa 1234, Lima",
+      "location": "Ubicación",
+      "dates": "Fechas"
+    },
+    "buttons": {
+      "selectPhotos": "Seleccionar Fotos",
+      "search": "Buscar",
+      "publish": "Publicar"
+    },
+    "messages": {
+      "missingFields": "Por favor completa todos los campos obligatorios.",
+      "success": "Evento publicado correctamente",
+      "error": "Ocurrió un error al guardar el evento.",
+      "addressNotFound": "No se encontró la dirección. Intenta con más detalle.",
+      "addressRequired": "Por favor, ingresa una dirección."
+    },
+    "mapMarker": "📍"
+  },
+  "myFairs": {
+    "title": "Mis ferias publicadas",
+    "columns": {
+      "image": "Imagen",
+      "name": "Nombre",
+      "status": "Estado",
+      "date": "Fecha",
+      "location": "Ubicación",
+      "actions": "Acciones"
+    },
+    "noImage": "Sin imagen",
+    "edit": "Editar",
+    "errors": {
+      "load": "Error al cargar eventos"
+    }
+  },
+  "organizerHeader": {
+    "logo": "NextHappen",
+    "nav": {
+      "dashboard": "Panel",
+      "stands": "Stands",
+      "createEvent": "Crear Evento",
+      "events": "Eventos"
+    }
+  },
+
+  "home": {
+    "title": "Inicio",
+    "msg": "Bienvenido a NextHappen",
+    "eventsPage": {
+      "title": "Eventos disponibles",
+      "noEvents": "No hay eventos disponibles",
+      "alerts": {
+        "saved": "Evento guardado correctamente",
+        "alreadySaved": "Este evento ya está guardado",
+        "error": "Error al guardar el evento"
+      }
+    }
+  },
+
+  "saved": {
+    "title": "Eventos guardados",
+    "emptyTitle": "Aún no tienes eventos guardados",
+    "emptyDesc": "Explora los eventos y toca el boton de guardar para guardarlos más tarde.",
+    "explore": "Explorar"
   }
 }

@@ -1,56 +1,49 @@
-
 <template>
-  <div class="page container">
-    <h1 class="page-title">Featured Events</h1>
+  <div class="home-page">
+    <h2 class="page-title">{{ $t('home.title') }}</h2>
 
-    <section class="events">
+    <div v-if="events.length" class="event-list">
       <EventCard
-          v-for="e in filteredEvents"
-          :key="e.id"
-          :event="e"
-          :showSave="true"
+          v-for="event in events"
+          :key="event.id"
+          :event="event"
           @save="onSave"
       />
-    </section>
+    </div>
+
+    <p v-else>{{ $t('home.noEvents') }}</p>
   </div>
 </template>
 
 <script setup>
 import EventCard from '../components/EventCard.vue'
-import { ref, computed, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 
-// estado reactivo
-const query = ref('')
-const events = ref([])      // todos los eventos
-const savedIds = ref([])    // ids de eventos guardados
+const { t } = useI18n()
 
-// obtener los eventos del backend JSON Server
+const query = ref('')
+const events = ref([])
+const savedIds = ref([])
+
 onMounted(async () => {
   try {
-    // obtener todos los eventos
-    const resEvents = await axios.get('http://localhost:3000/events')
-    events.value = resEvents.data.map(e => ({
+    const res = await axios.get('http://localhost:3000/events')
+    events.value = res.data.map(e => ({
       ...e,
-      image: e.image.startsWith('http') ? e.image : `${window.location.origin}${e.image}`
+      image: e.photos && e.photos.length > 0
+          ? e.photos[0]
+          : "https://via.placeholder.com/400x200?text=No+Image"
     }))
-    // obtener todos los guardados
-    const resSaved = await axios.get('http://localhost:3000/saved')
-    savedIds.value = resSaved.data.map(e => e.title)
 
-    console.log('Guardados:', savedIds.value)
+    console.log("Eventos cargados:", events.value)
   } catch (err) {
-    console.error('Error cargando eventos:', err)
+    console.error("Error cargando eventos:", err)
   }
 })
 
-// filtrar por búsqueda (opcional)
-const filteredEvents = computed(() =>
-    events.value.filter(e =>
-        e.title.toLowerCase().includes(query.value.toLowerCase())
-    )
-)
-
+// 💾 Guardar evento
 async function onSave(id) {
   try {
     const key = 'nh_saved'
@@ -61,21 +54,17 @@ async function onSave(id) {
       arr.push(id)
       localStorage.setItem(key, JSON.stringify(arr))
 
-      // buscar el evento en la lista actual
       const eventToSave = { ...events.value.find(e => e.id === id) }
-      delete eventToSave.id // evita conflicto de id duplicado en JSON Server
+      delete eventToSave.id
 
-      // guardar también en el backend
-      const res = await axios.post('http://localhost:3000/saved', eventToSave)
-      console.log('Evento guardado en backend:', res.data)
-
-      alert('✅ Evento guardado en backend y localStorage')
+      await axios.post('http://localhost:3000/saved', eventToSave)
+      alert(t('home.alerts.saved'))
     } else {
-      alert('⚠️ Este evento ya está guardado')
+      alert(t('home.alerts.alreadySaved'))
     }
   } catch (error) {
-    console.error('❌ Error al guardar evento:', error)
+    console.error('Error al guardar evento:', error)
+    alert(t('home.alerts.error'))
   }
 }
 </script>
-
