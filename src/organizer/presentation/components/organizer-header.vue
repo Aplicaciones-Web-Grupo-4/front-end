@@ -2,14 +2,14 @@
   <header class="organizer-header">
     <!-- Logo -->
     <div class="logo">
-      <img src="../../../assets/happi_logo.png" alt="happi-logo" class="logo-img"/>
+      <img src="../../../assets/happi_logo.png" alt="happi-logo" class="logo-img" />
       <span>NextHappen</span>
     </div>
 
     <!-- Nav links -->
     <nav class="nav-links">
-      <RouterLink to="/dashboard">Dashboard</RouterLink>
-      <RouterLink to="/stands">Stands</RouterLink>
+      <RouterLink to="/entrepreneur">Dashboard</RouterLink>
+      <RouterLink to="/register-stands">Stands</RouterLink>
       <RouterLink to="/create-event">Create Event</RouterLink>
       <RouterLink to="/events">Events</RouterLink>
     </nav>
@@ -83,10 +83,9 @@ import Avatar from 'primevue/avatar'
 }
 
 :deep(.p-button.p-button-text.p-button-rounded) {
-  color: #f59e0b;         /* color del ícono */
+  color: #f59e0b; /* color del ícono */
 }
 :deep(.p-button.p-button-text.p-button-rounded:hover) {
   background-color: #fef3c7; /* color al pasar mouse */
 }
-
 </style>

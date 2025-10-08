@@ -1,0 +1,69 @@
+:root{
+    /* Primarios */
+    --nh-yellow: #FAC638;      /* acento / botones destacados */
+    --nh-blue:   #1E90FF;      /* fondo principal (hero) */
+    --nh-black:  #000000;      /* textos fuertes */
+    --nh-white:  #FFFFFF;      /* balance/contraste */
+
+    /* Secundarios */
+    --nh-grey-50:  #F5F5F0;    /* fondo general */
+    --nh-grey-200: #D9D9D9;    /* bordes/complementos */
+    --nh-brown:    #1C170D;    /* descripciones/negro footer */
+    --nh-beige:    #F5E0E5;    /* barra/búsqueda (si aplica) */
+    --nh-beige2:   #F8E3CF;    /* detalles/acentos */
+    --nh-gold:     #9E8747;    /* textos de secciones específicas */
+    --nh-separator:#E5E8EB;    /* divisores/sutíl */
+    --nh-yellow-btn:#FAC738;   /* botón principal web (igual que amarillo) */
+
+    /* Tipografía */
+    --nh-font: 'Spline Sans', system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+
+    /* Espaciado/Radius base */
+    --nh-gap: 16px;
+    --nh-radius: 12px;
+}
+
+/* Base */
+html, body, #app { height: 100%; }
+body { font-family: var(--nh-font); color: var(--nh-black); background: var(--nh-grey-50); }
+
+/* Títulos y jerarquía simple */
+.h-title { font-weight: 700; letter-spacing: .2px; }
+.h-sub   { font-weight: 700; font-size: 1.25rem; }
+.p-muted { color: #616161; }
+
+/* Contenedores */
+.nh-card { background: var(--nh-white); border-radius: var(--nh-radius); padding: 16px; border: 1px solid var(--nh-separator); }
+
+/* Botón primario (aplicar como class extra al pv-button) */
+.nh-btn {
+    background: var(--nh-yellow);
+    border: 1px solid var(--nh-yellow);
+    color: #1a1a1a; /* contraste para amarillo */
+    border-radius: 14px; /* 12–16px según guía */
+    padding: 12px 20px;
+}
+.nh-btn:hover {            /* hover = 1 línea “de más” como pediste */
+    filter: brightness(0.95);
+}
+
+/* Links sutiles tipo Figma (categoría/editar) */
+.nh-link { color: var(--nh-blue); text-decoration: none; }
+.nh-link:hover { text-decoration: underline; }
+
+/* Tabla con bordes suaves */
+.p-datatable .p-datatable-thead > tr > th {
+    background: var(--nh-white);
+    border-bottom: 1px solid var(--nh-separator);
+}
+.p-datatable .p-datatable-tbody > tr > td {
+    border-bottom: 1px solid var(--nh-separator);
+}
+
+/* Menubar minimal */
+.p-menubar { background: transparent; border: none; }
+.p-menubar .p-menuitem-link { border-radius: 8px; }
+.p-menubar .p-menuitem-link:hover { background: rgba(0,0,0,0.03); }
+
+/* Cards de métricas (hover sutil, opcional en 1 línea) */
+.nh-card.hoverable:hover { transform: translateY(-1px); transition: transform .15s ease; }

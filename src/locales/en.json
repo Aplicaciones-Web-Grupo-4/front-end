@@ -1,0 +1,38 @@
+{
+  "nav": { "dashboard": "Dashboard", "stands": "Stands" },
+  "home": { "title": "Home", "msg": "Temporary basic landing." },
+  "entrepreneur": {
+    "title": "Organizer panel",
+    "summary": "Your fairs summary",
+    "fairTitle": "Spring Handcrafts Fair",
+    "fairDates": "May 15 – May 17",
+    "views": "Views",
+    "saved": "Saved",
+    "create": "Create event"
+  },
+  "common": {
+    "all": "All",
+    "save": "Save",
+    "update": "Update",
+    "cancel": "Cancel"
+  },
+  "stands": {
+    "title": "Register Stands",
+    "desc": "Add and manage entrepreneurs and their profiles within a specific fair.",
+    "selectFair": "Select Fair",
+    "chooseFair": "Choose a fair",
+    "addEntrepreneur": "Add Entrepreneur",
+    "name": "Name",
+    "category": "Category",
+    "stand": "Stand",
+    "actions": "Actions",
+    "edit": "Edit",
+    "newTitle": "New Stand",
+    "editTitle": "Edit Stand",
+    "errors": {
+      "nameRequired": "Name is required.",
+      "categoryRequired": "Select a category.",
+      "noFairForCategory": "There is no fair associated with this category yet."
+    }
+  }
+}

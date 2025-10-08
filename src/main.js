@@ -1,29 +1,54 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import PrimeVue from 'primevue/config'
-import router from './router'
+import { createApp } from 'vue';
+import App from './App.vue';
+import router from './router.js';
+import i18n from './i18n.js';
+import pinia from './pinia.js';
 
-// PrimeVue styles
-import 'primevue/resources/themes/saga-blue/theme.css'
-import 'primevue/resources/primevue.min.css'
-import 'primeicons/primeicons.css'
+// PrimeVue y tema Material
+import PrimeVue from 'primevue/config';
+import Material from '@primeuix/themes/material';
 
-//leaflet styles
+// Estilos generales
+import 'primeflex/primeflex.css';
+import 'primeicons/primeicons.css';
+import '@primeuix/themes/material';
+import './styles/nh-theme.css';
+
+// Estilos Leaflet (solo si usas mapas)
 import "leaflet/dist/leaflet.css";
 
-// PrimeFlex (para las utilidades de layout)
-import 'primeflex/primeflex.css'
+import {
+    Button,
+    Card,
+    DataTable,
+    Column,
+    Dropdown,
+    Avatar,
+    Menubar,
+    Toast,
+    Dialog,
+    ConfirmDialog
+} from 'primevue';
 
-import Button from 'primevue/button'
-import Avatar from 'primevue/avatar'
+import ToastService from 'primevue/toastservice';
+import DialogService from 'primevue/dialogservice';
+import ConfirmationService from 'primevue/confirmationservice';
 
-const app = createApp(App)
-
-app.use(PrimeVue)
-app.use(router)
-
-app.component('Button', Button)
-app.component('Avatar', Avatar)
-app.component
-
-app.mount('#app')
+createApp(App)
+    .use(PrimeVue, { ripple: true, theme: { preset: Material, options: { darkModeSelector: false }}})
+    .use(router)
+    .use(i18n)
+    .use(pinia)
+    .use(ToastService)
+    .use(DialogService)
+    .use(ConfirmationService)
+    .component('pv-button', Button)
+    .component('pv-card', Card)
+    .component('pv-data-table', DataTable)
+    .component('pv-column', Column)
+    .component('pv-dropdown', Dropdown)
+    .component('pv-avatar', Avatar)
+    .component('pv-menubar', Menubar)
+    .component('pv-toast', Toast)
+    .component('pv-confirm-dialog', ConfirmDialog)
+    .mount('#app');
