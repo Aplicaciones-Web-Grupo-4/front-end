@@ -1,12 +1,10 @@
 <template>
   <header class="main-header">
-    <!-- 🔸 Logo -->
     <div class="logo">
       <img src="../assets/happi_logo.png" alt="NextHappen Logo" class="logo-img" />
       <span>{{ $t('header.logo') }}</span>
     </div>
 
-    <!-- 🔸 Navigation links -->
     <nav class="nav-links">
       <RouterLink to="/user/home">{{ $t('header.nav.home') }}</RouterLink>
       <RouterLink to="/user/events">{{ $t('header.nav.events') }}</RouterLink>
@@ -16,7 +14,6 @@
 
     </nav>
 
-    <!-- 🔸 Right side actions -->
     <div class="actions">
       <div class="search-container">
         <i class="pi pi-search search-icon"></i>
@@ -52,7 +49,7 @@ function setLang(lang) {
 </script>
 
 <style scoped>
-/* === Contenedor principal === */
+
 .main-header {
   display: flex;
   align-items: center;
@@ -63,7 +60,6 @@ function setLang(lang) {
   font-family: 'Inter', sans-serif;
 }
 
-/* === Logo === */
 .logo {
   display: flex;
   align-items: center;
@@ -79,7 +75,6 @@ function setLang(lang) {
   object-fit: contain;
 }
 
-/* === Navegación === */
 .nav-links {
   display: flex;
   align-items: center;
@@ -95,7 +90,7 @@ function setLang(lang) {
 }
 
 .nav-links a:hover {
-  color: #f59e0b; /* Amarillo suave */
+  color: #f59e0b;
 }
 
 .nav-links a.router-link-active {
@@ -103,14 +98,12 @@ function setLang(lang) {
   font-weight: 600;
 }
 
-/* === Acciones (lado derecho) === */
 .actions {
   display: flex;
   align-items: center;
   gap: 16px;
 }
 
-/* === Search input === */
 .search-container {
   display: flex;
   align-items: center;
@@ -133,7 +126,6 @@ function setLang(lang) {
   margin-right: 8px;
 }
 
-/* === Botón Sign Up === */
 .signup-btn {
   background-color: #ffcd00;
   border: none;

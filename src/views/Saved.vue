@@ -33,9 +33,9 @@ async function loadSaved() {
   try {
     const res = await axios.get('http://localhost:3000/saved')
     savedList.value = res.data
-    console.log('🟢 Eventos guardados:', savedList.value)
+    console.log('Eventos guardados:', savedList.value)
   } catch (error) {
-    console.error('❌ Error al cargar eventos guardados:', error)
+    console.error('Error al cargar eventos guardados:', error)
   }
 }
 

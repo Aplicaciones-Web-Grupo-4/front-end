@@ -1,12 +1,10 @@
 <template>
   <header class="organizer-header">
-    <!-- 🔸 Logo -->
     <div class="logo">
       <img src="../../../assets/happi_logo.png" alt="happi-logo" class="logo-img" />
       <span>{{ $t('organizerHeader.logo') }}</span>
     </div>
 
-    <!-- 🔸 Nav links -->
     <nav class="nav-links">
       <RouterLink to="/org/entrepreneur">{{ $t('organizerHeader.nav.dashboard') }}</RouterLink>
       <RouterLink to="/org/register-stands">{{ $t('organizerHeader.nav.stands') }}</RouterLink>
@@ -15,10 +13,8 @@
       <RouterLink to="/user/home"> Admin </RouterLink>
     </nav>
 
-    <!-- 🌐 Switcher -->
     <LanguageSwitcher />
 
-    <!-- 🔔 Right side -->
     <div class="actions">
       <Button icon="pi pi-bell" class="p-button-rounded p-button-text" />
       <Avatar image="https://i.pravatar.cc/40" shape="circle" size="large" />
@@ -49,7 +45,6 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   padding: 12px 24px;
 }
 
-/* Logo */
 .logo {
   display: flex;
   align-items: center;
@@ -59,11 +54,10 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   color: #222;
 }
 .logo .pi {
-  color: #f59e0b; /* amarillo */
+  color: #f59e0b;
   font-size: 25px;
 }
 
-/* Links de navegación */
 .nav-links {
   display: flex;
   gap: 24px;
@@ -79,7 +73,6 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   color: #f59e0b;
 }
 
-/* Acciones a la derecha */
 .actions {
   display: flex;
   align-items: center;
