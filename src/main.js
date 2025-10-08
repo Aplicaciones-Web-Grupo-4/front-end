@@ -4,14 +4,18 @@ import router from './router.js';
 import i18n from './i18n.js';
 import pinia from './pinia.js';
 
+// PrimeVue y tema Material
 import PrimeVue from 'primevue/config';
 import Material from '@primeuix/themes/material';
 
+// Estilos generales
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '@primeuix/themes/material';
 import './styles/nh-theme.css';
 
+// Estilos Leaflet (solo si usas mapas)
+import "leaflet/dist/leaflet.css";
 
 import {
     Button,

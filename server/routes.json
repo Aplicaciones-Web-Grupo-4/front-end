@@ -3,4 +3,7 @@
   "/api/fairs/:id": "/fairs/:id",
   "/api/stands": "/stands",
   "/api/stands/:id": "/stands/:id"
+  "/api/*": "/$1",
+  "/organizer/events": "/events"
+
 }

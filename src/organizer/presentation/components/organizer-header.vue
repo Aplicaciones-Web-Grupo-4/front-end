@@ -2,9 +2,7 @@
   <header class="organizer-header">
     <!-- Logo -->
     <div class="logo">
-      <!-- usa el vite.svg que ya está en /public -->
-      <img src="../../../assets/happi_logo.png" alt="happi-logo" class="logo-img"/>
-
+      <img src="../../../assets/happi_logo.png" alt="happi-logo" class="logo-img" />
       <span>NextHappen</span>
     </div>
 
@@ -85,7 +83,7 @@ import Avatar from 'primevue/avatar'
 }
 
 :deep(.p-button.p-button-text.p-button-rounded) {
-  color: #f59e0b;         /* color del ícono */
+  color: #f59e0b; /* color del ícono */
 }
 :deep(.p-button.p-button-text.p-button-rounded:hover) {
   background-color: #fef3c7; /* color al pasar mouse */

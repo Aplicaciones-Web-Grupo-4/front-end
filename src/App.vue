@@ -11,7 +11,7 @@
 </template>
 
 <script setup>
-import OrganizerHeader from './organizer/presentation/components/organizer-header.vue';
+import OrganizerHeader from './organizer/presentation/components/organizer-header.vue'
 </script>
 
 <style>
@@ -20,3 +20,6 @@ body {
   font-family: 'Inter', sans-serif;
 }
 </style>
+
+
+
