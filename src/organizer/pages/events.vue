@@ -69,7 +69,7 @@ const fairs = ref([]);
 // 📡 Cargar los eventos desde db.json
 const loadFairs = async () => {
   try {
-    const res = await fetch("http://localhost:3001/events");
+    const res = await fetch("http://localhost:3000/events");
     if (!res.ok) throw new Error("Error al cargar eventos");
     fairs.value = await res.json();
   } catch (err) {
