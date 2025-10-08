@@ -1,0 +1,11 @@
+:root{
+  --bg: #fbf8f5;
+  --accent: #f5c04a;
+  --muted: #6b6b6b;
+  --card: #ffffff;
+  --title: #222222;
+  --container-w: 1100px;
+}
+*{box-sizing:border-box}
+html,body,#app{height:100%;margin:0;background:var(--bg);font-family:Inter, Arial, sans-serif;color:var(--title)}
+.container{max-width:var(--container-w);margin:0 auto;padding:36px 28px}

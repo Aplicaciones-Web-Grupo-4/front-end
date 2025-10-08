@@ -1,0 +1,37 @@
+{
+  "events": [
+    {
+      "id": 1,
+      "title": "Retro Fair",
+      "description": "A nostalgic trip back in time with vintage goods and classic games.",
+      "image": "https://via.placeholder.com/300x200/ff6b6b/ffffff?text=Retro+Fair",
+      "date": "2025-10-15",
+      "location": "Central Park"
+    },
+    {
+      "id": 2,
+      "title": "Food Truck Fiesta",
+      "description": "A culinary adventure with a variety of gourmet food trucks.",
+      "image": "https://via.placeholder.com/300x200/4ecdc4/ffffff?text=Food+Truck",
+      "date": "2025-10-12",
+      "location": "Downtown Square"
+    },
+    {
+      "id": 3,
+      "title": "Artisanal Market",
+      "description": "Discover unique handmade crafts and meet local artisans.",
+      "image": "https://via.placeholder.com/300x200/45b7d1/ffffff?text=Artisanal+Market",
+      "date": "2025-10-20",
+      "location": "Art District"
+    },
+    {
+      "id": 4,
+      "title": "Pop-Up Shop",
+      "description": "Exclusive pop-up shops featuring limited-edition items.",
+      "image": "https://via.placeholder.com/300x200/96ceb4/ffffff?text=Pop-Up+Shop",
+      "date": "2025-10-18",
+      "location": "Fashion Avenue"
+    }
+  ],
+  "saved": []
+}
