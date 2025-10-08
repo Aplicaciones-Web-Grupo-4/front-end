@@ -23,20 +23,6 @@
       "category": "Gastronomía",
       "fairId": 2,
       "code": "B1"
-    },
-    {
-      "id": 3,
-      "name": "hbgfds",
-      "category": "Artesanías",
-      "fairId": 1,
-      "code": "A2"
-    },
-    {
-      "id": 4,
-      "name": "gfdsgb",
-      "category": "Gastronomía",
-      "fairId": 2,
-      "code": "B2"
     }
   ]
 }

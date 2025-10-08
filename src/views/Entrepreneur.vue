@@ -16,7 +16,6 @@
               <span class="mr-1">{{ $t('entrepreneur.views') }}:</span>
               <span class="font-medium">1,240</span>
             </div>
-            <pv-button class="nh-btn" :label="$t('entrepreneur.create')" icon="pi pi-plus" />
           </div>
         </div>
       </div>
@@ -46,5 +45,4 @@
 </template>
 
 <script setup>
-// No logic needed here; solo usamos $t en template.
 </script>

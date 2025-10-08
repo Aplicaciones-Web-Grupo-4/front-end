@@ -1,10 +1,22 @@
 <template>
-  <div class="min-h-screen surface-ground text-color">
-    <HeaderNav />
-    <router-view />
+  <div>
+    <!-- Header fijo -->
+    <OrganizerHeader />
+
+    <!-- Aquí se muestran las vistas del router -->
+    <main class="p-3">
+      <router-view />
+    </main>
   </div>
 </template>
 
 <script setup>
-import HeaderNav from './components/HeaderNav.vue';
+import OrganizerHeader from './organizer/presentation/components/organizer-header.vue';
 </script>
+
+<style>
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}
+</style>
