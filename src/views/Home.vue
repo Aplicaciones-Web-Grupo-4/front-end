@@ -23,27 +23,28 @@ import axios from 'axios'
 
 const { t } = useI18n()
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
+
 const query = ref('')
 const events = ref([])
 const savedIds = ref([])
 
 onMounted(async () => {
   try {
-    const res = await axios.get('http://localhost:3000/events')
+    const res = await axios.get(`${API_URL}/events`)
     events.value = res.data.map(e => ({
       ...e,
       image: e.photos && e.photos.length > 0
           ? e.photos[0]
-          : "https://via.placeholder.com/400x200?text=No+Image"
+          : 'https://via.placeholder.com/400x200?text=No+Image'
     }))
 
-    console.log("Eventos cargados:", events.value)
+    console.log('Eventos cargados:', events.value)
   } catch (err) {
-    console.error("Error cargando eventos:", err)
+    console.error('Error cargando eventos:', err)
   }
 })
 
-// 💾 Guardar evento
 async function onSave(id) {
   try {
     const key = 'nh_saved'
@@ -57,7 +58,7 @@ async function onSave(id) {
       const eventToSave = { ...events.value.find(e => e.id === id) }
       delete eventToSave.id
 
-      await axios.post('http://localhost:3000/saved', eventToSave)
+      await axios.post(`${API_URL}/saved`, eventToSave)
       alert(t('home.alerts.saved'))
     } else {
       alert(t('home.alerts.alreadySaved'))

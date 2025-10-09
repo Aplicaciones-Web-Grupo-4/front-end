@@ -60,15 +60,17 @@ import Button from "primevue/button";
 
 const { t } = useI18n();
 
+const API_URL = import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com";
+
 const fairs = ref([]);
 
 const loadFairs = async () => {
   try {
-    const res = await fetch("http://localhost:3000/events");
+    const res = await fetch(`${API_URL}/events`);
     if (!res.ok) throw new Error(t("myFairs.errors.load"));
     fairs.value = await res.json();
   } catch (err) {
-    console.error("❌", err);
+    console.error("Error al cargar eventos:", err);
   }
 };
 
@@ -79,6 +81,7 @@ const editFair = (fair) => {
   console.log("Editar feria:", fair.title);
 };
 </script>
+
 
 
 <style>

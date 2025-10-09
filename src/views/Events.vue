@@ -28,13 +28,14 @@ const { t } = useI18n()
 const events = ref([])
 const query = ref('')
 
-// obtener eventos guardados del backend
+const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
+
 onMounted(async () => {
   try {
-    const res = await axios.get('http://localhost:3000/saved')
+    const res = await axios.get(`${API_URL}/saved`)
     events.value = res.data.map(e => ({
       ...e,
-      image: e.photos?.[0] || "https://via.placeholder.com/400x200?text=No+Image"
+      image: e.photos?.[0] || 'https://via.placeholder.com/400x200?text=No+Image'
     }))
     console.log('Eventos guardados cargados:', events.value)
   } catch (err) {
@@ -42,13 +43,13 @@ onMounted(async () => {
   }
 })
 
-// filtro de búsqueda
 const filteredEvents = computed(() =>
     events.value.filter(e =>
         e.title.toLowerCase().includes(query.value.toLowerCase())
     )
 )
 </script>
+
 
 <style scoped>
 .saved-container {

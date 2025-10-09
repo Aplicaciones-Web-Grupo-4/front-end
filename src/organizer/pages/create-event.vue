@@ -123,6 +123,8 @@ import Button from "primevue/button";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
 
+const API_URL = import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com";
+
 const form = ref({
   title: "",
   description: "",
@@ -167,7 +169,7 @@ const removeImage = (index) => {
 
 const publishEvent = async () => {
   if (!form.value.title || !form.value.dates || !form.value.location) {
-    alert("createEvent.messages.missingFields");
+    alert(t("createEvent.messages.missingFields"));
     return;
   }
 
@@ -187,7 +189,7 @@ const publishEvent = async () => {
   };
 
   try {
-    const res = await fetch("http://localhost:3000/events", {
+    const res = await fetch(`${API_URL}/events`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newEvent),
@@ -195,7 +197,8 @@ const publishEvent = async () => {
 
     if (!res.ok) throw new Error("Error al guardar el evento");
 
-    alert("createEvent.messages.success");
+    alert(t("createEvent.messages.success"));
+
     form.value = {
       title: "",
       description: "",
@@ -208,15 +211,14 @@ const publishEvent = async () => {
     };
     previewImages.value = [];
   } catch (err) {
-    console.error("❌ Error al publicar el evento:", err);
-    alert("createEvent.messages.error");
+    console.error("Error al publicar el evento:", err);
+    alert(t("createEvent.messages.error"));
   }
 };
 
-// 🗺️ Google Maps
 const searchAddress = async () => {
   if (!form.value.address) {
-    alert("createEvent.messages.addressRequired");
+    alert(t("createEvent.messages.addressRequired"));
     return;
   }
 
@@ -239,7 +241,7 @@ const searchAddress = async () => {
       form.value.lng = location.lng();
       form.value.location = result.formatted_address;
     } else {
-      alert("createEvent.messages.addressNotFound");
+      alert(t("createEvent.messages.addressNotFound"));
     }
   });
 };
@@ -268,8 +270,8 @@ onMounted(() => {
 });
 </script>
 
+
 <style>
-/* 🧱 Estilos generales */
 .create-event-page {
   max-width: 800px;
   margin: 2rem auto;
@@ -294,7 +296,6 @@ onMounted(() => {
   gap: 0.5rem;
 }
 
-/* 📍 Dirección */
 .address-search {
   display: flex;
   gap: 0.5rem;
@@ -305,7 +306,6 @@ onMounted(() => {
   flex-grow: 1;
 }
 
-/* 🗺️ Mapa */
 #map {
   height: 350px;
   width: 100%;
@@ -314,7 +314,6 @@ onMounted(() => {
   border: 1px solid #ddd;
 }
 
-/* 🟡 Botones */
 .publish-button {
   color: black;
   background-color: #fac738;
@@ -328,14 +327,12 @@ onMounted(() => {
   font-weight: bold;
 }
 
-/* 📅 Calendario */
 .calendar-custom .p-calendar .p-button {
   background-color: #fac738;
   border: none;
   color: black;
 }
 
-/* 🖼️ Subida de fotos */
 .upload-area {
   border: 2px dashed #ccc;
   border-radius: 12px;
@@ -364,7 +361,6 @@ onMounted(() => {
   font-weight: bold;
 }
 
-/* 🖼️ Vista previa */
 .preview-container {
   display: flex;
   flex-wrap: wrap;
@@ -407,7 +403,6 @@ onMounted(() => {
   font-size: 0.9rem;
 }
 
-/* 🟡 Input focus */
 .p-inputtext:focus,
 .p-inputtextarea:focus,
 textarea:focus,
