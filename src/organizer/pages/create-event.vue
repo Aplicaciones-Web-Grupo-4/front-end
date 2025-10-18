@@ -4,6 +4,15 @@
 
     <div class="form-container">
       <div class="field">
+        <label for="org">{{ $t('createEvent.fields.orgName')}}</label>
+        <pv-input-text
+            id="org"
+            class="org-form"
+            v-model="form.org"
+            :placeholder="$t('createEvent.fields.orgPlaceholder')"
+        />
+      </div>
+      <div class="field">
         <label for="title">{{ $t('createEvent.fields.title') }}</label>
         <pv-input-text
             id="title"
@@ -27,36 +36,40 @@
 
       <div class="field">
         <div class="price-quantity-category">
-          <!-- Precio -->
           <div class="input-group">
             <label for="price">{{ $t('createEvent.fields.price') }}</label>
-            <pv-input-text
+            <pv-input-number
                 id="price"
-                class="price-quantity-form"
                 v-model="form.price"
                 :placeholder="$t('createEvent.fields.pricePlaceholder')"
+                inputId="price_input"
+                mode="currency"
+                currency="PEN"
+                locale="en-US"
+                variant="filled"
             />
           </div>
 
-          <!-- Cantidad -->
           <div class="input-group">
             <label for="quantity">{{ $t('createEvent.fields.quantity') }}</label>
-            <pv-input-text
+            <pv-input-number
                 id="quantity"
-                class="price-quantity-form"
                 v-model="form.quantity"
                 :placeholder="$t('createEvent.fields.quantityPlaceholder')"
             />
           </div>
 
-          <!-- Categoría -->
           <div class="input-group">
             <label for="category">{{ $t('createEvent.fields.category') }}</label>
-            <pv-input-text
+            <pv-cascade-select
                 id="category"
-                class="price-quantity-form"
                 v-model="form.category"
-                :placeholder="$t('createEvent.fields.categoryPlaceholder')"
+                :options="categories"
+                optionLabel="name"
+                optionGroupLabel="name"
+                optionGroupChildren="subcategories"
+                placeholder="Selecciona una categoría"
+                class="w-full"
             />
           </div>
         </div>
@@ -153,11 +166,14 @@
 import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 
+
+
 const { t } = useI18n()
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
 
 const form = ref({
+  org: '',
   title: '',
   description: '',
   price: '',
@@ -170,6 +186,18 @@ const form = ref({
   lat: null,
   lng: null
 })
+
+const categories = ref([
+  {
+    name: 'Gatronomía',
+  },
+  {
+    name: 'Cultural',
+  },
+  {
+    name: 'Tecnología',
+  }
+])
 
 const previewImages = ref([])
 const fileInput = ref(null)
@@ -220,7 +248,6 @@ const publishEvent = async () => {
     price: form.value.price,
     quantity: form.value.quantity,
     category: form.value.category,
-    status: 'En vivo',
     date: formattedDates,
     location: form.value.location,
     photos: previewImages.value // URLs base64
@@ -238,6 +265,7 @@ const publishEvent = async () => {
     alert(t('createEvent.messages.success'))
 
     form.value = {
+      org: '',
       title: '',
       description: '',
       price: '',
@@ -328,6 +356,13 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   font-weight: bold;
+}
+
+.org-form {
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  height: 30px;
+  font-size: 0.95rem;
 }
 
 .title-form{
@@ -555,25 +590,18 @@ onMounted(() => {
   width: 100%;
 }
 
-.price-quantity-category .input-group {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.price-quantity-form {
+.category-form {
   border: 2px solid #333 !important;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
   height: 38px !important;
   font-size: 0.95rem !important;
 }
 
-/* 📱 Responsive para pantallas pequeñas */
-@media (max-width: 768px) {
-  .price-quantity-category {
-    flex-direction: column;
-  }
+.price-quantity-category .input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 </style>
 
@@ -691,4 +719,98 @@ onMounted(() => {
   color: #000 !important;
   font-weight: bold !important;
 }
+
+.p-inputnumber-input {
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  height: 38px !important;
+  font-size: 0.95rem !important;
+  width: 100% !important;
+}
+
+/* Contenedor general */
+.p-cascadeselect {
+  display: flex !important;
+  align-items: center !important;
+  width: 100% !important;
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  background-color: #fffdf8 !important;
+  height: 40px !important;
+  position: relative !important;
+}
+
+/* Texto seleccionado */
+.p-cascadeselect-label {
+  flex: 1 !important;
+  border: none !important;
+  background: transparent !important;
+  font-size: 0.95rem !important;
+  padding: 0 2rem 0 0.5rem !important;
+  display: flex !important;
+  align-items: center !important;
+  height: 100% !important;
+}
+
+/* Flechita */
+.p-cascadeselect-trigger {
+  right: 0.5rem !important;
+  display: flex !important;
+  background-color: #ffcd00 !important;
+  align-items: center !important;
+  justify-content: center !important;
+  cursor: pointer !important;
+  height: 100% !important;
+  width: 2rem !important;
+  border-left: 2px solid #333 !important;
+}
+
+.p-cascadeselect-trigger:hover {
+  background-color: #fff7ed !important;
+  color: #f59e0b !important;
+  border-color: #f59e0b !important;
+}
+
+/* === Panel desplegable === */
+.p-cascadeselect-panel {
+  border: 2px solid #333 !important;
+  background-color: #fffdf8 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  padding: 1rem !important;
+  overflow: hidden !important;
+}
+
+/* === Cada item dentro del panel === */
+.p-cascadeselect-item {
+  padding: 0.6rem 0.8rem !important;
+  font-size: 0.9rem !important;
+  border-radius: 4px !important;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+/* Hover item */
+.p-cascadeselect-item:hover {
+  background-color: #ffef99 !important;
+  transform: translateX(2px);
+  cursor: pointer;
+}
+
+/* === Icono de flecha en el panel (>) === */
+.p-cascadeselect-item .p-cascadeselect-item-icon {
+  color: #333 !important;
+}
+
+/* Elimina los puntos de lista en todos los niveles */
+.p-cascadeselect-list,
+.p-cascadeselect-item {
+  list-style: none !important;
+}
+
+/* Asegura que los subniveles tampoco los muestren */
+.p-cascadeselect-sublist {
+  list-style-type: none !important;
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
 </style>
