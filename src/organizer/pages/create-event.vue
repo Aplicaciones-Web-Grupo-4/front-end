@@ -3,21 +3,21 @@
     <h1 class="page-title">{{ $t('createEvent.titlePage') }}</h1>
 
     <div class="form-container">
-      <!-- Título -->
       <div class="field">
         <label for="title">{{ $t('createEvent.fields.title') }}</label>
-        <InputText
+        <pv-input-text
             id="title"
+            class="title-form"
             v-model="form.title"
             :placeholder="$t('createEvent.fields.titlePlaceholder')"
         />
       </div>
 
-      <!-- Descripción -->
       <div class="field">
         <label for="description">{{ $t('createEvent.fields.description') }}</label>
-        <Textarea
+        <pv-textarea
             id="description"
+            class="description-form"
             v-model="form.description"
             rows="4"
             :placeholder="$t('createEvent.fields.descriptionPlaceholder')"
@@ -25,12 +25,49 @@
         />
       </div>
 
-      <!-- Subir fotos -->
+      <div class="field">
+        <div class="price-quantity-category">
+          <!-- Precio -->
+          <div class="input-group">
+            <label for="price">{{ $t('createEvent.fields.price') }}</label>
+            <pv-input-text
+                id="price"
+                class="price-quantity-form"
+                v-model="form.price"
+                :placeholder="$t('createEvent.fields.pricePlaceholder')"
+            />
+          </div>
+
+          <!-- Cantidad -->
+          <div class="input-group">
+            <label for="quantity">{{ $t('createEvent.fields.quantity') }}</label>
+            <pv-input-text
+                id="quantity"
+                class="price-quantity-form"
+                v-model="form.quantity"
+                :placeholder="$t('createEvent.fields.quantityPlaceholder')"
+            />
+          </div>
+
+          <!-- Categoría -->
+          <div class="input-group">
+            <label for="category">{{ $t('createEvent.fields.category') }}</label>
+            <pv-input-text
+                id="category"
+                class="price-quantity-form"
+                v-model="form.category"
+                :placeholder="$t('createEvent.fields.categoryPlaceholder')"
+            />
+          </div>
+        </div>
+      </div>
+
       <div class="field">
         <label>{{ $t('createEvent.fields.photos') }}</label>
         <div class="upload-area" @dragover.prevent @drop.prevent="handleDrop">
           <i class="pi pi-images upload-icon"></i>
           <p>{{ $t('createEvent.fields.dragText') }}</p>
+
           <input
               type="file"
               accept="image/*"
@@ -39,7 +76,8 @@
               ref="fileInput"
               class="hidden-input"
           />
-          <Button
+
+          <pv-button
               :label="$t('createEvent.buttons.selectPhotos')"
               icon="pi pi-upload"
               class="upload-button"
@@ -47,7 +85,6 @@
           />
         </div>
 
-        <!-- Vista previa -->
         <div v-if="previewImages.length" class="preview-container">
           <div
               v-for="(img, index) in previewImages"
@@ -55,24 +92,24 @@
               class="image-preview"
           >
             <img :src="img" alt="Preview" />
-            <button class="remove-btn" @click="removeImage(index)">
+            <pv-button class="remove-btn" @click="removeImage(index)">
               <i class="pi pi-times"></i>
-            </button>
+            </pv-button>
           </div>
         </div>
       </div>
 
-      <!-- Buscar dirección -->
       <div class="field">
         <label for="address">{{ $t('createEvent.fields.address') }}</label>
         <div class="address-search">
-          <InputText
+          <pv-input-text
               id="address"
+              class="address-form"
               v-model="form.address"
               :placeholder="$t('createEvent.fields.addressPlaceholder')"
               @keyup.enter="searchAddress"
           />
-          <Button
+          <pv-button
               icon="pi pi-search"
               :label="$t('createEvent.buttons.search')"
               class="search-button"
@@ -81,29 +118,27 @@
         </div>
       </div>
 
-      <!-- Mapa -->
       <div class="field">
         <label>{{ $t('createEvent.fields.location') }}</label>
         <div id="map" class="map"></div>
-        <small v-if="form.location">{{ $t('createEvent.mapMarker') }} {{ form.location }}</small>
+        <small v-if="form.location">
+          {{ $t('createEvent.mapMarker') }} {{ form.location }}
+        </small>
       </div>
 
-      <!-- Fechas -->
       <div class="field">
         <label>{{ $t('createEvent.fields.dates') }}</label>
-        <Calendar
+        <pv-calendar
             v-model="form.dates"
             selectionMode="range"
-            showIcon
             dateFormat="dd/mm/yy"
             :placeholder="$t('createEvent.fields.dates')"
             class="calendar-custom"
         />
       </div>
 
-      <!-- Botón -->
       <div class="button-container">
-        <Button
+        <pv-button
             :label="$t('createEvent.buttons.publish')"
             icon="pi pi-check"
             class="publish-button"
@@ -115,176 +150,175 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
-import InputText from "primevue/inputtext";
-import Textarea from "primevue/textarea";
-import Calendar from "primevue/calendar";
-import Button from "primevue/button";
-import { useI18n } from "vue-i18n";
-const { t } = useI18n();
+import { ref, onMounted, nextTick } from 'vue'
+import { useI18n } from 'vue-i18n'
 
-const API_URL = import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com";
+const { t } = useI18n()
+
+const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
 
 const form = ref({
-  title: "",
-  description: "",
+  title: '',
+  description: '',
+  price: '',
+  quantity: '',
+  category: '',
   photos: [],
-  address: "",
-  location: "",
+  address: '',
+  location: '',
   dates: null,
   lat: null,
-  lng: null,
-});
+  lng: null
+})
 
-const previewImages = ref([]);
-const fileInput = ref(null);
+const previewImages = ref([])
+const fileInput = ref(null)
 
-let map, marker, geocoder;
-const GOOGLE_API_KEY = "AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0";
+let map, marker, geocoder
+const GOOGLE_API_KEY = 'AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0'
 
 const onFileChange = (e) => {
-  const files = Array.from(e.target.files);
+  const files = Array.from(e.target.files)
   files.forEach((file) => {
-    form.value.photos.push(file);
-    const reader = new FileReader();
-    reader.onload = (event) => previewImages.value.push(event.target.result);
-    reader.readAsDataURL(file);
-  });
-};
+    form.value.photos.push(file)
+    const reader = new FileReader()
+    reader.onload = (event) => previewImages.value.push(event.target.result)
+    reader.readAsDataURL(file)
+  })
+}
 
 const handleDrop = (e) => {
-  const files = Array.from(e.dataTransfer.files);
+  const files = Array.from(e.dataTransfer.files)
   files.forEach((file) => {
-    form.value.photos.push(file);
-    const reader = new FileReader();
-    reader.onload = (event) => previewImages.value.push(event.target.result);
-    reader.readAsDataURL(file);
-  });
-};
+    form.value.photos.push(file)
+    const reader = new FileReader()
+    reader.onload = (event) => previewImages.value.push(event.target.result)
+    reader.readAsDataURL(file)
+  })
+}
 
 const removeImage = (index) => {
-  form.value.photos.splice(index, 1);
-  previewImages.value.splice(index, 1);
-};
+  form.value.photos.splice(index, 1)
+  previewImages.value.splice(index, 1)
+}
 
 const publishEvent = async () => {
   if (!form.value.title || !form.value.dates || !form.value.location) {
-    alert(t("createEvent.messages.missingFields"));
-    return;
+    alert(t('createEvent.messages.missingFields'))
+    return
   }
 
   const formattedDates = Array.isArray(form.value.dates)
       ? form.value.dates
-          .map((d) => new Date(d).toLocaleDateString("es-PE"))
-          .join(" - ")
-      : new Date(form.value.dates).toLocaleDateString("es-PE");
+          .map((d) => new Date(d).toLocaleDateString('es-PE'))
+          .join(' - ')
+      : new Date(form.value.dates).toLocaleDateString('es-PE')
 
   const newEvent = {
     title: form.value.title,
     description: form.value.description,
-    status: "En vivo",
+    price: form.value.price,
+    quantity: form.value.quantity,
+    category: form.value.category,
+    status: 'En vivo',
     date: formattedDates,
     location: form.value.location,
-    photos: previewImages.value, // URLs base64
-  };
+    photos: previewImages.value // URLs base64
+  }
 
   try {
     const res = await fetch(`${API_URL}/events`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(newEvent),
-    });
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newEvent)
+    })
 
-    if (!res.ok) throw new Error("Error al guardar el evento");
+    if (!res.ok) throw new Error('Error al guardar el evento')
 
-    alert(t("createEvent.messages.success"));
+    alert(t('createEvent.messages.success'))
 
     form.value = {
-      title: "",
-      description: "",
+      title: '',
+      description: '',
+      price: '',
+      quantity: '',
+      category: '',
       photos: [],
-      address: "",
-      location: "",
+      address: '',
+      location: '',
       dates: null,
       lat: null,
-      lng: null,
-    };
-    previewImages.value = [];
+      lng: null
+    }
+    previewImages.value = []
   } catch (err) {
-    console.error("Error al publicar el evento:", err);
-    alert(t("createEvent.messages.error"));
+    console.error('Error al publicar el evento:', err)
+    alert(t('createEvent.messages.error'))
   }
-};
+}
 
 const searchAddress = async () => {
   if (!form.value.address) {
-    alert(t("createEvent.messages.addressRequired"));
-    return;
+    alert(t('createEvent.messages.addressRequired'))
+    return
   }
 
   geocoder.geocode({ address: form.value.address }, (results, status) => {
-    if (status === "OK" && results.length > 0) {
-      const result = results[0];
-      const location = result.geometry.location;
+    if (status === 'OK' && results.length > 0) {
+      const result = results[0]
+      const location = result.geometry.location
 
-      map.setCenter(location);
-      map.setZoom(17);
+      map.setCenter(location)
+      map.setZoom(17)
 
-      if (marker) marker.setMap(null);
+      if (marker) marker.setMap(null)
       marker = new google.maps.Marker({
         position: location,
         map: map,
-        draggable: true,
-      });
+        draggable: true
+      })
 
-      form.value.lat = location.lat();
-      form.value.lng = location.lng();
-      form.value.location = result.formatted_address;
+      form.value.lat = location.lat()
+      form.value.lng = location.lng()
+      form.value.location = result.formatted_address
     } else {
-      alert(t("createEvent.messages.addressNotFound"));
+      alert(t('createEvent.messages.addressNotFound'))
     }
-  });
-};
+  })
+}
 
 const initMap = () => {
-  geocoder = new google.maps.Geocoder();
-  map = new google.maps.Map(document.getElementById("map"), {
+  geocoder = new google.maps.Geocoder()
+  map = new google.maps.Map(document.getElementById('map'), {
     center: { lat: -12.0464, lng: -77.0428 },
-    zoom: 12,
-  });
-};
+    zoom: 12
+  })
+}
 
 onMounted(() => {
   nextTick(() => {
     if (!window.google || !window.google.maps) {
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initMap;
-      document.head.appendChild(script);
+      const script = document.createElement('script')
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`
+      script.async = true
+      script.defer = true
+      script.onload = initMap
+      document.head.appendChild(script)
     } else {
-      initMap();
+      initMap()
     }
-  });
-});
+  })
+})
 </script>
 
-
-<style>
+<style scoped>
 .create-event-page {
   max-width: 800px;
   margin: 2rem auto;
   padding: 1.5rem;
 }
 
-.page-title {
-  font-size: 1.8rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-
-.form-container {
+.form-container{
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
@@ -293,7 +327,37 @@ onMounted(() => {
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  font-weight: bold;
+}
+
+.title-form{
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  height: 30px;
+  font-size: 0.95rem;
+}
+
+.price-quantity-form{
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  height: 30px;
+  font-size: 0.95rem;
+}
+
+.description-form{
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  font-family: sans-serif;
+  font-size: 0.95rem;
+}
+
+:deep(.p-inputtext:hover),
+:deep(.p-inputtext:focus),
+:deep(.p-inputtextarea:hover),
+:deep(.p-inputtextarea:focus) {
+  border-color: #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  outline: none !important;
 }
 
 .address-search {
@@ -301,64 +365,76 @@ onMounted(() => {
   gap: 0.5rem;
 }
 
-.address-search input,
-.address-search .p-inputtext {
-  flex-grow: 1;
+.address-form{
+  flex: 1;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  height: 30px;
+  font-size: 0.95rem;
+}
+
+.search-button{
+  border: 2px solid #333;
+  height: 38px;
+  background-color: #ffcd00;
+  font-size: 0.95rem;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  font-weight: bold;
+}
+
+.search-button:hover{
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
 }
 
 #map {
   height: 350px;
   width: 100%;
-  border-radius: 12px;
-  overflow: hidden;
-  border: 1px solid #ddd;
-}
-
-.publish-button {
-  color: black;
-  background-color: #fac738;
-  border: none;
-  font-weight: bold;
-}
-.search-button {
-  color: black;
-  background-color: #fac738;
-  border: none;
-  font-weight: bold;
-}
-
-.calendar-custom .p-calendar .p-button {
-  background-color: #fac738;
-  border: none;
-  color: black;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
 }
 
 .upload-area {
   border: 2px dashed #ccc;
-  border-radius: 12px;
   padding: 1.5rem;
   text-align: center;
   transition: all 0.3s;
   background-color: #fafafa;
 }
+
 .upload-area:hover {
   border-color: #fac738;
   background-color: #fff8e1;
 }
+
 .upload-icon {
   font-size: 2rem;
-  color: #fac738;
+  color: #333;
   margin-bottom: 0.5rem;
 }
+
+.upload-button {
+  border: 2px solid #333;
+  height: 40px;
+  font-weight: bold;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  background-color: #ffcd00;
+  margin-top: 0.5rem;
+}
+
+.upload-button:hover {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
+
 .hidden-input {
   display: none;
-}
-.upload-button {
-  margin-top: 0.5rem;
-  background-color: #fac738;
-  color: black;
-  border: none;
-  font-weight: bold;
 }
 
 .preview-container {
@@ -367,19 +443,20 @@ onMounted(() => {
   gap: 1rem;
   margin-top: 1rem;
 }
+
 .image-preview {
   position: relative;
   width: 120px;
   height: 120px;
-  border-radius: 12px;
   overflow: hidden;
-  border: 2px solid #eee;
 }
+
 .image-preview img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .remove-btn {
   position: absolute;
   top: 5px;
@@ -395,27 +472,223 @@ onMounted(() => {
   justify-content: center;
   transition: background 0.2s;
 }
+
 .remove-btn:hover {
   background-color: #ccc;
 }
+
 .remove-btn i {
   color: #d32f2f;
   font-size: 0.9rem;
 }
 
-.p-inputtext:focus,
-.p-inputtextarea:focus,
-textarea:focus,
-input:focus {
-  outline: none !important;
-  border-color: #fac738 !important;
-  box-shadow: 0 0 0 0.15rem rgba(250, 199, 56, 0.35) !important;
-  transition: border-color 0.2s, box-shadow 0.2s;
+:deep(.p-calendar) {
+  width: 100%;
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  background-color: #fff;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  font-size: 0.95rem;
 }
-.p-inputtext:hover,
-.p-inputtextarea:hover,
-textarea:hover,
-input:hover {
-  border-color: #fac738 !important;
+
+:deep(.p-calendar .p-inputtext) {
+  border: none !important;
+  box-shadow: none !important;
+  width: 100%;
+  height: 100%;
+  background: transparent !important;
+  color: #111;
+  font-size: 0.95rem;
+  font-family: 'Inter', sans-serif;
+}
+
+:deep(.p-calendar .p-button) {
+  border: none !important;
+  background: transparent !important;
+  color: #333 !important;
+  transition: all 0.2s ease;
+}
+
+:deep(.p-calendar:hover),
+:deep(.p-calendar:focus-within) {
+  border-color: #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  outline: none !important;
+}
+.publish-button{
+  border: 2px solid #333;
+  height: 40px;
+  font-size: 1rem;
+  background-color: #ffcd00;
+  font-weight: bold;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  cursor: pointer;
+}
+
+.publish-button:hover {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
+
+.page-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: bold;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.price-quantity-category {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  width: 100%;
+}
+
+.price-quantity-category .input-group {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.price-quantity-form {
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  height: 38px !important;
+  font-size: 0.95rem !important;
+}
+
+/* 📱 Responsive para pantallas pequeñas */
+@media (max-width: 768px) {
+  .price-quantity-category {
+    flex-direction: column;
+  }
+}
+</style>
+
+<style>
+.p-datepicker {
+  position: absolute !important;
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  background-color: #fffdf8 !important;
+  font-family: 'Inter', sans-serif;
+  z-index: 9999 !important;   /* se mantiene encima de todo */
+}
+
+.p-datepicker-year,
+.p-datepicker-month {
+  color: #333 !important;
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  background-color: #ffcd00;
+  font-weight: bold !important;
+}
+
+.p-datepicker-month {
+  margin-right: 6px;
+}
+
+.p-datepicker-year {
+  margin-left: 6px;
+}
+
+.p-datepicker-year:hover,
+.p-datepicker-month:hover {
+  color: #ffcd00 !important;
+  border-color: #f59e0b !important;
+  background-color: #fff7ed;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  cursor: pointer;
+}
+
+.p-datepicker-header {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  background: #fff7ed !important;
+  border-bottom: 2px solid #333 !important;
+  font-weight: bold !important;
+  color: #333 !important;
+  text-transform: uppercase;
+  gap: 1rem !important;
+  padding: 0.5rem 0 !important;
+}
+
+.p-datepicker-prev,
+.p-datepicker-next {
+  color: #333 !important;
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  background-color: #ffcd00;
+}
+
+.p-monthpicker-month,
+.p-yearpicker-year {
+  transition: all 0.15s ease;
+  border-radius: 50%;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.p-monthpicker-month:hover,
+.p-yearpicker-year:hover {
+  cursor: pointer;
+  background-color: #facc15 !important;
+}
+
+.p-datepicker-calendar {
+  margin: 0 auto !important;
+}
+
+.p-datepicker table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  text-align: center !important;
+}
+
+.p-datepicker-prev:hover,
+.p-datepicker-next:hover {
+  color: #ffcd00 !important;
+  border-color: #f59e0b !important;
+  background-color: #fff7ed;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  cursor: pointer;
+}
+
+.p-datepicker td > span {
+  transition: all 0.15s ease;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.p-datepicker td > span:hover {
+  background-color: #facc15 !important;
+  color: #000 !important;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.p-datepicker .p-highlight {
+  background-color: #facc15 !important;
+  color: #000 !important;
+  font-weight: bold !important;
 }
 </style>
