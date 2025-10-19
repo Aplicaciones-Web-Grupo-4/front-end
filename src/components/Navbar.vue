@@ -1,20 +1,13 @@
 <template>
   <header class="main-header">
-    <div class="logo">
-      <img src="../assets/happi_logo.png" alt="NextHappen Logo" class="logo-img" />
-      <span>{{ $t('header.logo') }}</span>
-    </div>
 
-    <nav class="nav-links">
-      <RouterLink to="/user/home">{{ $t('header.nav.home') }}</RouterLink>
-      <RouterLink to="/user/events">{{ $t('header.nav.events') }}</RouterLink>
-      <RouterLink to="/user/explore">{{ $t('header.nav.explore') }}</RouterLink>
-      <RouterLink to="/user/tickets">{{ $t('header.nav.tickets') }}</RouterLink>
-      <RouterLink to="/user/following">{{ $t('header.nav.following') }}</RouterLink>
+    <RouterLink to="/">
+      <div class="logo">
+        <img src="../assets/Group.png" alt="NextHappen Logo" class="logo-img" />
+      </div>
+    </RouterLink>
 
-    </nav>
-
-    <div class="actions">
+    <div class="center-section">
       <div class="search-container">
         <i class="pi pi-search search-icon"></i>
         <input
@@ -23,11 +16,35 @@
             class="search-input"
         />
       </div>
+    </div>
+
+    <nav class="actions">
+      <LanguageSwitcher />
+
+      <RouterLink to="/user/home">
+        <pv-button icon="pi pi-home" class="options" />
+      </RouterLink>
+
+      <RouterLink to="/user/events">
+        <pv-button icon="pi pi-calendar" class="options" />
+      </RouterLink>
+
+      <RouterLink to="/user/explore">
+        <pv-button icon="pi pi-compass" class="options" />
+      </RouterLink>
+
+      <RouterLink to="/user/tickets">
+        <pv-button icon="pi pi-ticket" class="options" />
+      </RouterLink>
+
+      <RouterLink to="/org">
+        <pv-button icon="pi pi-users" class="options" />
+      </RouterLink>
 
       <RouterLink to="/signup">
         <button class="signup-btn">{{ $t('header.signup') }}</button>
       </RouterLink>
-    </div>
+    </nav>
   </header>
 </template>
 
@@ -38,25 +55,21 @@ import { RouterLink } from 'vue-router'
 import LanguageSwitcher from "../organizer/presentation/components/LanguageSwitcher.vue";
 
 const { t, locale } = useI18n()
-
 const isEs = computed(() => locale.value === 'es')
-
 function setLang(lang) {
   locale.value = lang
-  localStorage.setItem('nh-locale', lang) // ✅ se guarda para próximos reloads
+  localStorage.setItem('nh-locale', lang)
 }
-
 </script>
 
 <style scoped>
-
 .main-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   background-color: #fffdf8;
-  border-bottom: 1px solid #e0e0e0;
-  padding: 14px 40px;
+  border-bottom: 2px solid #333;
+  padding: 10px 40px;
   font-family: 'Inter', sans-serif;
 }
 
@@ -64,52 +77,32 @@ function setLang(lang) {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-weight: bold;
-  font-size: 22px;
-  color: #222;
 }
 
 .logo-img {
-  width: 55px;
-  height: 55px;
-  object-fit: contain;
+  display: block;
+  height: auto;
+  width: auto;
+  max-height: 45px;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
 }
 
-.nav-links {
+.center-section {
   display: flex;
   align-items: center;
-  gap: 24px;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #333;
-  font-weight: 500;
-  font-size: 17px;
-  transition: color 0.2s ease;
-}
-
-.nav-links a:hover {
-  color: #f59e0b;
-}
-
-.nav-links a.router-link-active {
-  color: #f59e0b;
-  font-weight: 600;
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 16px;
+  gap: 1rem;
+  flex-grow: 1;
+  justify-content: center;
 }
 
 .search-container {
   display: flex;
   align-items: center;
-  background-color: #f9f4e8;
-  border-radius: 8px;
-  padding: 6px 10px;
+  border: 2px solid #333;
+  padding: 5px 10px;
+  width: 20%;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
 }
 
 .search-input {
@@ -117,42 +110,76 @@ function setLang(lang) {
   background: transparent;
   outline: none;
   font-size: 14px;
-  width: 160px;
+  width: 100%;
 }
 
 .search-icon {
-  color: #bfa14a;
   font-size: 16px;
   margin-right: 8px;
 }
 
+:deep(.search-container:hover) {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+:deep(.options.p-button) {
+  width: 45px;
+  height: 45px;
+  border: 2px solid #333;
+  background-color: #f8f8f8;
+  padding: 3px;
+  align-items: center;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20)
+}
+
+:deep(.options.p-button:hover) {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
+
+:deep(.options .pi) {
+  font-size: 1.5rem;
+  color: #333;
+}
+
 .signup-btn {
   background-color: #ffcd00;
-  border: none;
+  border: 2px solid #333;
   padding: 8px 18px;
-  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .signup-btn:hover {
-  background-color: #f5c000;
+  border: 2px solid #f59e0b;
+  color: #f59e0b;
+  background-color: #ffffff;
+  box-shadow: 3px 3px 0 rgb(245, 158, 11, 1);
 }
 
-.lang-switch button {
-  background: transparent;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 4px 10px;
-  cursor: pointer;
-  font-size: 13px;
+:deep(.options.p-button:hover .p-button-icon) {
+  color: #f59e0b !important;
 }
 
-.lang-switch button.active {
-  background-color: #f59e0b;
-  color: white;
-  border-color: #f59e0b;
+:deep(.actions a) {
+  text-decoration: none !important;
+  color: inherit !important;
+  display: flex;
+  align-items: center;
 }
-
 </style>

@@ -69,3 +69,9 @@ async function onSave(id) {
   }
 }
 </script>
+
+<style scoped>
+.home-page {
+  margin: 40px
+}
+</style>

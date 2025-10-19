@@ -9,9 +9,6 @@ const CreateEvent = () => import('../organizer/pages/create-event.vue')
 const Events = () => import('../organizer/pages/events.vue')
 
 export default [
-    // Home organizador
-    { path: '/org/home', name: 'org-home', component: Home },
-
     // Sección Emprendedor
     { path: '/org/entrepreneur', name: 'org-entrepreneur', component: Entrepreneur },
     { path: '/org/register-stands', name: 'org-register-stands', component: StandsList },
