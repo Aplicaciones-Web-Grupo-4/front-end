@@ -1,11 +1,16 @@
 <template>
-  <div class="lang-switch-text">
-    <span @click="set('es')" :class="{ active: isEs }">ES</span> |
-    <span @click="set('en')" :class="{ active: !isEs }">EN</span>
+  <div class="lang-switch">
+    <Button
+        icon="pi pi-globe"
+        class="lang-btn p-button-text"
+        @click="toggleLang"
+        :aria-label="`Cambiar idioma a ${isEs ? 'Inglés' : 'Español'}`"
+    />
   </div>
 </template>
 
 <script setup>
+import Button from 'primevue/button'
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 
@@ -17,29 +22,35 @@ function toggleLang() {
   locale.value = lang
   localStorage.setItem('nh-locale', lang)
 }
-
-function set(lang) {
-  locale.value = lang;
-  localStorage.setItem('nh-locale', lang);
-}
 </script>
 
 <style scoped>
-.lang-switch-text {
-  cursor: pointer;
-  font-weight: 600;
-  color: #666;
-  font-size: 0.9rem;
-  user-select: none;
+
+:deep(.lang-btn.p-button) {
+  width: 45px;
+  height: 45px;
+  border: 2px solid #333;
+  background-color: #f8f8f8;
+  padding: 3px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20)
 }
-.lang-switch-text span {
-  transition: color 0.2s, border-bottom 0.2s;
-}
-.lang-switch-text span.active {
+
+:deep(.lang-btn.p-button:hover) {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
   color: #f59e0b;
-  border-bottom: 2px solid #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 100)
 }
-.lang-switch-text span:hover {
-  color: #fbbf24;
+
+:deep(.lang-btn .p-button-icon) {
+  color: #333;
+  font-size: 1.5rem;
+  font-weight: 300;
+  transition: color 0.2s ease;
+}
+
+:deep(.lang-btn.p-button:hover .p-button-icon) {
+  color: #f59e0b;
 }
 </style>
