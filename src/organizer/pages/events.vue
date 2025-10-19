@@ -16,11 +16,25 @@
           </template>
         </Column>
 
+        <Column field="org" :header="$t('myFairs.columns.org')" />
+
         <Column field="title" :header="$t('myFairs.columns.name')" />
 
-        <Column :header="$t('myFairs.columns.status')">
+        <Column field="price" :header="$t('myFairs.columns.price')">
           <template #body="{ data }">
-            <span class="status-badge">{{ data.status }}</span>
+            <span class="price-text">{{ data.price }}</span>
+          </template>
+        </Column>
+
+        <Column field="quantity" :header="$t('myFairs.columns.quantity')">
+          <template #body="{ data }">
+            <span class="quantity-text">{{ data.quantity }}</span>
+          </template>
+        </Column>
+
+        <Column field="category" :header="$t('myFairs.columns.category')">
+          <template #body="{ data }">
+            <span class="category-text">{{ data.category.name }}</span>
           </template>
         </Column>
 
@@ -82,16 +96,13 @@ const editFair = (fair) => {
 };
 </script>
 
-
-
 <style>
 .my-fairs-page {
-  max-width: 1000px;
+  max-width: 1500px;
   margin: 2rem auto;
   padding: 2rem;
-  background-color: #fffaf3; /* Fondo cálido */
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 
 .page-title {
@@ -102,20 +113,16 @@ const editFair = (fair) => {
 }
 
 .custom-table {
-  background: white;
-  border-radius: 10px;
+  border: 2px solid #333;
   overflow: hidden;
   font-family: "Inter", sans-serif;
-  border: 1px solid #f0e6d8;
 }
 
 .p-datatable .p-datatable-thead > tr > th {
-  background-color: #fff6e6;
-  color: #1d1d1d;
-  font-weight: 700;
+  border: 2px solid #333;
   font-size: 0.95rem;
-  padding: 1rem;
-  border: none;
+  padding: 0.9rem;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 
 .p-datatable .p-datatable-tbody > tr > td {
@@ -126,15 +133,18 @@ const editFair = (fair) => {
   vertical-align: middle;
 }
 
+.p-datatable-table{
+  border-collapse: separate;
+  border-spacing: 10px;
+}
+
 .p-datatable .p-datatable-tbody > tr:nth-child(even) {
   background-color: #fffdf9;
 }
 
 .status-badge {
-  background-color: #fff4d6;
   color: #1d1d1d;
   padding: 0.35rem 0.9rem;
-  border-radius: 999px;
   font-weight: 700;
   font-size: 0.85rem;
   display: inline-flex;
@@ -144,41 +154,48 @@ const editFair = (fair) => {
 }
 
 .date-text {
-  color: #d19700;
-  font-weight: 600;
+  font-size: 0.95rem;
 }
 
 .location-text {
-  color: #007b83;
-  font-weight: 600;
   text-decoration: none;
-  cursor: pointer;
-}
-.location-text:hover {
-  text-decoration: underline;
 }
 
 .edit-btn {
-  color: #111 !important;
-  font-weight: 700 !important;
-  text-decoration: underline;
-  cursor: pointer;
-  transition: color 0.2s;
+  border: 2px solid #333;
+  height: 38px;
+  background-color: #ffcd00;
+  font-size: 0.95rem;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  font-weight: bold;
 }
+
 .edit-btn:hover {
-  color: #d19700 !important;
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
 }
 
 .event-thumb {
-  width: 70px;
-  height: 70px;
+  width: 80px;
+  height: 80px;
   object-fit: cover;
-  border-radius: 8px;
-  border: 1px solid #eee;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 .no-image {
   font-size: 0.8rem;
   color: #999;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
   font-style: italic;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 </style>
