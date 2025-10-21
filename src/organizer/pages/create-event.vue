@@ -177,6 +177,9 @@
     <pv-dialog
       v-model:visible="showSuccessDialog"
       modal
+      :draggable="false"
+      :closable="false"
+      :dismissableMask="false"
       class="dialog-custom"
     >
       <h3>{{ $t('createEvent.messages.successTitle') }}</h3>
@@ -197,6 +200,7 @@
       v-model:visible="showErrorDialog"
       modal
       :draggable="false"
+      :closable="false"
       :dismissableMask="false"
       class="dialog-custom"
     >
@@ -216,6 +220,9 @@
     <pv-dialog
       v-model:visible="showMissingFieldsDialog"
       modal
+      :draggable="false"
+      :closable="false"
+      :dismissableMask="false"
       class="dialog-custom"
     >
       <h3>{{ $t('createEvent.messages.warningTitle') }}</h3>
@@ -233,6 +240,9 @@
     <pv-dialog
       v-model:visible="showAddressDialog"
       modal
+      :draggable="false"
+      :closable="false"
+      :dismissableMask="false"
       class="dialog-custom"
     >
       <h3>{{ $t('createEvent.messages.addressErrorTitle') }}</h3>
@@ -282,7 +292,7 @@ const categories = ref([
 const previewImages = ref([])
 const fileInput = ref(null)
 
-// ✅ Estados de los diálogos
+//Estados de los diálogos
 const showSuccessDialog = ref(false)
 const showErrorDialog = ref(false)
 const showMissingFieldsDialog = ref(false)
@@ -953,5 +963,16 @@ onMounted(() => {
 /* Centrar texto dentro del contenido del diálogo */
 .p-dialog-content {
   text-align: center !important;
+}
+
+/* === Fondo sombreado al mostrar el diálogo === */
+.p-dialog-mask {
+  background-color: rgba(0, 0, 0, 0.45) !important; /* sombra */
+  backdrop-filter: blur(2px); /* opcional: desenfoque elegante */
+  transition: background-color 0.3s ease;
+}
+
+.p-dialog-mask.p-component-overlay {
+  z-index: 2000 !important;
 }
 </style>
