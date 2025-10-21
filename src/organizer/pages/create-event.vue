@@ -1,80 +1,89 @@
-  <template>
+<template>
   <div class="create-event-page">
     <h1 class="page-title">{{ $t('createEvent.titlePage') }}</h1>
 
     <div class="form-container">
+      <!-- Nombre del organizador -->
       <div class="field">
-        <label for="org">{{ $t('createEvent.fields.orgName')}}</label>
+        <label for="org">{{ $t('createEvent.fields.orgName') }}</label>
         <pv-input-text
-            id="org"
-            class="org-form"
-            v-model="form.org"
-            :placeholder="$t('createEvent.fields.orgPlaceholder')"
+          id="org"
+          class="org-form"
+          v-model="form.org"
+          :placeholder="$t('createEvent.fields.orgPlaceholder')"
         />
       </div>
+
+      <!-- Título -->
       <div class="field">
         <label for="title">{{ $t('createEvent.fields.title') }}</label>
         <pv-input-text
-            id="title"
-            class="title-form"
-            v-model="form.title"
-            :placeholder="$t('createEvent.fields.titlePlaceholder')"
+          id="title"
+          class="title-form"
+          v-model="form.title"
+          :placeholder="$t('createEvent.fields.titlePlaceholder')"
         />
       </div>
 
+      <!-- Descripción -->
       <div class="field">
         <label for="description">{{ $t('createEvent.fields.description') }}</label>
         <pv-textarea
-            id="description"
-            class="description-form"
-            v-model="form.description"
-            rows="4"
-            :placeholder="$t('createEvent.fields.descriptionPlaceholder')"
-            autoResize
+          id="description"
+          class="description-form"
+          v-model="form.description"
+          rows="4"
+          :placeholder="$t('createEvent.fields.descriptionPlaceholder')"
+          autoResize
         />
       </div>
 
+      <!-- Precio / Cantidad / Categoría -->
       <div class="field">
         <div class="price-quantity-category">
+          <!-- Precio -->
           <div class="input-group">
             <label for="price">{{ $t('createEvent.fields.price') }}</label>
             <pv-input-number
-                id="price"
-                v-model="form.price"
-                :placeholder="$t('createEvent.fields.pricePlaceholder')"
-                inputId="price_input"
-                mode="currency"
-                currency="PEN"
-                locale="en-US"
-                variant="filled"
+              id="price"
+              v-model="form.price"
+              :placeholder="$t('createEvent.fields.pricePlaceholder')"
+              inputId="price_input"
+              mode="currency"
+              currency="PEN"
+              locale="en-US"
+              variant="filled"
             />
           </div>
 
+          <!-- Cantidad -->
           <div class="input-group">
             <label for="quantity">{{ $t('createEvent.fields.quantity') }}</label>
             <pv-input-number
-                id="quantity"
-                v-model="form.quantity"
-                :placeholder="$t('createEvent.fields.quantityPlaceholder')"
+              id="quantity"
+              v-model="form.quantity"
+              :placeholder="$t('createEvent.fields.quantityPlaceholder')"
             />
           </div>
 
+          <!-- Categoría -->
           <div class="input-group">
             <label for="category">{{ $t('createEvent.fields.category') }}</label>
             <pv-cascade-select
-                id="category"
-                v-model="form.category"
-                :options="categories"
-                optionLabel="name"
-                optionGroupLabel="name"
-                optionGroupChildren="subcategories"
-                placeholder="Selecciona una categoría"
-                class="w-full"
+              id="category"
+              v-model="form.category"
+              :options="categories"
+              optionLabel="name"
+              optionGroupLabel="name"
+              optionGroupChildren="subcategories"
+              placeholder="Selecciona una categoría"
+              class="w-full"
             />
           </div>
         </div>
       </div>
 
+      <!-- Subir fotos -->
       <div class="field">
         <label>{{ $t('createEvent.fields.photos') }}</label>
         <div class="upload-area" @dragover.prevent @drop.prevent="handleDrop">
@@ -82,27 +91,27 @@
           <p>{{ $t('createEvent.fields.dragText') }}</p>
 
           <input
-              type="file"
-              accept="image/*"
-              multiple
-              @change="onFileChange"
-              ref="fileInput"
-              class="hidden-input"
+            type="file"
+            accept="image/*"
+            multiple
+            @change="onFileChange"
+            ref="fileInput"
+            class="hidden-input"
           />
 
           <pv-button
-              :label="$t('createEvent.buttons.selectPhotos')"
-              icon="pi pi-upload"
-              class="upload-button"
-              @click="$refs.fileInput.click()"
+            :label="$t('createEvent.buttons.selectPhotos')"
+            icon="pi pi-upload"
+            class="upload-button"
+            @click="$refs.fileInput.click()"
           />
         </div>
 
         <div v-if="previewImages.length" class="preview-container">
           <div
-              v-for="(img, index) in previewImages"
-              :key="index"
-              class="image-preview"
+            v-for="(img, index) in previewImages"
+            :key="index"
+            class="image-preview"
           >
             <img :src="img" alt="Preview" />
             <pv-button class="remove-btn" @click="removeImage(index)">
@@ -112,25 +121,27 @@
         </div>
       </div>
 
+      <!-- Dirección -->
       <div class="field">
         <label for="address">{{ $t('createEvent.fields.address') }}</label>
         <div class="address-search">
           <pv-input-text
-              id="address"
-              class="address-form"
-              v-model="form.address"
-              :placeholder="$t('createEvent.fields.addressPlaceholder')"
-              @keyup.enter="searchAddress"
+            id="address"
+            class="address-form"
+            v-model="form.address"
+            :placeholder="$t('createEvent.fields.addressPlaceholder')"
+            @keyup.enter="searchAddress"
           />
           <pv-button
-              icon="pi pi-search"
-              :label="$t('createEvent.buttons.search')"
-              class="search-button"
-              @click="searchAddress"
+            icon="pi pi-search"
+            :label="$t('createEvent.buttons.search')"
+            class="search-button"
+            @click="searchAddress"
           />
         </div>
       </div>
 
+      <!-- Mapa -->
       <div class="field">
         <label>{{ $t('createEvent.fields.location') }}</label>
         <div id="map" class="map"></div>
@@ -139,34 +150,109 @@
         </small>
       </div>
 
+      <!-- Fechas -->
       <div class="field">
         <label>{{ $t('createEvent.fields.dates') }}</label>
         <pv-calendar
-            v-model="form.dates"
-            selectionMode="range"
-            dateFormat="dd/mm/yy"
-            :placeholder="$t('createEvent.fields.dates')"
-            class="calendar-custom"
+          v-model="form.dates"
+          selectionMode="range"
+          dateFormat="dd/mm/yy"
+          :placeholder="$t('createEvent.fields.dates')"
+          class="calendar-custom"
         />
       </div>
 
+      <!-- Botón Publicar -->
       <div class="button-container">
         <pv-button
-            :label="$t('createEvent.buttons.publish')"
-            icon="pi pi-check"
-            class="publish-button"
-            @click="publishEvent"
+          :label="$t('createEvent.buttons.publish')"
+          icon="pi pi-check"
+          class="publish-button"
+          @click="publishEvent"
         />
       </div>
     </div>
+    
+    <!--Diálogo de éxito -->
+    <pv-dialog
+      v-model:visible="showSuccessDialog"
+      modal
+      class="dialog-custom"
+    >
+      <h3>{{ $t('createEvent.messages.successTitle') }}</h3>
+      <p>{{ $t('createEvent.messages.success') }}</p>
+
+      <template #footer>
+        <pv-button
+          label="OK"
+          icon="pi pi-check"
+          @click="showSuccessDialog = false"
+          class="dialog-ok"
+        />
+      </template>
+    </pv-dialog>
+
+    <!--Diálogo de error -->
+    <pv-dialog
+      v-model:visible="showErrorDialog"
+      modal
+      :draggable="false"
+      :dismissableMask="false"
+      class="dialog-custom"
+    >
+      <h3>{{ $t('createEvent.messages.errorTitle') }}</h3>
+      <p>{{ $t('createEvent.messages.error') }}</p>
+      <template #footer>
+        <pv-button
+          label="OK"
+          icon="pi pi-times"
+          @click="showErrorDialog = false"
+          class="dialog-ok"
+        />
+      </template>
+    </pv-dialog>
+
+    <!-- Diálogo de campos faltantes -->
+    <pv-dialog
+      v-model:visible="showMissingFieldsDialog"
+      modal
+      class="dialog-custom"
+    >
+      <h3>{{ $t('createEvent.messages.warningTitle') }}</h3>
+      <p>{{ $t('createEvent.messages.missingFields') }}</p>
+      <template #footer>
+        <pv-button
+          label="OK"
+          icon="pi pi-exclamation-triangle"
+          @click="showMissingFieldsDialog = false"
+          class="dialog-ok"
+        />
+      </template>
+    </pv-dialog>
+
+    <pv-dialog
+      v-model:visible="showAddressDialog"
+      modal
+      class="dialog-custom"
+    >
+      <h3>{{ $t('createEvent.messages.addressErrorTitle') }}</h3>
+      <p>{{ $t('createEvent.messages.addressNotFound') }}</p>
+      <template #footer>
+        <pv-button
+          label="OK"
+          icon="pi pi-map-marker"
+          @click="showAddressDialog = false"
+          class="dialog-ok"
+        />
+      </template>
+    </pv-dialog>
   </div>
 </template>
+
 
 <script setup>
 import { ref, onMounted, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-
-
 
 const { t } = useI18n()
 
@@ -188,23 +274,24 @@ const form = ref({
 })
 
 const categories = ref([
-  {
-    name: 'Gastronomía',
-  },
-  {
-    name: 'Cultural',
-  },
-  {
-    name: 'Tecnología',
-  }
+  { name: 'Gastronomía' },
+  { name: 'Cultural' },
+  { name: 'Tecnología' }
 ])
 
 const previewImages = ref([])
 const fileInput = ref(null)
 
+// ✅ Estados de los diálogos
+const showSuccessDialog = ref(false)
+const showErrorDialog = ref(false)
+const showMissingFieldsDialog = ref(false)
+const showAddressDialog = ref(false)
+
 let map, marker, geocoder
 const GOOGLE_API_KEY = 'AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0'
 
+// === Manejo de imágenes ===
 const onFileChange = (e) => {
   const files = Array.from(e.target.files)
   files.forEach((file) => {
@@ -230,17 +317,16 @@ const removeImage = (index) => {
   previewImages.value.splice(index, 1)
 }
 
+// === Publicar evento ===
 const publishEvent = async () => {
   if (!form.value.title || !form.value.dates || !form.value.location) {
-    alert(t('createEvent.messages.missingFields'))
+    showMissingFieldsDialog.value = true
     return
   }
 
   const formattedDates = Array.isArray(form.value.dates)
-      ? form.value.dates
-          .map((d) => new Date(d).toLocaleDateString('es-PE'))
-          .join(' - ')
-      : new Date(form.value.dates).toLocaleDateString('es-PE')
+    ? form.value.dates.map((d) => new Date(d).toLocaleDateString('es-PE')).join(' - ')
+    : new Date(form.value.dates).toLocaleDateString('es-PE')
 
   const newEvent = {
     title: form.value.title,
@@ -250,7 +336,7 @@ const publishEvent = async () => {
     category: form.value.category,
     date: formattedDates,
     location: form.value.location,
-    photos: previewImages.value // URLs base64
+    photos: previewImages.value
   }
 
   try {
@@ -262,8 +348,9 @@ const publishEvent = async () => {
 
     if (!res.ok) throw new Error('Error al guardar el evento')
 
-    alert(t('createEvent.messages.success'))
+    showSuccessDialog.value = true
 
+    // limpiar formulario
     form.value = {
       org: '',
       title: '',
@@ -281,13 +368,14 @@ const publishEvent = async () => {
     previewImages.value = []
   } catch (err) {
     console.error('Error al publicar el evento:', err)
-    alert(t('createEvent.messages.error'))
+    showErrorDialog.value = true
   }
 }
 
+// === Buscar dirección y marcar en mapa ===
 const searchAddress = async () => {
   if (!form.value.address) {
-    alert(t('createEvent.messages.addressRequired'))
+    showMissingFieldsDialog.value = true
     return
   }
 
@@ -310,11 +398,12 @@ const searchAddress = async () => {
       form.value.lng = location.lng()
       form.value.location = result.formatted_address
     } else {
-      alert(t('createEvent.messages.addressNotFound'))
+      showAddressDialog.value = true
     }
   })
 }
 
+// === Inicializar mapa ===
 const initMap = () => {
   geocoder = new google.maps.Geocoder()
   map = new google.maps.Map(document.getElementById('map'), {
@@ -603,6 +692,20 @@ onMounted(() => {
   flex-direction: column;
   gap: 0.3rem;
 }
+
+.dialog-ok {
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  background-color: #ffcd00;
+}
+
+.dialog-ok:hover {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
 </style>
 
 <style>
@@ -813,4 +916,42 @@ onMounted(() => {
   margin-left: 0 !important;
 }
 
+.p-dialog {
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  padding: 1rem;
+  background-color: #fff7ed;
+}
+
+/* === Centrar botón OK en los diálogos === */
+.p-dialog-footer {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+.p-dialog-header {
+  display: flex !important;
+  justify-content: right !important;
+  align-items: center !important;
+}
+
+.p-dialog-header-icon.p-dialog-header-close.p-link {
+  border: 2px solid #333 !important;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
+  background-color: #d32f2f;
+}
+
+.p-dialog-header-icon.p-dialog-header-close.p-link:hover {
+  border: 2px solid #d32f2f !important;
+  box-shadow: 3px 3px 0 rgba(211, 47, 47, 2) !important;
+  color: #d32f2f;
+  background-color: #fff7ed;
+  cursor: pointer;
+}
+
+/* Centrar texto dentro del contenido del diálogo */
+.p-dialog-content {
+  text-align: center !important;
+}
 </style>
