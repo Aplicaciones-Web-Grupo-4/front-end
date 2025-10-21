@@ -1,4 +1,4 @@
-<template>
+  <template>
   <div class="create-event-page">
     <h1 class="page-title">{{ $t('createEvent.titlePage') }}</h1>
 
@@ -189,7 +189,7 @@ const form = ref({
 
 const categories = ref([
   {
-    name: 'Gatronomía',
+    name: 'Gastronomía',
   },
   {
     name: 'Cultural',
@@ -735,7 +735,7 @@ onMounted(() => {
   width: 100% !important;
   border: 2px solid #333 !important;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 2) !important;
-  background-color: #fffdf8 !important;
+  background-color: #fff !important;
   height: 40px !important;
   position: relative !important;
 }

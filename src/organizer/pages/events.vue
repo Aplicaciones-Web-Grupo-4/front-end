@@ -98,7 +98,7 @@ const editFair = (fair) => {
 
 <style>
 .my-fairs-page {
-  max-width: 1500px;
+  max-width: 80rem;
   margin: 2rem auto;
   padding: 2rem;
   border: 2px solid #333;
