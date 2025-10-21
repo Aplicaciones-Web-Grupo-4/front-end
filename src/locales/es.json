@@ -77,11 +77,15 @@
       "publish": "Publicar"
     },
     "messages": {
-      "missingFields": "Por favor completa todos los campos obligatorios.",
-      "success": "Evento publicado correctamente",
-      "error": "Ocurrió un error al guardar el evento.",
-      "addressNotFound": "No se encontró la dirección. Intenta con más detalle.",
-      "addressRequired": "Por favor, ingresa una dirección."
+      "successTitle": "Evento publicado",
+      "errorTitle": "Error al publicar",
+      "warningTitle": "Campos requeridos",
+      "addressErrorTitle": "Dirección no encontrada",
+      "success": "Tu evento fue publicado exitosamente.",
+      "error": "Ocurrió un error al publicar tu evento. Intenta nuevamente.",
+      "missingFields": "Por favor completa todos los campos obligatorios antes de publicar.",
+      "addressNotFound": "No se encontró la dirección ingresada. Verifica e intenta de nuevo.",
+      "addressRequired": "Por favor ingresa una dirección antes de buscar."
     },
     "mapMarker": "📍"
   },

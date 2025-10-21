@@ -54,7 +54,7 @@
     "titlePage": "Publish Fair",
     "fields": {
       "orgName": "Organization Name",
-      "orgNamePlaceholder": "Put your organization or your name",
+      "orgPlaceholder": "Put your organization or your name",
       "title": "Title",
       "titlePlaceholder": "Fair name",
       "description": "Description",
@@ -78,11 +78,15 @@
       "publish": "Publish"
     },
     "messages": {
-      "missingFields": "Please fill in all required fields.",
-      "success": "Event published successfully",
-      "error": "An error occurred while saving the event.",
-      "addressNotFound": "Address not found. Try being more specific.",
-      "addressRequired": "Please enter an address."
+      "successTitle": "Event Published",
+      "errorTitle": "Publish Error",
+      "warningTitle": "Required Fields",
+      "addressErrorTitle": "Address Not Found",
+      "success": "Your event was successfully published.",
+      "error": "An error occurred while publishing your event. Please try again.",
+      "missingFields": "Please fill in all required fields before publishing.",
+      "addressNotFound": "The entered address could not be found. Please check and try again.",
+      "addressRequired": "Please enter an address before searching."
     },
     "mapMarker": "📍"
   },
