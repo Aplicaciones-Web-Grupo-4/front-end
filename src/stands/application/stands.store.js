@@ -14,13 +14,26 @@ export const useStandsStore = defineStore('stands', () => {
     const errors  = ref([]);
 
     const count = computed(() => stands.value.length);
-
+    
     async function fetchFairs() {
-        try {
-            const resp = await api.getFairs();
-            fairs.value = FairAssembler.toEntities(resp);
-        } catch (e) { errors.value.push(e); }
-    }
+  try {
+    const res = await fetch(`${import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com"}/events`);
+    if (!res.ok) throw new Error("Error al cargar ferias (eventos)");
+    const data = await res.json();
+
+    // Mapea los datos para que cada feria tenga un id y un título
+    fairs.value = data.map((f, index) => ({
+      id: f.id ?? index + 1, // por si el backend no devuelve ID
+      title: f.title || f.org || "Sin nombre",
+      org: f.org,
+      category: f.category?.name,
+    }));
+  } catch (e) {
+    console.error("Error cargando ferias:", e);
+    errors.value.push(e);
+  }
+}
+
 
     async function fetchStands() {
         loading.value = true;
