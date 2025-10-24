@@ -339,6 +339,7 @@ const publishEvent = async () => {
     : new Date(form.value.dates).toLocaleDateString('es-PE')
 
   const newEvent = {
+    org: form.value.org,
     title: form.value.title,
     description: form.value.description,
     price: form.value.price,
