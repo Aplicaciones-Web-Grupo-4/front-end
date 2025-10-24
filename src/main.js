@@ -11,6 +11,7 @@ import 'primeflex/primeflex.css'
 import 'primeicons/primeicons.css'
 import '@primeuix/themes/material'
 import 'leaflet/dist/leaflet.css'
+import './style.css'
 
 // componentes
 import Button from 'primevue/button'
