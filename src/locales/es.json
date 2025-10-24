@@ -22,6 +22,7 @@
     "selectFair": "Seleccionar Feria",
     "chooseFair": "Elige una feria",
     "addEntrepreneur": "Agregar Emprendedor",
+    "fair": "Feria",
     "name": "Nombre",
     "category": "Categoría",
     "stand": "Stand",
@@ -107,6 +108,9 @@
     "edit": "Editar",
     "errors": {
       "load": "Error al cargar eventos"
+    },
+    "editDialog":{
+      "title": "Editar publicación"
     }
   },
   "organizerHeader": {

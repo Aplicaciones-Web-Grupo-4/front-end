@@ -22,6 +22,7 @@
     "selectFair": "Select Fair",
     "chooseFair": "Choose a fair",
     "addEntrepreneur": "Add Entrepreneur",
+    "fair": "Fair",
     "name": "Name",
     "category": "Category",
     "stand": "Stand",
@@ -109,6 +110,9 @@
     "edit": "Edit",
     "errors": {
       "load": "Error loading events"
+    }, 
+    "editDialog":{
+      "title": "Edit publishment"
     }
   },
 
