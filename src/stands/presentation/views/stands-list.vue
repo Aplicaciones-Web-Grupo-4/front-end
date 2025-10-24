@@ -30,13 +30,18 @@
         <pv-column :header="$t('stands.actions')" style="width:12rem">
           <template #body="{ data }">
             <pv-button
-                class="p-button-text"
+                class="edit-button"
                 :label="$t('stands.edit')"
                 icon="pi pi-pencil"
                 @click="goEdit(data.id)"
             />
-            <span class="mx-2">·</span>
-            <a class="nh-link" href="#" @click.prevent="onDelete(data)">Eliminar</a>
+            <span class="mx-2"> </span>
+            <pv-button
+                class="delete-button"
+                :label="$t('stands.edit')"
+                icon="pi pi-trash"
+                @click.prevent="onDelete(data)"
+            />
           </template>
         </pv-column>
       </pv-data-table>
@@ -119,5 +124,37 @@ async function onDelete(row) {
   color: #f59e0b;
   cursor: pointer;
   box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
+
+.edit-button {
+  border: 2px solid #333;
+  background-color: #ffcd00;
+  font-size: 0.95rem;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  font-weight: bold;
+}
+
+.edit-button:hover {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
+
+.delete-button {
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  background-color: #d32f2f;
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.delete-button:hover {
+  border: 2px solid #d32f2f;
+  box-shadow: 3px 3px 0 rgba(211, 47, 47, 2);
+  color: #d32f2f;
+  background-color: #fff7ed;
+  cursor: pointer;
 }
 </style>
