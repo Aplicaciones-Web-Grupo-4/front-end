@@ -50,7 +50,7 @@ const categories = computed(() => {
   return Array.from(set).sort((a,b) => a.localeCompare(b));
 });
 
-const form = reactive({ id: null, name: '', category: '' });
+const form = reactive({ id: null, name: '', category: '', fairId: null});
 
 onMounted(async () => {
   if (!store.stands?.length) await store.fetchStands();
@@ -90,7 +90,7 @@ async function onSubmit() {
   if (isEdit.value) {
     await store.update({ id: form.id, name: form.name.trim(), category: form.category, fairId });
   } else {
-    await store.add({ name: form.name.trim(), category: form.category, fairId });
+    await store.add({ name: form.name.trim(), category: form.category, fairId: selectFair.value?.id || null });
   }
   organizerRoutes.push({ name: 'register-stands' });
 }
