@@ -1,14 +1,14 @@
 <template>
-  <div class="p-4 nh-card">
+  <div class="new-stand">
     <h3 class="h-title mb-3">{{ isEdit ? $t('stands.editTitle') : $t('stands.newTitle') }}</h3>
 
     <div class="grid">
       <div class="col-12 md:col-6">
         <label class="block mb-1">{{ $t('stands.name') }}</label>
-        <input
+        <pv-input-text
             v-model.trim="form.name"
             required
-            class="p-inputtext p-component w-full border-round border-1 p-2"
+            class="form-name"
             :placeholder="$t('stands.name')"
         />
       </div>
@@ -25,9 +25,9 @@
     </div>
 
     <div class="mt-3 flex gap-2">
-      <pv-button class="nh-btn" :label="isEdit ? $t('common.update') : $t('common.save')" icon="pi pi-check" @click="onSubmit" />
+      <pv-button class="save-button" :label="isEdit ? $t('common.update') : $t('common.save')" icon="pi pi-check" @click="onSubmit" />
       <router-link :to="{ name: 'org-register-stands' }">
-        <pv-button :label="$t('common.cancel')" class="p-button-text" />
+        <pv-button :label="$t('common.cancel')" class="cancel-button" />
       </router-link>
     </div>
   </div>
@@ -95,3 +95,55 @@ async function onSubmit() {
   organizerRoutes.push({ name: 'register-stands' });
 }
 </script>
+
+<style scoped>
+.new-stand {
+  max-width: 80rem;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
+}
+
+.form-name {
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
+  height: 38px;
+  width: 100%;
+  font-family: 'Inter', sans-serif; 
+}
+
+.save-button {
+  border: 2px solid #333;
+  height: 38px;
+  background-color: #ffcd00;
+  font-size: 0.95rem;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  font-weight: bold;
+}
+
+.save-button:hover {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+}
+
+.cancel-button {
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+  background-color: #d32f2f;
+  height: 38px;
+  font-size: 0.95rem;
+  font-weight: bold;
+}
+
+.cancel-button:hover {
+  border: 2px solid #d32f2f;
+  box-shadow: 3px 3px 0 rgba(211, 47, 47, 2);
+  color: #d32f2f;
+  background-color: #fff7ed;
+  cursor: pointer;
+}
+</style>
