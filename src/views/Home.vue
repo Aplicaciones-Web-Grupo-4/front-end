@@ -8,6 +8,7 @@
           :key="event.id"
           :event="event"
           @save="onSave"
+          class="event-card"
       />
     </div>
 
@@ -73,5 +74,12 @@ async function onSave(id) {
 <style scoped>
 .home-page {
   margin: 40px
+}
+
+.event-card{
+  border: 2px solid #333;
+  border-radius: 0;
+  margin-top: 20px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0,2);
 }
 </style>

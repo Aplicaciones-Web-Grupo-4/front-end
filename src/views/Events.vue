@@ -52,12 +52,6 @@ const filteredEvents = computed(() =>
 
 
 <style scoped>
-.saved-container {
-  font-family: 'Inter', sans-serif;
-  background-color: #f9f8f5;
-  min-height: 100vh;
-  text-align: center;
-}
 
 .events-nav {
   display: flex;

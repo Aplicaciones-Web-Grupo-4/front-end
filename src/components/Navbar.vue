@@ -26,7 +26,7 @@
       </RouterLink>
 
       <RouterLink to="/user/events">
-        <pv-button icon="pi pi-calendar" class="options" />
+        <pv-button icon="pi pi-heart" class="options" />
       </RouterLink>
 
       <RouterLink to="/user/explore">
