@@ -123,7 +123,7 @@ async function onDelete(row) {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 .edit-button {
@@ -139,7 +139,7 @@ async function onDelete(row) {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 .delete-button {
@@ -152,7 +152,7 @@ async function onDelete(row) {
 
 .delete-button:hover {
   border: 2px solid #d32f2f;
-  box-shadow: 3px 3px 0 rgba(211, 47, 47, 2);
+  box-shadow: none;
   color: #d32f2f;
   background-color: #fff7ed;
   cursor: pointer;

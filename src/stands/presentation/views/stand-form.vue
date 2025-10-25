@@ -127,7 +127,7 @@ async function onSubmit() {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 .cancel-button {
@@ -141,7 +141,7 @@ async function onSubmit() {
 
 .cancel-button:hover {
   border: 2px solid #d32f2f;
-  box-shadow: 3px 3px 0 rgba(211, 47, 47, 2);
+  box-shadow: none;
   color: #d32f2f;
   background-color: #fff7ed;
   cursor: pointer;

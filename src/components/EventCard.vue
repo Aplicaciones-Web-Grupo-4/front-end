@@ -51,7 +51,7 @@ defineProps({
 
 :deep(.p-button:hover){
   border: 2px solid red;
-  box-shadow: 3px 3px 0 red;
+  box-shadow: none;
   cursor: pointer;
 }
 

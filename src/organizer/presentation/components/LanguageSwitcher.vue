@@ -40,14 +40,13 @@ function toggleLang() {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 100)
+  box-shadow: none;
 }
 
 :deep(.lang-btn .p-button-icon) {
   color: #333;
   font-size: 1.5rem;
   font-weight: 300;
-  transition: color 0.2s ease;
 }
 
 :deep(.lang-btn.p-button:hover .p-button-icon) {

@@ -147,7 +147,7 @@ function setLang(lang) {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 :deep(.options .pi) {
@@ -162,14 +162,13 @@ function setLang(lang) {
   font-weight: 600;
   cursor: pointer;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .signup-btn:hover {
   border: 2px solid #f59e0b;
   color: #f59e0b;
   background-color: #ffffff;
-  box-shadow: 3px 3px 0 rgb(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 :deep(.options.p-button:hover .p-button-icon) {

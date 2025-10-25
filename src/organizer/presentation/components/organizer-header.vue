@@ -98,7 +98,7 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 100)
+  box-shadow: none;
 }
 
 :deep(.options.p-button:hover .p-button-icon) {
