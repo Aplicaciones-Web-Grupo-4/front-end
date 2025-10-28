@@ -338,7 +338,7 @@ const saveEdit = async () => {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 .event-thumb {
@@ -403,7 +403,7 @@ const saveEdit = async () => {
   background-color: #fff7ed;
   border-color: #f59e0b;
   color: #f59e0b;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
   cursor: pointer;
 }
 
@@ -420,7 +420,7 @@ const saveEdit = async () => {
   background-color: #fff7ed;
   color: #d32f2f;
   border-color: #d32f2f;
-  box-shadow: 3px 3px 0 rgba(211, 47, 47, 1);
+  box-shadow: none;
   cursor: pointer;
 }
 
@@ -486,7 +486,7 @@ const saveEdit = async () => {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 .hidden-input {
@@ -529,14 +529,6 @@ const saveEdit = async () => {
   transition: background 0.2s;
 }
 
-.remove-btn:hover {
-  background-color: #ccc;
-}
-
-.remove-btn i {
-  color: #d32f2f;
-  font-size: 0.9rem;
-}
 
 :deep(.edit-cascade .p-cascadeselect){
   display: flex !important;

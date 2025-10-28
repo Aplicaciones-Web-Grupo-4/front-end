@@ -1,12 +1,11 @@
 <template>
-  <div class="saved-container">
     <div class="saved-content">
       <h2>{{ $t('saved.title') }}</h2>
 
       <div v-if="filteredEvents.length === 0">
         <p class="no-saved-title">{{ $t('saved.emptyTitle') }}</p>
         <p class="no-saved-desc">{{ $t('saved.emptyDesc') }}</p>
-        <RouterLink to="/home">
+        <RouterLink to="/user/home">
           <button class="explore-btn">{{ $t('saved.explore') }}</button>
         </RouterLink>
       </div>
@@ -15,7 +14,6 @@
         <EventCard v-for="e in filteredEvents" :key="e.id" :event="e" :showSave="false" />
       </div>
     </div>
-  </div>
 </template>
 
 <script setup>
@@ -52,6 +50,9 @@ const filteredEvents = computed(() =>
 
 
 <style scoped>
+.saved-content{
+  text-align: center;
+}
 
 .events-nav {
   display: flex;
@@ -118,12 +119,15 @@ const filteredEvents = computed(() =>
 }
 
 .explore-btn {
-  background-color: #e9e2d0;
-  border: none;
-  padding: 10px 18px;
-  border-radius: 6px;
-  font-weight: 600;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
   cursor: pointer;
+  height: 30px;
+}
+
+.explore-btn:hover {
+  border: 2px solid #333;
+  box-shadow: none;
 }
 
 .happi-img {

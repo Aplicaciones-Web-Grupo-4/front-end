@@ -29,7 +29,7 @@
 
 .p-dialog-header-icon.p-dialog-header-close.p-link:hover {
   border: 2px solid #d32f2f !important;
-  box-shadow: 3px 3px 0 rgba(211, 47, 47, 2) !important;
+  box-shadow: none !important; 
   color: #d32f2f;
   background-color: #fff7ed;
   cursor: pointer;

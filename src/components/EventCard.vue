@@ -13,6 +13,9 @@
         @click="$emit('save', event.id)"
         icon="pi pi-heart"
     />
+    <router-link :to="{ name: 'user-publishment', params: { id: event.id } }">
+      <pv-button class="btn-eye" icon="pi pi-eye" />
+    </router-link>
   </div>
 </template>
 

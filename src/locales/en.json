@@ -28,6 +28,7 @@
     "stand": "Stand",
     "actions": "Actions",
     "edit": "Edit",
+    "delete": "Delete",
     "newTitle": "New Stand",
     "editTitle": "Edit Stand",
     "errors": {

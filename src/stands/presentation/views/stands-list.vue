@@ -38,7 +38,7 @@
             <span class="mx-2"> </span>
             <pv-button
                 class="delete-button"
-                :label="$t('stands.edit')"
+                :label="$t('stands.delete')"
                 icon="pi pi-trash"
                 @click.prevent="onDelete(data)"
             />
