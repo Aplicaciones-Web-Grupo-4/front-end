@@ -1,9 +1,7 @@
 <template>
   <div class="publishment-page" v-if="event">
-    <h1>{{ event.title }}</h1>
-
-    <p><strong>Fecha: </strong>{{ event.date }}</p>
-
+    <h1 class="title">{{ event.title }}</h1>
+    <p><strong>Organizador:</strong> {{ event.org }}</p>
     <div class="carousel-container">
       <div class="carousel" ref="carousel">
         <div
@@ -31,9 +29,9 @@
   &#10095;
 </button>
     </div>
-
     <p class="desc">{{ event.description }}</p>
-    <p><strong>Organizador:</strong> {{ event.org }}</p>
+    <p><strong>Fecha: </strong>{{ event.date }}</p>
+    <p><strong>Cantidad:</strong> {{ event.quantity }}</p>
     <p><strong>Precio:</strong> S/. {{ event.price }}</p>
 
     <div class="actions">
@@ -117,6 +115,10 @@ async function buyTicket() {
 </script>
 
 <style scoped>
+.title {
+  text-align: center;
+}
+
 /* ==== Carrusel con separación ==== */
 .carousel-container {
   position: relative;
@@ -134,7 +136,6 @@ async function buyTicket() {
   flex: 0 0 calc(33.33% - 20px);
   background: #fff;
   border: 2px solid #333;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
   border-radius: 0;
   overflow: hidden;
 }
@@ -191,20 +192,25 @@ async function buyTicket() {
 
 .actions {
   margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 20px; /* 🔹 Opcional: separación lateral */
 }
 
 .btn-buy {
+  align-items: center;
   background-color: #ffcd00;
-  color: #333;
   border: 2px solid #333;
-  box-shadow: 3px 3px 0 rgba(0,0,0,2);
-  font-weight: bold;
-  border-radius: 0;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
 }
 
 :deep(.btn-buy:hover) {
-  background-color: #333;
-  color: #fff;
+  border: 2px solid #f59e0b;
+  color: #f59e0b;
+  background-color: #ffffff;
   box-shadow: none;
 }
 

@@ -513,7 +513,7 @@ onMounted(() => {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 #map {
@@ -556,7 +556,7 @@ onMounted(() => {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 .hidden-input {
@@ -658,7 +658,7 @@ onMounted(() => {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 
 .page-title {
@@ -706,6 +706,6 @@ onMounted(() => {
   border-color: #f59e0b;
   color: #f59e0b;
   cursor: pointer;
-  box-shadow: 3px 3px 0 rgba(245, 158, 11, 1);
+  box-shadow: none;
 }
 </style>

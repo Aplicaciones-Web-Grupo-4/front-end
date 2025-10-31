@@ -6,6 +6,7 @@ import Events from '../views/Events.vue'
 import Search from '../views/Search.vue'
 import SignUp from '../views/SignUp.vue'
 import Publishment from '../views/Publishment.vue'
+import Tickets from '../views/Tickets.vue'
 
 const routes = [
     // Redirección por defecto
@@ -14,6 +15,7 @@ const routes = [
     // Rutas del panel de usuario
     { path: '/user/home', name: 'user-home', component: Home },
     { path: '/user/events', name: 'user-events', component: Events },
+    { path: '/user/tickets', name: 'user-tickets', component: Tickets },
     { path: '/user/search', name: 'user-search', component: Search },
     { path: '/user/signup', name: 'user-signup', component: SignUp },
     { path: '/user/publishment/:id', name: 'user-publishment', component: Publishment, props: true}

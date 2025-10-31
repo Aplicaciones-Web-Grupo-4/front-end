@@ -28,11 +28,7 @@
       <RouterLink to="/user/events">
         <pv-button icon="pi pi-heart" class="options" />
       </RouterLink>
-
-      <RouterLink to="/user/explore">
-        <pv-button icon="pi pi-compass" class="options" />
-      </RouterLink>
-
+      
       <RouterLink to="/user/tickets">
         <pv-button icon="pi pi-ticket" class="options" />
       </RouterLink>
