@@ -146,5 +146,18 @@
     "emptyTitle": "No saved events yet",
     "emptyDesc": "Explore events and tap the save bottom to save them for later.",
     "explore": "Explore"
+  },
+
+  "metrics": {
+  "title": "My Event Metrics",
+  "desc": "Select one of your events to view its view and save statistics.",
+  "selectEvent": "Select an event",
+  "views": "Views",
+  "saves": "Saves",
+  "noEventSelected": "Select an event to view its metrics.",
+  "table": {
+    "timestamp": "Date & Time",
+    "action": "Action"
   }
+}
 }

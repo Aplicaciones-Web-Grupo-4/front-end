@@ -23,21 +23,15 @@
 </template>
 
 <script setup>
+import { computed, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
+import { useSavedStore } from '../application/saved.store.js'
 import EventCard from '../components/EventCard.vue'
-import { ref, onMounted } from 'vue'
-import axios from 'axios'
 
-const savedList = ref([])
+const { t } = useI18n()
+const savedStore = useSavedStore()
 
-async function loadSaved() {
-  try {
-    const res = await axios.get('http://localhost:3000/saved')
-    savedList.value = res.data
-    console.log('Eventos guardados:', savedList.value)
-  } catch (error) {
-    console.error('Error al cargar eventos guardados:', error)
-  }
-}
+onMounted(() => savedStore.loadSaved())
 
-onMounted(loadSaved)
+const filteredEvents = computed(() => savedStore.savedEvents)
 </script>

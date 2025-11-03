@@ -143,5 +143,18 @@
     "emptyTitle": "Aún no tienes eventos guardados",
     "emptyDesc": "Explora los eventos y toca el boton de guardar para guardarlos más tarde.",
     "explore": "Explorar"
+  },
+
+  "metrics": {
+  "title": "Métricas de mis eventos",
+  "desc": "Selecciona uno de tus eventos para ver sus métricas de visualización y guardado.",
+  "selectEvent": "Selecciona un evento",
+  "views": "Visualizaciones",
+  "saves": "Guardados",
+  "noEventSelected": "Selecciona un evento para visualizar sus métricas.",
+  "table": {
+    "timestamp": "Fecha y Hora",
+    "action": "Acción"
   }
+}
 }

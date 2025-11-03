@@ -1,19 +1,26 @@
 <template>
-    <div class="saved-content">
-      <h2>{{ $t('saved.title') }}</h2>
+  <div class="saved-content">
+    <h2>{{ $t('saved.title') }}</h2>
 
-      <div v-if="filteredEvents.length === 0">
-        <p class="no-saved-title">{{ $t('saved.emptyTitle') }}</p>
-        <p class="no-saved-desc">{{ $t('saved.emptyDesc') }}</p>
-        <RouterLink to="/user/home">
-          <button class="explore-btn">{{ $t('saved.explore') }}</button>
-        </RouterLink>
-      </div>
-
-      <div v-else class="events-grid">
-        <EventCard v-for="e in filteredEvents" :key="e.id" :event="e" :showSave="false" />
-      </div>
+    <!-- Cuando no hay eventos guardados -->
+    <div v-if="filteredEvents.length === 0">
+      <p class="no-saved-title">{{ $t('saved.emptyTitle') }}</p>
+      <p class="no-saved-desc">{{ $t('saved.emptyDesc') }}</p>
+      <RouterLink to="/user/home">
+        <button class="explore-btn">{{ $t('saved.explore') }}</button>
+      </RouterLink>
     </div>
+
+    <!-- Cuando sí hay eventos guardados -->
+    <div v-else class="events-grid">
+      <EventCard
+        v-for="e in filteredEvents"
+        :key="e.id"
+        :event="e"
+        :showSave="false"
+      />
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -21,37 +28,55 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import EventCard from '../components/EventCard.vue'
+import { useSavedStore } from '../application/saved.store.js' // si ya tienes la store, úsala
 
 const { t } = useI18n()
+const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
 const events = ref([])
 const query = ref('')
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
+// 🧠 Si usas Pinia, sincroniza con la store
+const savedStore = useSavedStore ? useSavedStore() : null
 
 onMounted(async () => {
   try {
     const res = await axios.get(`${API_URL}/saved`)
+
+    // Normaliza los datos: evita errores por campos faltantes
     events.value = res.data.map(e => ({
       ...e,
-      image: e.photos?.[0] || 'https://via.placeholder.com/400x200?text=No+Image'
+      title: e.title || '(Sin título)',
+      description: e.description || '',
+      image: e.image || e.photos?.[0] || 'https://via.placeholder.com/400x200?text=No+Image'
     }))
-    console.log('Eventos guardados cargados:', events.value)
+
+    console.log('✅ Eventos guardados cargados:', events.value)
+
+    // Si tienes store de guardados, sincroniza también
+    if (savedStore) savedStore.savedEvents = events.value
   } catch (err) {
-    console.error('Error cargando eventos:', err)
+    console.error('❌ Error cargando eventos guardados:', err)
   }
 })
 
+// 🔎 Filtro de búsqueda (seguro contra campos vacíos)
 const filteredEvents = computed(() =>
-    events.value.filter(e =>
-        e.title.toLowerCase().includes(query.value.toLowerCase())
-    )
+  events.value.filter(e =>
+    (e.title || '').toLowerCase().includes(query.value.toLowerCase())
+  )
 )
 </script>
-
 
 <style scoped>
 .saved-content{
   text-align: center;
+  margin: 40px;
+}
+  
+.event-card{
+  border-radius: 0;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 
 .events-nav {
@@ -138,10 +163,11 @@ const filteredEvents = computed(() =>
 }
 
 .events-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 24px;
+  display: flex;
+  flex-direction: column;   
+  gap: 20px;                 
   margin-top: 32px;
   padding: 0 48px;
 }
 </style>
+

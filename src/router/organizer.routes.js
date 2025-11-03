@@ -1,6 +1,6 @@
 // --- Rutas de Organizer / Emprendedor ---
 import Home from '../views/Home.vue'
-import Entrepreneur from '../views/Entrepreneur.vue'
+import Entrepreneur from '../metrics/presentation/entrepreneur-metrics.vue'
 import StandsList from '../stands/presentation/views/stands-list.vue'
 import StandForm from '../stands/presentation/views/stand-form.vue'
 

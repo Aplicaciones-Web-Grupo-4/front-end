@@ -16,23 +16,30 @@ export const useStandsStore = defineStore('stands', () => {
     const count = computed(() => stands.value.length);
     
     async function fetchFairs() {
+  loading.value = true;
   try {
     const res = await fetch(`${import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com"}/events`);
     if (!res.ok) throw new Error("Error al cargar ferias (eventos)");
     const data = await res.json();
 
-    // Mapea los datos para que cada feria tenga un id y un título
+    // Mantenemos todos los campos del evento (no los recortamos)
     fairs.value = data.map((f, index) => ({
-      id: f.id ?? index + 1, // por si el backend no devuelve ID
-      title: f.title || f.org || "Sin nombre",
-      org: f.org,
-      category: f.category?.name,
+      id: f.id ?? index + 1,
+      title: f.title || "Sin título",
+      org: f.org || "Sin organizador",
+      date: f.date || null,
+      category: f.category || null,
+      description: f.description || "",
+      ...f // ← preserva cualquier otro campo (como userId, price, etc.)
     }));
   } catch (e) {
     console.error("Error cargando ferias:", e);
     errors.value.push(e);
+  } finally {
+    loading.value = false;
   }
 }
+
 
 
     async function fetchStands() {
