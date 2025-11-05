@@ -26,7 +26,7 @@
         <pv-button icon="pi pi-users" class="options" />
       </RouterLink>
 
-      <RouterLink to="/user/signup">
+      <RouterLink to="/signup">
         <button class="signup-btn">{{ $t('header.signup') }}</button>
       </RouterLink>
     </nav>

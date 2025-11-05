@@ -17,7 +17,7 @@ const routes = [
     { path: '/user/events', name: 'user-events', component: Events },
     { path: '/user/tickets', name: 'user-tickets', component: Tickets },
     { path: '/user/search', name: 'user-search', component: Search },
-    { path: '/user/signup', name: 'user-signup', component: SignUp },
+    { path: '/signup', name: 'user-signup', component: SignUp },
     { path: '/user/publishment/:id', name: 'user-publishment', component: Publishment, props: true}
 ]
 
