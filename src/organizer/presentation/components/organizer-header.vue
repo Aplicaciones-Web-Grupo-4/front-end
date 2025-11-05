@@ -25,7 +25,9 @@
         <pv-button icon="pi pi-calendar" class="options p-button-text" />
       </RouterLink>
 
-      <Button icon="pi pi-bell" class="options p-button-text" />
+      <RouterLink to="/org/notifications">
+        <pv-button icon="pi pi-bell" class="options p-button-text" />
+      </RouterLink>
 
       <p class="profile"> Marquinho </p>
 

@@ -1,24 +1,22 @@
 <template>
   <div class="event-card">
-    <!-- Imagen: registra visualización -->
+    <!-- Imagen -->
     <div class="img-wrap" @click="registerView">
       <img :src="props.event.image" :alt="props.event.title" />
     </div>
 
-    <!-- Contenido -->
+    <!-- Título -->
     <div class="body">
       <h3 class="title">{{ props.event.title }}</h3>
     </div>
 
-    <!-- Botón Guardar -->
     <pv-button
-      v-if="props.showSave"
-      class="btn-save"
-      icon="pi pi-heart"
-      @click="onSave"
+    v-if="props.showSave"
+    class="btn-save"
+    :icon="isSaved ? 'pi pi-heart-fill' : 'pi pi-heart'" 
+    @click="toggleSave"
     />
 
-    <!-- Botón Ver -->
     <pv-button
       class="btn-eye"
       icon="pi pi-eye"
@@ -28,6 +26,7 @@
 </template>
 
 <script setup>
+import { ref, onMounted } from 'vue'
 import { useSavedStore } from '../application/saved.store.js'
 import { MetricsApi } from '../metrics/infrastructure/metrics-api.js'
 import { useRouter } from 'vue-router'
@@ -43,8 +42,28 @@ const props = defineProps({
 })
 
 const currentUser = 'Marquinho'
+const isSaved = ref(false)
+const savedId = ref(null) // para poder eliminarlo luego
 
-// 👁️ Registrar visualización (solo métrica)
+onMounted(async () => {
+  if (!props.event?.id) return
+  try {
+    const res = await fetch(`${baseUrl}/saved`)
+    const data = await res.json()
+
+    const existing = data.find(
+      e => e.user === currentUser && e.eventId === props.event.id
+    )
+
+    if (existing) {
+      isSaved.value = true
+      savedId.value = existing.id
+    }
+  } catch (err) {
+    console.error('Error verificando guardado:', err)
+  }
+})
+
 async function registerView() {
   if (!props.event?.id) return
   try {
@@ -54,43 +73,52 @@ async function registerView() {
   }
 }
 
-// ❤️ Guardar evento
-async function onSave() {
+async function toggleSave() {
   if (!props.event?.id) return
   try {
-    const res = await fetch(`${baseUrl}/saved?user=${currentUser}&eventId=${props.event.id}`)
-    const existing = await res.json()
+    const res = await fetch(`${baseUrl}/saved`)
+    const allSaved = await res.json()
 
-    if (existing.length === 0) {
-      const savedEvent = {
-        id: Date.now(), // ID del registro guardado
-        user: currentUser,
-        eventId: props.event.id, // referencia al evento original
-        title: props.event.title,
-        description: props.event.description,
-        image: props.event.image,
-        photos: props.event.photos || [],
-        timestamp: new Date().toISOString()
-      }
+    const existing = allSaved.find(
+      e => e.user === currentUser && e.eventId === props.event.id
+    )
 
-      await fetch(`${baseUrl}/saved`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(savedEvent)
-      })
-
-      savedStore.addSaved(savedEvent)
-      await api.registerAction(props.event.id, 'save')
-      console.log('✅ Guardado y store actualizada')
-    } else {
-      console.log('⚠️ Evento ya estaba guardado.')
+    if (existing) {
+      await fetch(`${baseUrl}/saved/${existing.id}`, { method: 'DELETE' })
+      isSaved.value = false
+      savedId.value = null
+      await api.registerAction(props.event.id, 'unsave')
+      console.log('💔 Evento desguardado')
+      return
     }
-  } catch (e) {
-    console.error('Error registrando save:', e)
+
+    const newSaved = {
+      id: Date.now(),
+      user: currentUser,
+      eventId: props.event.id,
+      title: props.event.title,
+      description: props.event.description,
+      image: props.event.image,
+      photos: props.event.photos || [],
+      timestamp: new Date().toISOString()
+    }
+
+    await fetch(`${baseUrl}/saved`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(newSaved)
+    })
+
+    savedStore.addSaved(newSaved)
+    await api.registerAction(props.event.id, 'save')
+    isSaved.value = true
+    savedId.value = newSaved.id
+    console.log('✅ Guardado correctamente')
+  } catch (err) {
+    console.error('Error en toggleSave:', err)
   }
 }
 
-// 👁️ Ver evento (redirige al detalle correcto)
 async function handleView() {
   try {
     await api.registerAction(props.event.id, 'view')
@@ -98,9 +126,7 @@ async function handleView() {
     console.error('Error registrando vista:', e)
   }
 
-  // Usa el id real del evento si viene de "saved"
   const realId = props.event.eventId || props.event.id
-
   router.push({ name: 'user-publishment', params: { id: realId } })
 }
 </script>
@@ -127,34 +153,48 @@ async function handleView() {
   background-color: #fff;
 }
 
-/* === Ícono base === */
+/* Ícono base */
 :deep(.p-button-icon) {
   margin: 0 !important;
   font-size: 1.5rem;
   font-weight: 300;
   color: #333;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
 }
 
-/* === Hover SAVE (corazón rojo) === */
+/* Hover SAVE */
 .btn-save:hover {
   border-color: red;
-  box-shadow: none;
   cursor: pointer;
+  box-shadow: none;
 }
 .btn-save:hover :deep(.p-button-icon) {
   color: red;
 }
 
-/* === Hover EYE (azul) === */
+/* Hover EYE */
 .btn-eye:hover {
   border-color: #2563eb;
-  box-shadow: none;
   cursor: pointer;
+  box-shadow: none;
 }
 .btn-eye:hover :deep(.p-button-icon) {
   color: #2563eb;
 }
+
+/* ==== Estado guardado permanente ==== */
+.btn-saved {
+  border-color: red !important;
+  box-shadow: none !important;
+}
+.btn-saved :deep(.p-button-icon) {
+  color: red !important;
+}
+
+:deep(.pi-heart-fill) {
+  color: red !important;
+}
+
 
 /* ==== Imagen ==== */
 .img-wrap {
@@ -165,40 +205,31 @@ async function handleView() {
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
   overflow: hidden;
 }
-
 .img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
 }
 
 /* ==== Texto ==== */
 .body {
   flex: 1;
 }
-
 .title {
   font-size: 22px;
   margin: 0 0 8px;
   font-weight: 800;
 }
 
-/* ==== Responsivo ==== */
+/* ==== Responsive ==== */
 @media (max-width: 640px) {
   .event-card {
     flex-direction: column;
     align-items: flex-start;
   }
-
   .img-wrap {
     width: 100%;
     height: 180px;
-  }
-
-  .btn-save {
-    position: static;
-    margin-top: 8px;
   }
 }
 </style>

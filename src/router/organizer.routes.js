@@ -3,6 +3,7 @@ import Home from '../views/Home.vue'
 import Entrepreneur from '../metrics/presentation/entrepreneur-metrics.vue'
 import StandsList from '../stands/presentation/views/stands-list.vue'
 import StandForm from '../stands/presentation/views/stand-form.vue'
+import Notifications from '../views/Notifications.vue'
 
 // --- Lazy load de Organizer Pages ---
 const CreateEvent = () => import('../organizer/pages/create-event.vue')
@@ -18,5 +19,7 @@ export default [
     // Sección Organizer
     { path: '/org/dashboard', name: 'org-dashboard', component: { template: '<h1>Dashboard Organizador</h1>' } },
     { path: '/org/create-event', name: 'org-create-event', component: CreateEvent },
-    { path: '/org/events', name: 'org-events', component: Events }
+    { path: '/org/events', name: 'org-events', component: Events },
+    { path: '/org/notifications', name: 'org-notifications', component: Notifications }
+
 ]

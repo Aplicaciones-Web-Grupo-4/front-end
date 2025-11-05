@@ -7,17 +7,6 @@
       </div>
     </RouterLink>
 
-    <div class="center-section">
-      <div class="search-container">
-        <i class="pi pi-search search-icon"></i>
-        <input
-            type="text"
-            :placeholder="$t('header.search.placeholder')"
-            class="search-input"
-        />
-      </div>
-    </div>
-
     <nav class="actions">
       <LanguageSwitcher />
 
