@@ -35,7 +35,6 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrend
 const events = ref([])
 const query = ref('')
 
-// 🧠 Si usas Pinia, sincroniza con la store
 const savedStore = useSavedStore ? useSavedStore() : null
 
 onMounted(async () => {
@@ -50,16 +49,16 @@ onMounted(async () => {
       image: e.image || e.photos?.[0] || 'https://via.placeholder.com/400x200?text=No+Image'
     }))
 
-    console.log('✅ Eventos guardados cargados:', events.value)
+    console.log('Eventos guardados cargados:', events.value)
 
     // Si tienes store de guardados, sincroniza también
     if (savedStore) savedStore.savedEvents = events.value
   } catch (err) {
-    console.error('❌ Error cargando eventos guardados:', err)
+    console.error('Error cargando eventos guardados:', err)
   }
 })
 
-// 🔎 Filtro de búsqueda (seguro contra campos vacíos)
+// Filtro de búsqueda (seguro contra campos vacíos)
 const filteredEvents = computed(() =>
   events.value.filter(e =>
     (e.title || '').toLowerCase().includes(query.value.toLowerCase())
