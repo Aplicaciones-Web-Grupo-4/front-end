@@ -1,6 +1,5 @@
 <template>
   <header class="main-header">
-
     <RouterLink to="/">
       <div class="logo">
         <img src="../assets/Group.png" alt="NextHappen Logo" class="logo-img" />
@@ -17,7 +16,7 @@
       <RouterLink to="/user/events">
         <pv-button icon="pi pi-heart" class="options" />
       </RouterLink>
-      
+
       <RouterLink to="/user/tickets">
         <pv-button icon="pi pi-ticket" class="options" />
       </RouterLink>
@@ -26,7 +25,26 @@
         <pv-button icon="pi pi-users" class="options" />
       </RouterLink>
 
-      <RouterLink to="/signup">
+      <!-- 🔹 Si hay usuario logueado, muestra nombre y avatar -->
+      <div v-if="userName" class="user-info">
+        <p class="profile">{{ userName }}</p>
+        <Avatar
+          class="profile-img"
+          :image="userAvatar"
+          shape="circle"
+          @click="goToProfile"
+        />
+        <input
+          ref="fileInput"
+          type="file"
+          accept="image/*"
+          class="hidden-input"
+          @change="handleFileChange"
+        />
+      </div>
+
+      <!-- 🔹 Si no hay usuario logueado, muestra botón de registro -->
+      <RouterLink v-else to="/signup">
         <button class="signup-btn">{{ $t('header.signup') }}</button>
       </RouterLink>
     </nav>
@@ -34,16 +52,44 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { RouterLink } from 'vue-router'
-import LanguageSwitcher from "../organizer/presentation/components/LanguageSwitcher.vue";
+import { ref, onMounted } from "vue"
+import { RouterLink } from "vue-router"
+import LanguageSwitcher from "../organizer/presentation/components/LanguageSwitcher.vue"
+import Avatar from "primevue/avatar"
 
-const { t, locale } = useI18n()
-const isEs = computed(() => locale.value === 'es')
-function setLang(lang) {
-  locale.value = lang
-  localStorage.setItem('nh-locale', lang)
+const userName = ref("")
+const userAvatar = ref("")
+const fileInput = ref(null)
+
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function goToProfile() {
+  router.push('/user/profile')
+}
+
+// Cargar datos del usuario si existen en localStorage
+onMounted(() => {
+  userName.value = localStorage.getItem("userName") || ""
+  userAvatar.value = localStorage.getItem("userAvatar") || ""
+})
+
+// Abrir selector de archivo al hacer clic en el avatar
+function uploadImage() {
+  fileInput.value?.click()
+}
+
+// Guardar imagen de perfil en localStorage
+function handleFileChange(event) {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    userAvatar.value = reader.result
+    localStorage.setItem("userAvatar", reader.result)
+  }
+  reader.readAsDataURL(file)
 }
 </script>
 
@@ -54,7 +100,7 @@ function setLang(lang) {
   justify-content: space-between;
   background-color: #fffdf8;
   border-bottom: 2px solid #333;
-  padding: 10px 40px;
+  padding: 0 40px;
   font-family: 'Inter', sans-serif;
 }
 
@@ -117,6 +163,13 @@ function setLang(lang) {
   justify-content: flex-end;
 }
 
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
 :deep(.options.p-button) {
   width: 45px;
   height: 45px;
@@ -125,6 +178,49 @@ function setLang(lang) {
   padding: 3px;
   align-items: center;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 20)
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.profile {
+  min-width: 90px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  font-weight: 500;
+  font-size: 1rem;
+  color: #333;
+  border: 2px solid #333;
+  background-color: #f8f8f8;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
+}
+
+.profile-img {
+  width: 40px !important;
+  height: 40px !important;
+  border: 2px solid #333;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
+  cursor: pointer;
+  object-fit: cover;
+}
+
+.profile-img:hover {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+/* Input oculto para subir imagen */
+.hidden-input {
+  display: none;
 }
 
 :deep(.options.p-button:hover) {

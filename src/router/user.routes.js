@@ -7,10 +7,12 @@ import Search from '../views/Search.vue'
 import SignUp from '../views/SignUp.vue'
 import Publishment from '../views/Publishment.vue'
 import Tickets from '../views/Tickets.vue'
+import SignIn from '../views/SignIn.vue'
+import Profile from '../views/Profile.vue'
 
 const routes = [
     // Redirección por defecto
-    { path: '/', redirect: '/user/home' },
+    { path: '/', redirect: '/signin' },
 
     // Rutas del panel de usuario
     { path: '/user/home', name: 'user-home', component: Home },
@@ -18,7 +20,10 @@ const routes = [
     { path: '/user/tickets', name: 'user-tickets', component: Tickets },
     { path: '/user/search', name: 'user-search', component: Search },
     { path: '/signup', name: 'user-signup', component: SignUp },
+    { path: '/signin', name: 'user-signin', component: SignIn },
+    { path: '/user/profile', name: 'user-profile', component: Profile },
     { path: '/user/publishment/:id', name: 'user-publishment', component: Publishment, props: true}
+
 ]
 
 // Exportamos SOLO el arreglo de rutas (no el router completo)

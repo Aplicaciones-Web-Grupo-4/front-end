@@ -159,5 +159,53 @@
     "timestamp": "Date & Time",
     "action": "Action"
   }
+},
+"signup": {
+  "title": "Create Account",
+  "subtitle": "Sign up to start exploring events.",
+  "name": "Full Name",
+  "namePlaceholder": "Enter your name",
+  "email": "Email Address",
+  "emailPlaceholder": "your@email.com",
+  "password": "Password",
+  "passwordPlaceholder": "Minimum 6 characters",
+  "create": "Sign Up",
+  "creating": "Creating account...",
+  "already": "Already have an account?",
+  "signin": "Sign in",
+  "error": "An error occurred while creating your account.",
+  "fillAll": "Please fill in all fields.",
+  "userTypeTitle": "Select your account type",
+  "user": "User",
+  "organizer": "Organizer"
+},
+
+"signin": {
+  "title": "Sign In",
+  "subtitle": "Sign in to keep exploring new events.",
+  "name": "Full Name",
+  "namePlaceholder": "Enter your name",
+  "password": "Password",
+  "passwordPlaceholder": "Enter your password",
+  "button": "Sign In",
+  "loading": "Signing in...",
+  "noAccount": "Don’t have an account?",
+  "create": "Create Account",
+  "error": "An error occurred while signing in.",
+  "fillAll": "Please fill in all fields.",
+  "selectType": "Select your account type",
+  "user": "User",
+  "organizer": "Organizer"
+},
+"profile": {
+  "title": "My Profile",
+  "subtitle": "Manage your personal information",
+  "name": "Full Name",
+  "email": "Email Address",
+  "changePhoto": "Click to change photo",
+  "save": "Save Changes",
+  "logout": "Log Out",
+  "fillFields": "Please fill in all fields.",
+  "saved": "Profile updated successfully."
 }
 }

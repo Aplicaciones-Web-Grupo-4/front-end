@@ -29,18 +29,73 @@
         <pv-button icon="pi pi-bell" class="options p-button-text" />
       </RouterLink>
 
-      <p class="profile"> Marquinho </p>
+      <!-- 🔹 Nombre y avatar del organizador -->
+      <div v-if="userName" class="user-info">
+        <p class="profile">{{ userName }}</p>
+        <Avatar
+          class="profile-img"
+          :image="userAvatar"
+          shape="circle"
+          @click="goToProfile"
+        />
+        <input
+          ref="fileInput"
+          type="file"
+          accept="image/*"
+          class="hidden-input"
+          @change="handleFileChange"
+        />
+      </div>
 
-      <Avatar class="profile-img" image="https://i.pravatar.cc/40" />
+      <!-- 🔹 Si no hay usuario -->
+      <RouterLink v-else to="/signup">
+        <button class="signup-btn">{{ $t('header.signup') }}</button>
+      </RouterLink>
     </div>
   </header>
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
-import Button from 'primevue/button'
-import Avatar from 'primevue/avatar'
-import LanguageSwitcher from './LanguageSwitcher.vue'
+import { ref, onMounted } from "vue"
+import { RouterLink } from "vue-router"
+import Avatar from "primevue/avatar"
+import LanguageSwitcher from "./LanguageSwitcher.vue"
+
+// datos reactivos
+const userName = ref("")
+const userAvatar = ref("")
+const fileInput = ref(null)
+
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+function goToProfile() {
+  router.push('/org/profile')
+}
+
+// al montar el componente, carga datos guardados del organizador
+onMounted(() => {
+  userName.value = localStorage.getItem("userName") || ""
+  userAvatar.value = localStorage.getItem("userAvatar") || ""
+})
+
+// abre el selector de archivos
+function uploadImage() {
+  fileInput.value?.click()
+}
+
+// guarda la imagen en localStorage
+function handleFileChange(event) {
+  const file = event.target.files[0]
+  if (!file) return
+
+  const reader = new FileReader()
+  reader.onload = () => {
+    userAvatar.value = reader.result
+    localStorage.setItem("userAvatar", reader.result)
+  }
+  reader.readAsDataURL(file)
+}
 </script>
 
 <style scoped>
@@ -50,7 +105,7 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   width: auto;
   max-height: 45px;
   border: 2px solid #333;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 
 .organizer-header {
@@ -60,31 +115,53 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   background-color: #fffdf8;
   border-bottom: 2px solid #333;
   padding: 0 40px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
-:deep(.profile){
-  width: 90px;
+/* --- Nombre del organizador --- */
+.profile {
+  min-width: 90px;
   height: 40px;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 0 10px;
   font-weight: 500;
   font-size: 1rem;
   color: #333;
-  margin-right: 10px;
   border: 2px solid #333;
   background-color: #f8f8f8;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 
 .profile-img {
   width: 40px !important;
   height: 40px !important;
   border: 2px solid #333;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20);
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
+  object-fit: cover;
+  cursor: pointer;
 }
 
+.profile-img:hover {
+  background-color: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  cursor: pointer;
+  box-shadow: none;
+}
+
+.hidden-input {
+  display: none;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+/* --- Botones del menú --- */
 :deep(.options.p-button) {
   width: 45px;
   height: 45px;
@@ -92,7 +169,7 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   background-color: #f8f8f8;
   padding: 3px;
   align-items: center;
-  box-shadow: 3px 3px 0 rgba(0, 0, 0, 20)
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 
 :deep(.options.p-button:hover) {
@@ -114,6 +191,7 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   color: #333;
 }
 
+/* --- Logo --- */
 .logo {
   display: flex;
   align-items: center;
@@ -129,17 +207,20 @@ import LanguageSwitcher from './LanguageSwitcher.vue'
   gap: 0.5rem;
 }
 
-:deep(.p-button.p-button-text.p-button-rounded) {
-  color: #f59e0b;
-}
-:deep(.p-button.p-button-text.p-button-rounded:hover) {
-  background-color: #fef3c7;
+/* --- Botón de registro (por si no hay usuario) --- */
+.signup-btn {
+  background-color: #ffcd00;
+  border: 2px solid #333;
+  padding: 8px 18px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 
-:deep(.actions a) {
-  text-decoration: none !important;
-  color: inherit !important;
-  display: flex;
-  align-items: center;
+.signup-btn:hover {
+  border-color: #f59e0b;
+  color: #f59e0b;
+  background-color: #ffffff;
+  box-shadow: none;
 }
 </style>

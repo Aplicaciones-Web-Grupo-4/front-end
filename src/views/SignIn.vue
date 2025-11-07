@@ -1,85 +1,77 @@
 <template>
-  <div class="signup-wrapper">
-    <!-- 🌐 Botón de idioma -->
-    <div class="lang-toggle">
-      <button @click="toggleLanguage" class="btn-lang">
-        🌐 {{ currentLang === 'es' ? 'EN' : 'ES' }}
-      </button>
+    <div class="sign-in">
+
+        <div class="signup-wrapper">
+          <!-- 🌐 Botón idioma -->
+          <div class="lang-toggle">
+            <button @click="toggleLanguage" class="btn-lang">
+              🌐 {{ currentLang === 'es' ? 'EN' : 'ES' }}
+            </button>
+          </div>
+      
+          <div class="signup-card">
+            <h2 class="title">{{ t('signin.title') }}</h2>
+            <p class="subtitle">{{ t('signin.subtitle') }}</p>
+      
+            <!-- 🔹 Selección de tipo de cuenta -->
+            <div class="user-type-section">
+              <p class="user-type-title">{{ t('signin.selectType') }}</p>
+              <div class="user-type-buttons">
+                <button
+                  class="user-type-btn"
+                  :class="{ active: userType === 'user' }"
+                  @click="userType = 'user'"
+                >
+                  {{ t('signin.user') }}
+                </button>
+                <button
+                  class="user-type-btn"
+                  :class="{ active: userType === 'organizer' }"
+                  @click="userType = 'organizer'"
+                >
+                  {{ t('signin.organizer') }}
+                </button>
+              </div>
+            </div>
+      
+            <form @submit.prevent="loginUser" class="signup-form">
+              <div class="form-group">
+                <label for="name">{{ t('signin.name') }}</label>
+                <input
+                  id="name"
+                  v-model.trim="name"
+                  type="text"
+                  :placeholder="t('signin.namePlaceholder')"
+                  required
+                />
+              </div>
+      
+              <div class="form-group">
+                <label for="password">{{ t('signin.password') }}</label>
+                <input
+                  id="password"
+                  v-model.trim="password"
+                  type="password"
+                  :placeholder="t('signin.passwordPlaceholder')"
+                  minlength="6"
+                  required
+                />
+              </div>
+      
+              <button type="submit" class="btn-submit" :disabled="loading">
+                {{ loading ? t('signin.loading') : t('signin.button') }}
+              </button>
+      
+              <p v-if="error" class="error-text">{{ error }}</p>
+            </form>
+      
+            <p class="login-text">
+              {{ t('signin.noAccount') }}
+              <router-link to="/signup" class="login-link">{{ t('signin.create') }}</router-link>
+            </p>
+          </div>
+        </div>
     </div>
-
-    <div class="signup-card">
-      <h2 class="title">{{ t('signup.title') }}</h2>
-      <p class="subtitle">{{ t('signup.subtitle') }}</p>
-
-      <!-- 🔹 Selección de tipo de cuenta -->
-      <div class="user-type-section">
-        <p class="user-type-title">{{ t('signup.userTypeTitle') }}</p>
-        <div class="user-type-buttons">
-          <button
-            class="user-type-btn"
-            :class="{ active: userType === 'user' }"
-            @click="userType = 'user'"
-          >
-            {{ t('signup.user') }}
-          </button>
-          <button
-            class="user-type-btn"
-            :class="{ active: userType === 'organizer' }"
-            @click="userType = 'organizer'"
-          >
-            {{ t('signup.organizer') }}
-          </button>
-        </div>
-      </div>
-
-      <form @submit.prevent="registerUser" class="signup-form">
-        <div class="form-group">
-          <label for="name">{{ t('signup.name') }}</label>
-          <input
-            id="name"
-            v-model.trim="name"
-            type="text"
-            :placeholder="t('signup.namePlaceholder')"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="email">{{ t('signup.email') }}</label>
-          <input
-            id="email"
-            v-model.trim="email"
-            type="email"
-            :placeholder="t('signup.emailPlaceholder')"
-            required
-          />
-        </div>
-
-        <div class="form-group">
-          <label for="password">{{ t('signup.password') }}</label>
-          <input
-            id="password"
-            v-model.trim="password"
-            type="password"
-            :placeholder="t('signup.passwordPlaceholder')"
-            minlength="6"
-            required
-          />
-        </div>
-
-        <button type="submit" class="btn-submit" :disabled="loading">
-          {{ loading ? t('signup.creating') : t('signup.create') }}
-        </button>
-
-        <p v-if="error" class="error-text">{{ error }}</p>
-      </form>
-
-      <p class="login-text">
-        {{ t('signup.already') }}
-        <router-link to="/signin" class="login-link">{{ t('signup.signin') }}</router-link>
-      </p>
-    </div>
-  </div>
 </template>
 
 <script setup>
@@ -91,9 +83,8 @@ const router = useRouter()
 const { t, locale } = useI18n()
 
 const name = ref("")
-const email = ref("")
 const password = ref("")
-const userType = ref("") // Nuevo: tipo de cuenta
+const userType = ref("") // Nuevo: tipo elegido
 const loading = ref(false)
 const error = ref("")
 const currentLang = ref(locale.value)
@@ -104,7 +95,7 @@ function toggleLanguage() {
   localStorage.setItem("lang", locale.value)
 }
 
-async function registerUser() {
+async function loginUser() {
   error.value = ""
   if (!userType.value) {
     error.value =
@@ -113,22 +104,22 @@ async function registerUser() {
         : "Please select your account type."
     return
   }
-  if (!name.value || !email.value || !password.value) {
-    error.value = t("signup.fillAll")
+
+  if (!name.value || !password.value) {
+    error.value = t("signin.fillAll")
     return
   }
 
   loading.value = true
   try {
-    const newUser = {
-      id: Date.now(),
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      type: userType.value
+    const storedUser = JSON.parse(localStorage.getItem("user"))
+
+    if (!storedUser || storedUser.name !== name.value || storedUser.password !== password.value) {
+      error.value = t("signin.error")
+      loading.value = false
+      return
     }
 
-    localStorage.setItem("user", JSON.stringify(newUser))
     localStorage.setItem("userName", name.value)
     localStorage.setItem("userType", userType.value)
 
@@ -139,7 +130,7 @@ async function registerUser() {
     }, 800)
   } catch (err) {
     console.error(err)
-    error.value = t("signup.error")
+    error.value = t("signin.error")
     loading.value = false
   }
 }
@@ -179,7 +170,6 @@ async function registerUser() {
   transform: translateY(-1px);
 }
 
-/* 💡 Tarjeta principal */
 .signup-card {
   width: 100%;
   max-width: 400px;
@@ -201,7 +191,7 @@ async function registerUser() {
   margin-bottom: 1.5rem;
 }
 
-/* 🔹 Sección tipo de usuario */
+/* 🔹 Tipo de cuenta */
 .user-type-section {
   margin-bottom: 1.5rem;
 }
@@ -223,7 +213,6 @@ async function registerUser() {
   padding: 0.6rem 1rem;
   cursor: pointer;
   font-weight: 600;
-  transition: all 0.2s ease;
   box-shadow: 3px 3px 0 rgba(0, 0, 0, 1);
 }
 

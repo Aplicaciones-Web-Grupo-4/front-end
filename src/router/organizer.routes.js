@@ -4,6 +4,7 @@ import Entrepreneur from '../metrics/presentation/entrepreneur-metrics.vue'
 import StandsList from '../stands/presentation/views/stands-list.vue'
 import StandForm from '../stands/presentation/views/stand-form.vue'
 import Notifications from '../views/Notifications.vue'
+import Profile from '../views/Profile.vue'
 
 // --- Lazy load de Organizer Pages ---
 const CreateEvent = () => import('../organizer/pages/create-event.vue')
@@ -20,6 +21,8 @@ export default [
     { path: '/org/dashboard', name: 'org-dashboard', component: { template: '<h1>Dashboard Organizador</h1>' } },
     { path: '/org/create-event', name: 'org-create-event', component: CreateEvent },
     { path: '/org/events', name: 'org-events', component: Events },
-    { path: '/org/notifications', name: 'org-notifications', component: Notifications }
+    { path: '/org/notifications', name: 'org-notifications', component: Notifications },
+    { path: '/org/profile', name: 'org-profile', component: Profile }
+
 
 ]

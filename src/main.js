@@ -34,6 +34,7 @@ import Textarea from "primevue/textarea";
 import Calendar from "primevue/calendar";
 import InputNumber from "primevue/inputnumber";
 import CascadeSelect from "primevue/cascadeselect";
+import MultiSelect from 'primevue/multiselect'
 
 createApp(App)
     .use(PrimeVue, { ripple: true, theme: { preset: Material, options: { darkModeSelector: false } } })
@@ -58,4 +59,5 @@ createApp(App)
     .component('pv-input-number', InputNumber)
     .component('pv-confirm-dialog', ConfirmDialog)
     .component('pv-cascade-select', CascadeSelect)
+    .component('pv-multi-select', MultiSelect)
     .mount('#app')

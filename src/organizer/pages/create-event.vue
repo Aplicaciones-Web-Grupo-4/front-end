@@ -286,8 +286,26 @@ const form = ref({
 const categories = ref([
   { name: 'Gastronomía' },
   { name: 'Cultural' },
-  { name: 'Tecnología' }
+  { name: 'Tecnología' },
+  { name: 'Arte y Diseño' },
+  { name: 'Moda y Belleza' },
+  { name: 'Música y Conciertos' },
+  { name: 'Deportes y Aventura' },
+  { name: 'Emprendimiento' },
+  { name: 'Educación y Capacitación' },
+  { name: 'Salud y Bienestar' },
+  { name: 'Medio Ambiente' },
+  { name: 'Gaming y Esports' },
+  { name: 'Fotografía y Cine' },
+  { name: 'Ciencia e Innovación' },
+  { name: 'Literatura' },
+  { name: 'Mascotas' },
+  { name: 'Viajes y Turismo' },
+  { name: 'Autos y Motos' },
+  { name: 'Infantil y Familiar' },
+  { name: 'Networking y Negocios' }
 ])
+
 
 const previewImages = ref([])
 const fileInput = ref(null)
