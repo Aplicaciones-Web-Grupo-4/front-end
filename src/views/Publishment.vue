@@ -2,6 +2,8 @@
   <div class="publishment-page" v-if="event">
     <h1 class="title">{{ event.title }}</h1>
     <p><strong>Organizador:</strong> {{ event.org }}</p>
+
+    <!-- ==== Carrusel ==== -->
     <div class="carousel-container">
       <div class="carousel" ref="carousel">
         <div
@@ -14,26 +16,48 @@
       </div>
 
       <button
-  v-if="event.photos && event.photos.length > 1"
-  class="btn prev"
-  @click="move(-1)"
->
-  &#10094;
-</button>
-
-<button
-  v-if="event.photos && event.photos.length > 1"
-  class="btn next"
-  @click="move(1)"
->
-  &#10095;
-</button>
+        v-if="event.photos && event.photos.length > 1"
+        class="btn prev"
+        @click="move(-1)"
+      >
+        &#10094;
+      </button>
+      <button
+        v-if="event.photos && event.photos.length > 1"
+        class="btn next"
+        @click="move(1)"
+      >
+        &#10095;
+      </button>
     </div>
-    <p class="desc">{{ event.description }}</p>
-    <p><strong>Fecha: </strong>{{ event.date }}</p>
-    <p><strong>Cantidad:</strong> {{ event.quantity }}</p>
-    <p><strong>Precio:</strong> S/. {{ event.price }}</p>
 
+    <!-- ==== Información general ==== -->
+    <p class="desc">{{ event.description }}</p>
+    <p><strong>Fecha:</strong> {{ event.date }}</p>
+    <p><strong>Entradas disponibles:</strong> {{ event.quantity }}</p>
+    <p><strong>Precio unitario:</strong> S/. {{ event.price }}</p>
+
+    <!-- ==== Selector de cantidad ==== -->
+    <div class="ticket-section">
+      <label for="ticketCount"><strong>Cantidad de entradas:</strong></label>
+      <div class="ticket-input">
+        <button class="btn-qty" @click="decreaseQuantity">−</button>
+        <input
+          id="ticketCount"
+          type="number"
+          v-model.number="ticketCount"
+          min="1"
+          :max="event.quantity"
+        />
+        <button class="btn-qty" @click="increaseQuantity">+</button>
+      </div>
+
+      <p class="total">
+        <strong>Total:</strong> S/. {{ totalPrice.toFixed(2) }}
+      </p>
+    </div>
+
+    <!-- ==== Botón de acción ==== -->
     <div class="actions">
       <pv-button
         label="Comprar entrada"
@@ -46,7 +70,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, computed, onMounted, nextTick } from 'vue'
 import { useRoute } from 'vue-router'
 import axios from 'axios'
 
@@ -56,6 +80,18 @@ const carousel = ref(null)
 let index = 0
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
+
+// ==== Tickets ====
+const ticketCount = ref(1)
+const totalPrice = computed(() => (event.value ? event.value.price * ticketCount.value : 0))
+
+function increaseQuantity() {
+  if (ticketCount.value < event.value.quantity) ticketCount.value++
+}
+
+function decreaseQuantity() {
+  if (ticketCount.value > 1) ticketCount.value--
+}
 
 onMounted(async () => {
   const res = await axios.get(`${API_URL}/events/${route.params.id}`)
@@ -102,11 +138,15 @@ async function buyTicket() {
     const ticketData = {
       eventId: event.value.id,
       title: event.value.title,
-      price: event.value.price,
-      date: new Date().toISOString()
+      unitPrice: event.value.price,
+      quantity: ticketCount.value,
+      total: totalPrice.value,
+      date: new Date().toISOString(),
+      // 🔹 Futuro: aquí se integrará Stripe Checkout
     }
+
     await axios.post(`${API_URL}/tickets`, ticketData)
-    alert('¡Compra realizada con éxito!')
+    alert(`¡Compra realizada con éxito! Total: S/. ${totalPrice.value.toFixed(2)}`)
   } catch (error) {
     console.error('Error al comprar entrada:', error)
     alert('Ocurrió un error al procesar la compra.')
@@ -212,6 +252,45 @@ async function buyTicket() {
   color: #f59e0b;
   background-color: #ffffff;
   box-shadow: none;
+}
+
+.ticket-input {
+  display: flex;
+  align-items: center;
+  margin-top: 8px;
+}
+
+.ticket-input input {
+  width: 60px;
+  text-align: center;
+  border: 2px solid #333;
+  height: 33px;
+  font-weight: 600;
+  margin: 0 8px;
+}
+
+.btn-qty {
+  background: #ffcd00;
+  border: 2px solid #333;
+  font-size: 1.1rem;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  gap: 2px;
+  box-shadow: 3px 3px 0 rgba(0, 0, 0, 2);
+}
+
+.btn-qty:hover {
+  background: #fff7ed;
+  border-color: #f59e0b;
+  color: #f59e0b;
+  box-shadow: none;
+}
+
+.total {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
 
 /* 📱 Responsivo */
