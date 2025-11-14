@@ -109,6 +109,7 @@
     },
     "noImage": "No image",
     "edit": "Edit",
+    "delete": "Delete",
     "errors": {
       "load": "Error loading events"
     }, 

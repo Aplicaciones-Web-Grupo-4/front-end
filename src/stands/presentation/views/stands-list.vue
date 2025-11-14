@@ -1,95 +1,108 @@
 <template>
   <div class="stands-page">
-    <h2 class="h-title mb-2">{{ $t('stands.title') }}</h2>
-    <p class="mb-4 p-muted" style="max-width:680px;">{{ $t('stands.desc') }}</p>
+    <h2 class="h-title mb-2">Registro de Stands</h2>
+    <p class="mb-4 p-muted">Selecciona un evento para asignar y gestionar stands.</p>
 
+    <!-- ========================== -->
+    <!-- DROPDOWN DE EVENTOS REALES -->
+    <!-- ========================== -->
     <div class="grid mb-3">
       <div class="col-12 md:col-6">
-        <label class="block mb-2 p-muted">{{ $t('stands.selectFair') }}</label>
+        <label class="block mb-2 p-muted">Seleccionar Evento</label>
+
         <pv-dropdown
-  v-model="selectedFair"
-  :options="fairsWithAll"
-  optionLabel="title"
-  optionValue="id"
-  placeholder="Selecciona una feria"
-  class="fair-select"
-/>
+          v-model="selectedEvent"
+          :options="events"
+          optionLabel="title"
+          optionValue="id"
+          placeholder="Selecciona un evento"
+          class="fair-select"
+          @change="onSelectEvent"
+        />
       </div>
     </div>
 
-    <div class="table-container">
-      <pv-data-table :value="filtered" :loading="loading" responsiveLayout="scroll" class="custom-table">
-        <pv-column field="fair" :header="$t('stands.fair')" />
-        <pv-column field="name" :header="$t('stands.name')" />
-        <pv-column field="category" :header="$t('stands.category')">
-          <template #body="{ data }">
-            <span class="nh-link">{{ data.category }}</span>
-          </template>
-        </pv-column>
-        <pv-column field="code" :header="$t('stands.stand')" />
-        <pv-column :header="$t('stands.actions')" style="width:12rem">
+    <!-- ============================================ -->
+    <!-- TABLA: SOLO SE MUESTRAN STANDS DEL EVENTO -->
+    <!-- ============================================ -->
+    <div class="table-container" v-if="selectedEvent">
+      <pv-data-table
+        :value="stands"
+        :loading="loading"
+        responsiveLayout="scroll"
+        class="custom-table"
+      >
+        <pv-column field="name" header="Nombre" />
+        <pv-column field="category" header="Categoría" />
+        <pv-column header="Acciones" style="width:12rem">
           <template #body="{ data }">
             <pv-button
-                class="edit-button"
-                :label="$t('stands.edit')"
-                icon="pi pi-pencil"
-                @click="goEdit(data.id)"
+              class="edit-button"
+              label="Editar"
+              icon="pi pi-pencil"
+              @click="goEdit(data.id)"
             />
+
             <span class="mx-2"> </span>
+
             <pv-button
-                class="delete-button"
-                :label="$t('stands.delete')"
-                icon="pi pi-trash"
-                @click.prevent="onDelete(data)"
+              class="delete-button"
+              label="Eliminar"
+              icon="pi pi-trash"
+              @click.prevent="onDelete(data)"
             />
           </template>
         </pv-column>
       </pv-data-table>
     </div>
-    
-    <router-link :to="{ name: 'org-stand-new' }">
-      <pv-button class="add-button" :label="$t('stands.addEntrepreneur')" icon="pi pi-plus" />
+
+    <!-- BOTÓN PARA CREAR NUEVO STAND -->
+    <router-link
+      v-if="selectedEvent"
+      :to="{ name: 'org-stand-new', params: { eventId: selectedEvent } }"
+    >
+      <pv-button class="add-button" label="Agregar Emprendedor" icon="pi pi-plus" />
     </router-link>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
-import { useStandsStore } from '../../application/stands.store.js'
+import { ref, onMounted, computed } from "vue"
+import { useRoute, useRouter } from "vue-router"
+import { useAssignStandsStore } from "../../application/assign-stands.store.js"
 
-const store = useStandsStore()
-const { t } = useI18n()
+const route = useRoute()
 const router = useRouter()
+const store = useAssignStandsStore()
 
-const selectedFair = ref(null)
-const ALL = computed(() => ({ id: 'ALL', title: t('common.all') }))
+const selectedEvent = ref(null)
 
+const events = computed(() => store.events)
+const stands = store.stands
+const loading = store.loading
+
+// Cargar eventos al entrar
 onMounted(async () => {
-  await store.fetchFairs()  // ahora usa /events
-  await store.fetchStands()
-  selectedFair.value = ALL.value
+  await store.fetchEvents()
+
+  // Si venimos desde guardar un stand
+  if (route.query.eventId) {
+    selectedEvent.value = route.params.eventId
+    await store.fetchAssigned(selectedEvent.value)
+  }
 })
 
-// opciones = [Todas, ...ferias]
-const fairsWithAll = computed(() => [ALL.value, ...store.fairs])
-const loading = computed(() => store.loading)
-
-const filtered = computed(() => {
-  if (!selectedFair.value || selectedFair.value === 'ALL') return store.stands
-  return store.stands.filter(s => s.fairId === selectedFair.value)
-})
-
-
-function goEdit(id) {
-  router.push({ name: 'stand-edit', params: { id } })
+function onSelectEvent() {
+  if (selectedEvent.value) {
+    store.fetchAssigned(selectedEvent.value)
+  }
 }
 
-async function onDelete(row) {
-  if (confirm(`¿Eliminar a ${row.name}?`)) {
-    await store.remove(row)
-  }
+function goEdit(id) {
+  router.push({
+    name: "org-stand-edit",
+    params: { id, eventId: selectedEvent.value }
+  })
 }
 </script>
 

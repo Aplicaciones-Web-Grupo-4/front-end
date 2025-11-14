@@ -107,6 +107,7 @@
     },
     "noImage": "Sin imagen",
     "edit": "Editar",
+    "delete": "Eliminar",
     "errors": {
       "load": "Error al cargar eventos"
     },

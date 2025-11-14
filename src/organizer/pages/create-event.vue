@@ -9,7 +9,7 @@
         <pv-input-text
           id="org"
           class="org-form"
-          v-model="form.org"
+          v-model="form.organizer"
           :placeholder="$t('createEvent.fields.orgPlaceholder')"
         />
       </div>
@@ -266,14 +266,16 @@ import { useI18n } from 'vue-i18n'
 
 const { t } = useI18n()
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
+// Tu backend .NET
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5038/api'
 
+// Formulario base
 const form = ref({
-  org: '',
+  organizer: '',
   title: '',
   description: '',
-  price: '',
-  quantity: '',
+  price: null,     // <--- antes era ''
+  quantity: null,  // <--- antes era ''
   category: '',
   photos: [],
   address: '',
@@ -283,6 +285,7 @@ const form = ref({
   lng: null
 })
 
+// Categorías predefinidas
 const categories = ref([
   { name: 'Gastronomía' },
   { name: 'Cultural' },
@@ -306,11 +309,9 @@ const categories = ref([
   { name: 'Networking y Negocios' }
 ])
 
-
+// Estados
 const previewImages = ref([])
 const fileInput = ref(null)
-
-//Estados de los diálogos
 const showSuccessDialog = ref(false)
 const showErrorDialog = ref(false)
 const showMissingFieldsDialog = ref(false)
@@ -319,13 +320,17 @@ const showAddressDialog = ref(false)
 let map, marker, geocoder
 const GOOGLE_API_KEY = 'AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0'
 
-// === Manejo de imágenes ===
+/* =====================================================
+   🖼️ Manejo de imágenes
+===================================================== */
 const onFileChange = (e) => {
   const files = Array.from(e.target.files)
   files.forEach((file) => {
-    form.value.photos.push(file)
     const reader = new FileReader()
-    reader.onload = (event) => previewImages.value.push(event.target.result)
+    reader.onload = (event) => {
+      previewImages.value.push(event.target.result)
+      form.value.photos.push(event.target.result) // <-- base64 directo
+    }
     reader.readAsDataURL(file)
   })
 }
@@ -333,9 +338,11 @@ const onFileChange = (e) => {
 const handleDrop = (e) => {
   const files = Array.from(e.dataTransfer.files)
   files.forEach((file) => {
-    form.value.photos.push(file)
     const reader = new FileReader()
-    reader.onload = (event) => previewImages.value.push(event.target.result)
+    reader.onload = (event) => {
+      previewImages.value.push(event.target.result)
+      form.value.photos.push(event.target.result)
+    }
     reader.readAsDataURL(file)
   })
 }
@@ -345,27 +352,32 @@ const removeImage = (index) => {
   previewImages.value.splice(index, 1)
 }
 
-// === Publicar evento ===
+/* =====================================================
+   🚀 Publicar evento (con backend .NET)
+===================================================== */
 const publishEvent = async () => {
   if (!form.value.title || !form.value.dates || !form.value.location) {
     showMissingFieldsDialog.value = true
     return
   }
 
-  const formattedDates = Array.isArray(form.value.dates)
-    ? form.value.dates.map((d) => new Date(d).toLocaleDateString('es-PE')).join(' - ')
-    : new Date(form.value.dates).toLocaleDateString('es-PE')
+  const [start, end] = Array.isArray(form.value.dates)
+    ? form.value.dates
+    : [form.value.dates, form.value.dates]
 
+  // 🧠 JSON EXACTO que espera tu backend .NET:
   const newEvent = {
-    org: form.value.org,
+    organizer: form.value.organizer,
     title: form.value.title,
     description: form.value.description,
-    price: form.value.price,
-    quantity: form.value.quantity,
+    price: parseFloat(form.value.price) || null,
+    quantity: parseInt(form.value.quantity) || null,
     category: form.value.category,
-    date: formattedDates,
+    address: form.value.address,
     location: form.value.location,
-    photos: previewImages.value
+    photos: form.value.photos,
+    startDate: new Date(start).toISOString(),
+    endDate: new Date(end).toISOString()
   }
 
   try {
@@ -379,9 +391,9 @@ const publishEvent = async () => {
 
     showSuccessDialog.value = true
 
-    // limpiar formulario
+    // Reinicia formulario
     form.value = {
-      org: '',
+      organizer: '',
       title: '',
       description: '',
       price: '',
@@ -401,7 +413,9 @@ const publishEvent = async () => {
   }
 }
 
-// === Buscar dirección y marcar en mapa ===
+/* =====================================================
+   📍 Buscar dirección en Google Maps
+===================================================== */
 const searchAddress = async () => {
   if (!form.value.address) {
     showMissingFieldsDialog.value = true
@@ -432,7 +446,9 @@ const searchAddress = async () => {
   })
 }
 
-// === Inicializar mapa ===
+/* =====================================================
+   🗺️ Inicializar mapa
+===================================================== */
 const initMap = () => {
   geocoder = new google.maps.Geocoder()
   map = new google.maps.Map(document.getElementById('map'), {

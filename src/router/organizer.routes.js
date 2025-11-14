@@ -13,9 +13,9 @@ const Events = () => import('../organizer/pages/events.vue')
 export default [
     // Sección Emprendedor
     { path: '/org/entrepreneur', name: 'org-entrepreneur', component: Entrepreneur },
-    { path: '/org/register-stands', name: 'org-register-stands', component: StandsList },
-    { path: '/org/register-stands/new', name: 'org-stand-new', component: StandForm },
-    { path: '/org/register-stands/:id/edit', name: 'org-stand-edit', component: StandForm },
+    { path: '/org/register-stands/:eventId?', name: 'org-register-stands', component: StandsList },
+    { path: '/org/register-stands/:eventId/new', name: 'org-stand-new', component: StandForm },
+    { path: '/org/register-stands/:eventId/:id/edit', name: 'org-stand-edit', component: StandForm },
 
     // Sección Organizer
     { path: '/org/dashboard', name: 'org-dashboard', component: { template: '<h1>Dashboard Organizador</h1>' } },
