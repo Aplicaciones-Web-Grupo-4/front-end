@@ -114,7 +114,7 @@ function handleFileChange(event) {
   justify-content: space-between;
   background-color: #fffdf8;
   border-bottom: 2px solid #333;
-  padding: 0 40px;
+  padding: 2px 40px;
   font-family: "Inter", sans-serif;
 }
 
