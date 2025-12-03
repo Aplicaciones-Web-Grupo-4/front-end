@@ -53,21 +53,20 @@ const store = useAssignStandsStore()
 const route = useRoute()
 const router = useRouter()
 
-const eventId = route.params.eventId
-const isEdit = !!route.params.id
+const eventId = route.params.eventId;  
+const isEdit = !!route.params.id;
 
-// 🔥 Categorías sugeridas + editable (el usuario puede añadir otras)
+onMounted(() => {
+  if (isEdit) {
+    const found = store.stands.find(s => s.id == route.params.id);
+    if (found) Object.assign(form, found);
+  }
+});
+
 const categories = ref([
-  'Comida',
-  'Arte',
-  'Ropa',
-  'Bebidas',
-  'Accesorios',
-  'Servicios',
-  'Manualidades',
-  'Tecnología',
-  'Salud & Bienestar',
-  'Juegos'
+  'Comida', 'Arte', 'Ropa', 'Bebidas', 'Accesorios',
+  'Servicios', 'Manualidades', 'Tecnología',
+  'Salud & Bienestar', 'Juegos'
 ])
 
 const form = reactive({
@@ -84,22 +83,18 @@ onMounted(() => {
 })
 
 async function onSubmit() {
-  // Si el usuario escribió una categoría nueva → la agregamos
-  if (form.category && !categories.value.includes(form.category)) {
-    categories.value.push(form.category)
+  if (isEdit) {
+    await store.update(form)
+  } else {
+    await store.add(eventId, form)
   }
 
-  if (isEdit) {
-  await store.update(form)
-} else {
-  await store.add(eventId, form)
+  router.push({
+    name: "org-stands-list",
+    query: { eventId }
+  })
 }
 
-  router.push({
-  name: "org-register-stands",
-  query: { eventId }
-})
-}
 </script>
 
 <style scoped>

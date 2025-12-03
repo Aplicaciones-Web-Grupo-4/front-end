@@ -55,41 +55,88 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { MetricsApi } from '../../metrics/infrastructure/metrics-api.js'
-import { useStandsStore } from '../../stands/application/stands.store.js'
 
 const { t } = useI18n()
-const store = useStandsStore()
 const metricsApi = new MetricsApi()
 
+// ================================================
 // Estado
+// ================================================
 const myEvents = ref([])
 const metrics = ref([])
 const selectedEventId = ref(null)
 const loading = ref(false)
 
+// CORREGIDO: VITE_API_URL debe venir SIN /api
+// Ejemplo correcto: VITE_API_URL="https://nexthappen-back.onrender.com"
+const API = import.meta.env.VITE_API_URL
+
+// ================================================
+// Cargar eventos REALES desde tu backend .NET
+// ================================================
+async function fetchEvents() {
+  loading.value = true
+  try {
+    const res = await fetch(`${API}/api/events`)
+    if (!res.ok) throw new Error("Error cargando eventos")
+
+    myEvents.value = await res.json()
+  } catch (e) {
+    console.error("Error cargando eventos:", e)
+    myEvents.value = []
+  } finally {
+    loading.value = false
+  }
+}
+
+// ================================================
+// onMounted → cargar eventos + métricas
+// ================================================
 onMounted(async () => {
-  await store.fetchFairs()
-  myEvents.value = store.fairs // ← quitar filtro
+  await fetchEvents()
   metrics.value = await metricsApi.getAll()
 })
 
+// ================================================
+// Cuando el usuario selecciona un evento → recargar métricas
+// ================================================
+watch(selectedEventId, async () => {
+  metrics.value = await metricsApi.getAll()
+})
 
-// Evento seleccionado completo
-const selectedEvent = computed(() => myEvents.value.find(e => e.id === selectedEventId.value))
+// ================================================
+// Evento seleccionado
+// ================================================
+const selectedEvent = computed(() =>
+  myEvents.value.find(e => e.id === selectedEventId.value)
+)
 
-// Métricas filtradas según evento
+// ================================================
+// Métricas del evento
+// ================================================
 const eventMetrics = computed(() => {
   if (!selectedEvent.value) return []
+
+  // BACKEND devuelte eventId = GUID
+  // FRONT selectedEvent.id = GUID
   return metrics.value.filter(m => m.eventId === selectedEvent.value.id)
 })
 
+// ================================================
 // Contadores
-const eventViews = computed(() => eventMetrics.value.filter(m => m.action === 'view').length)
-const eventSaves = computed(() => eventMetrics.value.filter(m => m.action === 'save').length)
+// ================================================
+const eventViews = computed(() =>
+  eventMetrics.value.filter(m => m.action === 'view').length
+)
+
+const eventSaves = computed(() =>
+  eventMetrics.value.filter(m => m.action === 'save').length
+)
 </script>
+
 
 <style scoped>
 .metrics-page {

@@ -15,13 +15,11 @@ export const useAssignStandsStore = defineStore("assignStands", () => {
   async function fetchEvents() {
     loading.value = true
     try {
-      const res = await axios.get(`${API}/events`)
+      const res = await axios.get(`${API}/api/events`)
       events.value = res.data
     } catch (e) {
       events.value = []
-    } finally {
-      loading.value = false
-    }
+    } finally { loading.value = false }
   }
 
   // ---------------------------
@@ -30,28 +28,32 @@ export const useAssignStandsStore = defineStore("assignStands", () => {
   async function fetchAssigned(eventId) {
     loading.value = true
     try {
-      const res = await axios.get(`${API}/events/${eventId}/stands`)
+      const res = await axios.get(`${API}/api/events/${eventId}/stands`)
       stands.value = res.data
     } catch (e) {
       stands.value = []
-    } finally {
-      loading.value = false
-    }
+    } finally { loading.value = false }
   }
 
   // ---------------------------
   // Crear stand
   // ---------------------------
-  async function add(eventId, payload) {
-    const res = await axios.post(`${API}/events/${eventId}/stands`, payload)
-    stands.value.push(res.data)
-  }
+ async function add(eventId, payload) {
+  const body = {
+    name: payload.name,
+    category: payload.category
+  };
+
+  const res = await axios.post(`${API}/api/events/${eventId}/stands`, body);
+  stands.value.push(res.data);
+}
+
 
   // ---------------------------
   // Editar stand
   // ---------------------------
   async function update(payload) {
-    const res = await axios.put(`${API}/stands/${payload.id}`, payload)
+    const res = await axios.put(`${API}/api/stands/${payload.id}`, payload)
 
     const i = stands.value.findIndex(s => s.id === payload.id)
     if (i !== -1) stands.value[i] = res.data
@@ -61,7 +63,7 @@ export const useAssignStandsStore = defineStore("assignStands", () => {
   // Eliminar stand
   // ---------------------------
   async function remove(id) {
-    await axios.delete(`${API}/stands/${id}`)
+    await axios.delete(`${API}/api/stands/${id}`)
     stands.value = stands.value.filter(s => s.id !== id)
   }
 

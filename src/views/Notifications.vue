@@ -25,27 +25,47 @@
 <script setup>
 import { ref, onMounted } from "vue"
 import { MetricsApi } from '../metrics/infrastructure/metrics-api.js'
-import { useStandsStore } from '../stands/application/stands.store.js'
 
 const metricsApi = new MetricsApi()
-const store = useStandsStore()
 const notifications = ref([])
+const events = ref([])
 
+const API = import.meta.env.VITE_API_URL || "https://nexthappen-platform.onrender.com/api"
+
+/* =====================================================
+   Cargar eventos desde el backend real (.NET)
+===================================================== */
+async function fetchEvents() {
+  try {
+    const res = await fetch(`${API}/api/events`)
+    if (!res.ok) throw new Error("Error al cargar eventos")
+    events.value = await res.json()
+  } catch (err) {
+    console.error("Error cargando eventos:", err)
+    events.value = []
+  }
+}
+
+/* =====================================================
+   Al montar la vista: cargar eventos + métricas
+===================================================== */
 onMounted(async () => {
-  await store.fetchFairs()
-  const fairs = store.fairs
+  await fetchEvents()
   const metrics = await metricsApi.getAll()
 
-  // Combinar métricas con el título del evento
   notifications.value = metrics
     .map(m => ({
       ...m,
-      eventTitle: fairs.find(f => f.id === m.eventId)?.title || "Evento desconocido"
+      eventTitle:
+        events.value.find(evt => evt.id === m.eventId)?.title ||
+        "Evento desconocido"
     }))
-    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)) // más recientes primero
+    .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
 })
 
-// Texto dinámico de la notificación
+/* =====================================================
+   Texto dinámico
+===================================================== */
 function getText(n) {
   switch (n.action) {
     case "save":
@@ -59,7 +79,9 @@ function getText(n) {
   }
 }
 
-// Ícono visual de PrimeIcons (para estilo futuro si usas PrimeVue)
+/* =====================================================
+   Ícono dinámico
+===================================================== */
 function getIcon(action) {
   return action === "save"
     ? "pi pi-heart text-red-500"
@@ -70,7 +92,9 @@ function getIcon(action) {
     : "pi pi-info-circle text-gray-500"
 }
 
-// Formato de fecha y hora
+/* =====================================================
+   Formato de fecha
+===================================================== */
 function formatDate(date) {
   return new Date(date).toLocaleString("es-PE", {
     dateStyle: "short",

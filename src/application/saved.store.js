@@ -2,22 +2,35 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useSavedStore = defineStore('saved', () => {
-  const savedEvents = ref([])
+  const savedEvents = ref(JSON.parse(localStorage.getItem('nh_saved') || '[]'))
 
-  // Cargar desde la API
-  async function loadSaved() {
-    const baseUrl = import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com"
-    const res = await fetch(`${baseUrl}/saved`)
-    const data = await res.json()
-    savedEvents.value = data
+  function persist() {
+    localStorage.setItem('nh_saved', JSON.stringify(savedEvents.value))
   }
 
-  // Agregar nuevo evento
+  // Saber si ya está guardado
+  function isSaved(id) {
+    return savedEvents.value.some(e => e.id === id)
+  }
+
+  // Guardar evento
   function addSaved(event) {
-    if (!savedEvents.value.some(e => e.eventId === event.eventId)) {
+    if (!isSaved(event.id)) {
       savedEvents.value.push(event)
+      persist()
     }
   }
 
-  return { savedEvents, loadSaved, addSaved }
+  // Quitar guardado
+  function removeSaved(id) {
+    savedEvents.value = savedEvents.value.filter(e => e.id !== id)
+    persist()
+  }
+
+  return {
+    savedEvents,
+    isSaved,
+    addSaved,
+    removeSaved
+  }
 })

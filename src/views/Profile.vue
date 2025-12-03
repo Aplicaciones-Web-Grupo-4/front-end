@@ -42,11 +42,11 @@
 
         <div class="input-section">
             <input
-              type="email"
-              v-model="email"
-              placeholder="tu@correo.com"
-              class="input-field"
-            />
+  type="email"
+  v-model="email"
+  :placeholder="email || 'tu@correo.com'"
+  class="input-field"
+/>
 
         </div>
 
@@ -72,40 +72,78 @@ const email = ref("")
 const avatar = ref("")
 const fileInput = ref(null)
 
+/* =====================================================
+   CLOUDINARY CONFIG (igual que create-event)
+===================================================== */
+const CLOUDINARY_UPLOAD_PRESET = "nexthappen_unsigned"
+const CLOUDINARY_CLOUD_NAME = "dmdswrhah"
+
+/* =====================================================
+   SUBIR IMAGEN A CLOUDINARY
+===================================================== */
+const uploadToCloudinary = async (file) => {
+  const formData = new FormData()
+  formData.append("file", file)
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET)
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: "POST",
+    body: formData
+  })
+
+  const data = await res.json()
+  return data.secure_url
+}
+
+/* =====================================================
+   Cargar datos guardados
+===================================================== */
 onMounted(() => {
   name.value = localStorage.getItem("userName") || ""
   email.value = JSON.parse(localStorage.getItem("user"))?.email || ""
   avatar.value = localStorage.getItem("userAvatar") || ""
 })
 
+/* =====================================================
+   Cambiar imagen → subir a Cloudinary
+===================================================== */
+function handleFileChange(e) {
+  const file = e.target.files[0]
+  if (!file) return
+
+  uploadToCloudinary(file).then(url => {
+    avatar.value = url
+    localStorage.setItem("userAvatar", url)
+  })
+}
+
 function triggerFileInput() {
   fileInput.value?.click()
 }
 
-function handleFileChange(e) {
-  const file = e.target.files[0]
-  if (!file) return
-  const reader = new FileReader()
-  reader.onload = () => {
-    avatar.value = reader.result
-    localStorage.setItem("userAvatar", reader.result)
-  }
-  reader.readAsDataURL(file)
-}
-
+/* =====================================================
+   Guardar datos del usuario localmente
+===================================================== */
 function saveProfile() {
   if (!name.value || !email.value) return alert(t("profile.fillFields"))
 
   localStorage.setItem("userName", name.value)
+  localStorage.setItem("userAvatar", avatar.value)
+
   const user = JSON.parse(localStorage.getItem("user")) || {}
-  localStorage.setItem(
-    "user",
-    JSON.stringify({ ...user, name: name.value, email: email.value })
-  )
+  localStorage.setItem("user", JSON.stringify({
+    ...user,
+    name: name.value,
+    email: email.value,
+    avatar: avatar.value
+  }))
 
   alert(t("profile.saved"))
 }
 
+/* =====================================================
+   Logout
+===================================================== */
 function logout() {
   localStorage.removeItem("user")
   localStorage.removeItem("userName")
@@ -114,6 +152,7 @@ function logout() {
   router.push("/signin")
 }
 </script>
+
 
 <style scoped>
 .profile-page {

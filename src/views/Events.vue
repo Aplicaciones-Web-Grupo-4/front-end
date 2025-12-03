@@ -28,42 +28,62 @@ import { ref, computed, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import axios from 'axios'
 import EventCard from '../components/EventCard.vue'
-import { useSavedStore } from '../application/saved.store.js' // si ya tienes la store, úsala
+
+const API_URL = import.meta.env.VITE_API_URL
+const savedEvents = ref([])
 
 const { t } = useI18n()
-const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
-const events = ref([])
-const query = ref('')
-
-const savedStore = useSavedStore ? useSavedStore() : null
 
 onMounted(async () => {
+  const userId = localStorage.getItem("userId")
+
+  if (!userId) {
+    console.error("No hay userId en localStorage")
+    return
+  }
+
   try {
-    const res = await axios.get(`${API_URL}/saved`)
+    // 1️⃣ Obtener lista de guardados (solo userId + eventId)
+    const res = await axios.get(`${API_URL}/api/users/${userId}/saved-events`)
+    const savedList = res.data
 
-    // Normaliza los datos: evita errores por campos faltantes
-    events.value = res.data.map(e => ({
-      ...e,
-      title: e.title || '(Sin título)',
-      description: e.description || '',
-      image: e.image || e.photos?.[0] || 'https://via.placeholder.com/400x200?text=No+Image'
-    }))
+    // 2️⃣ Traer el evento completo de cada guardado
+    const fullEvents = await Promise.all(
+      savedList.map(async (s) => {
+        try {
+          const eventRes = await axios.get(`${API_URL}/api/events/${s.eventId}`)
+          const ev = eventRes.data
 
-    console.log('Eventos guardados cargados:', events.value)
+          // 3️⃣ Normalizar imagen (Cloudinary)
+          const image =
+            ev.images?.[0]?.url ||
+            ev.photos?.[0] ||
+            "https://res.cloudinary.com/dummy/no-image.png"
 
-    // Si tienes store de guardados, sincroniza también
-    if (savedStore) savedStore.savedEvents = events.value
+          return {
+            ...ev,
+            image
+          }
+
+        } catch (err) {
+          console.error("Error cargando evento:", s.eventId)
+          return null
+        }
+      })
+    )
+
+    // 4️⃣ Guardar eventos válidos
+    savedEvents.value = fullEvents.filter(e => e !== null)
+
+    console.log("EVENTOS COMPLETOS:", savedEvents.value)
+
   } catch (err) {
-    console.error('Error cargando eventos guardados:', err)
+    console.error("Error cargando guardados:", err)
   }
 })
 
-// Filtro de búsqueda (seguro contra campos vacíos)
-const filteredEvents = computed(() =>
-  events.value.filter(e =>
-    (e.title || '').toLowerCase().includes(query.value.toLowerCase())
-  )
-)
+/* Para la vista */
+const filteredEvents = computed(() => savedEvents.value)
 </script>
 
 <style scoped>

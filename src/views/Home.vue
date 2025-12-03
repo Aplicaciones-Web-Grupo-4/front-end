@@ -24,25 +24,29 @@ import axios from 'axios'
 
 const { t } = useI18n()
 
-const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
+// ✔️ ESTA ES TU VARIABLE REAL
+const API = import.meta.env.VITE_API_URL
 
-const query = ref('')
 const events = ref([])
 const savedIds = ref([])
 
 onMounted(async () => {
   try {
-    const res = await axios.get(`${API_URL}/events`)
+    // ❌ API_URL → ❌ ERROR
+    // ✔️ API → FUNCIONA
+    const res = await axios.get(`${API}/api/events/public`)
+
     events.value = res.data.map(e => ({
       ...e,
-      image: e.photos && e.photos.length > 0
-          ? e.photos[0]
-          : 'https://via.placeholder.com/400x200?text=No+Image'
+      image: e.photos?.length
+        ? e.photos[0]
+        : 'https://via.placeholder.com/400x200?text=No+Image'
     }))
 
-    console.log('Eventos cargados:', events.value)
+    console.log("Eventos cargados:", events.value)
+
   } catch (err) {
-    console.error('Error cargando eventos:', err)
+    console.error("Error cargando eventos:", err)
   }
 })
 
@@ -59,7 +63,9 @@ async function onSave(id) {
       const eventToSave = { ...events.value.find(e => e.id === id) }
       delete eventToSave.id
 
-      await axios.post(`${API_URL}/saved`, eventToSave)
+      // ❌ API_URL → ❌ ERROR
+      // ✔️ API → OK
+      await axios.post(`${API}/api/saved`, eventToSave)
       alert(t('home.alerts.saved'))
     } else {
       alert(t('home.alerts.alreadySaved'))
@@ -70,6 +76,7 @@ async function onSave(id) {
   }
 }
 </script>
+
 
 <style scoped>
 .home-page {

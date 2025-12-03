@@ -12,7 +12,6 @@
         <div class="ticket-body">
           <p><strong>Precio unitario:</strong> S/. {{ ticket.unitPrice.toFixed(2) }}</p>
           <p><strong>Cantidad:</strong> {{ ticket.quantity }}</p>
-          <p class="total"><strong>Total pagado:</strong> S/. {{ ticket.total.toFixed(2) }}</p>
         </div>
 
         <div class="ticket-footer">
@@ -37,14 +36,48 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 const tickets = ref([])
-const API_URL = import.meta.env.VITE_API_URL || 'https://db-server-1-66zf.onrender.com'
+const API_URL = import.meta.env.VITE_API_URL
 
 onMounted(async () => {
   try {
-    const res = await axios.get(`${API_URL}/tickets`)
-    tickets.value = res.data
+    const userId = localStorage.getItem("userId")
+
+    if (!userId) return console.error("No hay userId en localStorage")
+
+    // 1️⃣ Obtener tickets del usuario
+    const res = await axios.get(`${API_URL}/api/users/${userId}/tickets`)
+    const rawTickets = res.data
+
+    // 2️⃣ Para cada ticket → obtener información completa del evento
+    const finalTickets = await Promise.all(
+      rawTickets.map(async (t) => {
+        try {
+          const eventRes = await axios.get(`${API_URL}/api/events/${t.eventId}`)
+          const event = eventRes.data
+
+          return {
+            id: t.id,
+            eventId: t.eventId,
+            title: event.title,
+            date: t.purchaseDate,
+            unitPrice: event.price || 0,
+            quantity: 1,
+            total: event.price || 0, 
+            image: event.photos?.[0] || "https://via.placeholder.com/500x300?text=Evento"
+          }
+        } catch (error) {
+          console.error("Error cargando datos del evento:", t.eventId)
+          return null
+        }
+      })
+    )
+
+    tickets.value = finalTickets.filter(e => e !== null)
+
+    console.log("TICKETS FINALES:", tickets.value)
+
   } catch (err) {
-    console.error('Error al obtener tickets:', err)
+    console.error("Error al obtener tickets:", err)
   }
 })
 

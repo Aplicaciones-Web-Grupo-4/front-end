@@ -21,10 +21,6 @@
         <pv-button icon="pi pi-ticket" class="options" />
       </RouterLink>
 
-      <RouterLink to="/org">
-        <pv-button icon="pi pi-users" class="options" />
-      </RouterLink>
-
       <!-- 🔹 Si hay usuario logueado, muestra nombre y avatar -->
       <div v-if="userName" class="user-info">
         <p class="profile">{{ userName }}</p>

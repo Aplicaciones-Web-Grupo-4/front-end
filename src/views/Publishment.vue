@@ -1,7 +1,7 @@
 <template>
   <div class="publishment-page" v-if="event">
     <h1 class="title">{{ event.title }}</h1>
-    <p><strong>Organizador:</strong> {{ event.org }}</p>
+    <p><strong>Organizador:</strong> {{ event.organizer }}</p>
 
     <!-- ==== Carrusel ==== -->
     <div class="carousel-container">
@@ -33,7 +33,12 @@
 
     <!-- ==== Información general ==== -->
     <p class="desc">{{ event.description }}</p>
-    <p><strong>Fecha:</strong> {{ event.date }}</p>
+    <p>
+  <strong>Fecha:</strong>
+  {{ new Date(event.startDate).toLocaleDateString() }}
+  -
+  {{ new Date(event.endDate).toLocaleDateString() }}
+</p>
     <p><strong>Entradas disponibles:</strong> {{ event.quantity }}</p>
     <p><strong>Precio unitario:</strong> S/. {{ event.price }}</p>
 
@@ -94,7 +99,7 @@ function decreaseQuantity() {
 }
 
 onMounted(async () => {
-  const res = await axios.get(`${API_URL}/events/${route.params.id}`)
+  const res = await axios.get(`${API_URL}/api/events/${route.params.id}`)
   event.value = res.data
   await nextTick()
   applyTransform()
@@ -135,21 +140,22 @@ function move(direction) {
 
 async function buyTicket() {
   try {
-    const ticketData = {
-      eventId: event.value.id,
-      title: event.value.title,
-      unitPrice: event.value.price,
-      quantity: ticketCount.value,
-      total: totalPrice.value,
-      date: new Date().toISOString(),
-      // 🔹 Futuro: aquí se integrará Stripe Checkout
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      alert("Debes iniciar sesión para comprar.");
+      return;
     }
 
-    await axios.post(`${API_URL}/tickets`, ticketData)
-    alert(`¡Compra realizada con éxito! Total: S/. ${totalPrice.value.toFixed(2)}`)
+    const url = `${API_URL}/api/events/${event.value.id}/tickets/purchase?` +
+                `userId=${userId}&quantity=${ticketCount.value}`;
+
+    await axios.post(url);
+
+    alert(`Compra realizada con éxito. Total: S/. ${totalPrice.value.toFixed(2)}`);
   } catch (error) {
-    console.error('Error al comprar entrada:', error)
-    alert('Ocurrió un error al procesar la compra.')
+    console.error("Error al comprar entrada:", error);
+    alert("Ocurrió un error al procesar la compra.");
   }
 }
 </script>

@@ -59,7 +59,11 @@
     <!-- BOTÓN PARA CREAR NUEVO STAND -->
     <router-link
       v-if="selectedEvent"
-      :to="{ name: 'org-stand-new', params: { eventId: selectedEvent } }"
+      :to="{
+  name: 'org-stand-new',
+  params: { eventId: selectedEvent }
+}"
+
     >
       <pv-button class="add-button" label="Agregar Emprendedor" icon="pi pi-plus" />
     </router-link>
@@ -67,7 +71,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from "vue"
+import { ref, onMounted, computed, watch } from "vue"
 import { useRoute, useRouter } from "vue-router"
 import { useAssignStandsStore } from "../../application/assign-stands.store.js"
 
@@ -78,31 +82,46 @@ const store = useAssignStandsStore()
 const selectedEvent = ref(null)
 
 const events = computed(() => store.events)
-const stands = store.stands
-const loading = store.loading
+const stands = computed(() => store.stands)
+const loading = computed(() => store.loading)
 
-// Cargar eventos al entrar
+// 🔥 Llamado al seleccionar evento
+function onSelectEvent() {
+  if (selectedEvent.value) {
+    store.fetchAssigned(selectedEvent.value)
+    router.replace({ query: { eventId: selectedEvent.value } })
+  }
+}
+
+// 🔥 Cargar eventos y stands si ya hay uno seleccionado
 onMounted(async () => {
   await store.fetchEvents()
 
-  // Si venimos desde guardar un stand
   if (route.query.eventId) {
-    selectedEvent.value = route.params.eventId
+    selectedEvent.value = route.query.eventId
     await store.fetchAssigned(selectedEvent.value)
   }
 })
 
-function onSelectEvent() {
-  if (selectedEvent.value) {
-    store.fetchAssigned(selectedEvent.value)
-  }
-}
+// 🔥 Reaccionar a cambios manuales del dropdown
+watch(selectedEvent, async (value) => {
+  if (value) await store.fetchAssigned(value)
+})
 
+// 🔥 Navegar a EDIT correctamente
 function goEdit(id) {
   router.push({
     name: "org-stand-edit",
-    params: { id, eventId: selectedEvent.value }
+    params: {
+      eventId: selectedEvent.value,
+      id
+    }
   })
+}
+
+// 🔥 Eliminar stand
+async function onDelete(stand) {
+  await store.remove(stand.id)
 }
 </script>
 

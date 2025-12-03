@@ -1,5 +1,7 @@
 export class MetricsApi {
-  baseUrl = import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com";
+  constructor() {
+    this.baseUrl = `${import.meta.env.VITE_API_URL}/api`;
+  }
 
   async registerAction(eventId, action) {
     try {
@@ -7,16 +9,16 @@ export class MetricsApi {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          eventId: Number(eventId),
+          eventId,          // ← GUID tal cual, sin convertir
           action,
           timestamp: new Date().toISOString()
         })
       });
 
       if (!res.ok) {
-        console.error("❌ Error al registrar métrica:", res.statusText);
+        console.error("Error al registrar métrica:", await res.text());
       } else {
-        console.log(`✅ ${action.toUpperCase()} registrada para evento ${eventId}`);
+        console.log(`${action.toUpperCase()} registrada para evento ${eventId}`);
       }
     } catch (e) {
       console.error("Error en MetricsApi.registerAction:", e);
@@ -24,7 +26,13 @@ export class MetricsApi {
   }
 
   async getAll() {
-    const res = await fetch(`${this.baseUrl}/metrics`);
-    return res.json();
+    try {
+      const res = await fetch(`${this.baseUrl}/metrics`);
+      if (!res.ok) throw new Error("Error al obtener métricas");
+      return await res.json();
+    } catch (e) {
+      console.error(e);
+      return [];
+    }
   }
 }

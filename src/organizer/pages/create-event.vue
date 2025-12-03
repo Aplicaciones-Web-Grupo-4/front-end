@@ -261,423 +261,249 @@
 
 
 <script setup>
-import { ref, onMounted, nextTick } from 'vue'
-import { useI18n } from 'vue-i18n'
+import { ref, onMounted, nextTick } from "vue";
+import { useI18n } from "vue-i18n";
 
-const { t } = useI18n()
+const { t } = useI18n();
 
-// // Tu backend .NET
-// const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5038/api'
+// URL del backend .NET (Render)
+const API_URL =
+  import.meta.env.VITE_API_URL ||
+  "https://nexthappen-platform.onrender.com/api";
 
-// // Formulario base
-// const form = ref({
-//   organizer: '',
-//   title: '',
-//   description: '',
-//   price: null,     // <--- antes era ''
-//   quantity: null,  // <--- antes era ''
-//   category: '',
-//   photos: [],
-//   address: '',
-//   location: '',
-//   dates: null,
-//   lat: null,
-//   lng: null
-// })
-
-// // Categorías predefinidas
-// const categories = ref([
-//   { name: 'Gastronomía' },
-//   { name: 'Cultural' },
-//   { name: 'Tecnología' },
-//   { name: 'Arte y Diseño' },
-//   { name: 'Moda y Belleza' },
-//   { name: 'Música y Conciertos' },
-//   { name: 'Deportes y Aventura' },
-//   { name: 'Emprendimiento' },
-//   { name: 'Educación y Capacitación' },
-//   { name: 'Salud y Bienestar' },
-//   { name: 'Medio Ambiente' },
-//   { name: 'Gaming y Esports' },
-//   { name: 'Fotografía y Cine' },
-//   { name: 'Ciencia e Innovación' },
-//   { name: 'Literatura' },
-//   { name: 'Mascotas' },
-//   { name: 'Viajes y Turismo' },
-//   { name: 'Autos y Motos' },
-//   { name: 'Infantil y Familiar' },
-//   { name: 'Networking y Negocios' }
-// ])
-
-// // Estados
-// const previewImages = ref([])
-// const fileInput = ref(null)
-// const showSuccessDialog = ref(false)
-// const showErrorDialog = ref(false)
-// const showMissingFieldsDialog = ref(false)
-// const showAddressDialog = ref(false)
-
-// let map, marker, geocoder
-// const GOOGLE_API_KEY = 'AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0'
-
-// /* =====================================================
-//    🖼️ Manejo de imágenes
-// ===================================================== */
-// const onFileChange = (e) => {
-//   const files = Array.from(e.target.files)
-//   files.forEach((file) => {
-//     const reader = new FileReader()
-//     reader.onload = (event) => {
-//       previewImages.value.push(event.target.result)
-//       form.value.photos.push(event.target.result) // <-- base64 directo
-//     }
-//     reader.readAsDataURL(file)
-//   })
-// }
-
-// const handleDrop = (e) => {
-//   const files = Array.from(e.dataTransfer.files)
-//   files.forEach((file) => {
-//     const reader = new FileReader()
-//     reader.onload = (event) => {
-//       previewImages.value.push(event.target.result)
-//       form.value.photos.push(event.target.result)
-//     }
-//     reader.readAsDataURL(file)
-//   })
-// }
-
-// const removeImage = (index) => {
-//   form.value.photos.splice(index, 1)
-//   previewImages.value.splice(index, 1)
-// }
-
-// /* =====================================================
-//    🚀 Publicar evento (con backend .NET)
-// ===================================================== */
-// const publishEvent = async () => {
-//   if (!form.value.title || !form.value.dates || !form.value.location) {
-//     showMissingFieldsDialog.value = true
-//     return
-//   }
-
-//   const [start, end] = Array.isArray(form.value.dates)
-//     ? form.value.dates
-//     : [form.value.dates, form.value.dates]
-
-//   // 🧠 JSON EXACTO que espera tu backend .NET:
-//   const newEvent = {
-//     organizer: form.value.organizer,
-//     title: form.value.title,
-//     description: form.value.description,
-//     price: parseFloat(form.value.price) || null,
-//     quantity: parseInt(form.value.quantity) || null,
-//     category: form.value.category,
-//     address: form.value.address,
-//     location: form.value.location,
-//     photos: form.value.photos,
-//     startDate: new Date(start).toISOString(),
-//     endDate: new Date(end).toISOString()
-//   }
-
-//   try {
-//     const res = await fetch(`${API_URL}/events`, {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify(newEvent)
-//     })
-
-//     if (!res.ok) throw new Error('Error al guardar el evento')
-
-//     showSuccessDialog.value = true
-
-//     // Reinicia formulario
-//     form.value = {
-//       organizer: '',
-//       title: '',
-//       description: '',
-//       price: '',
-//       quantity: '',
-//       category: '',
-//       photos: [],
-//       address: '',
-//       location: '',
-//       dates: null,
-//       lat: null,
-//       lng: null
-//     }
-//     previewImages.value = []
-//   } catch (err) {
-//     console.error('Error al publicar el evento:', err)
-//     showErrorDialog.value = true
-//   }
-// }
-
-// /* =====================================================
-//    📍 Buscar dirección en Google Maps
-// ===================================================== */
-// const searchAddress = async () => {
-//   if (!form.value.address) {
-//     showMissingFieldsDialog.value = true
-//     return
-//   }
-
-//   geocoder.geocode({ address: form.value.address }, (results, status) => {
-//     if (status === 'OK' && results.length > 0) {
-//       const result = results[0]
-//       const location = result.geometry.location
-
-//       map.setCenter(location)
-//       map.setZoom(17)
-
-//       if (marker) marker.setMap(null)
-//       marker = new google.maps.Marker({
-//         position: location,
-//         map: map,
-//         draggable: true
-//       })
-
-//       form.value.lat = location.lat()
-//       form.value.lng = location.lng()
-//       form.value.location = result.formatted_address
-//     } else {
-//       showAddressDialog.value = true
-//     }
-//   })
-// }
-
-// /* =====================================================
-//    🗺️ Inicializar mapa
-// ===================================================== */
-// const initMap = () => {
-//   geocoder = new google.maps.Geocoder()
-//   map = new google.maps.Map(document.getElementById('map'), {
-//     center: { lat: -12.0464, lng: -77.0428 },
-//     zoom: 12
-//   })
-// }
-
-// onMounted(() => {
-//   nextTick(() => {
-//     if (!window.google || !window.google.maps) {
-//       const script = document.createElement('script')
-//       script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`
-//       script.async = true
-//       script.defer = true
-//       script.onload = initMap
-//       document.head.appendChild(script)
-//     } else {
-//       initMap()
-//     }
-//   })
-// })
-
-const API_URL = "https://db-server-1-66zf.onrender.com"
-
-// =====================================================
-// Formulario base
-// =====================================================
+/* =====================================================
+   Formulario
+===================================================== */
 const form = ref({
-  organizer: '',
-  title: '',
-  description: '',
+  organizer: "",
+  title: "",
+  description: "",
   price: null,
   quantity: null,
-  category: '',
+  category: "",
   photos: [],
-  address: '',
-  location: '',
+  address: "",
+  location: "",
   dates: null,
   lat: null,
-  lng: null
-})
-
-// =====================================================
-// Categorías predefinidas
-// =====================================================
-const categories = ref([
-  { name: 'Gastronomía' }, { name: 'Cultural' }, { name: 'Tecnología' },
-  { name: 'Arte y Diseño' }, { name: 'Moda y Belleza' },
-  { name: 'Música y Conciertos' }, { name: 'Deportes y Aventura' },
-  { name: 'Emprendimiento' }, { name: 'Educación y Capacitación' },
-  { name: 'Salud y Bienestar' }, { name: 'Medio Ambiente' },
-  { name: 'Gaming y Esports' }, { name: 'Fotografía y Cine' },
-  { name: 'Ciencia e Innovación' }, { name: 'Literatura' },
-  { name: 'Mascotas' }, { name: 'Viajes y Turismo' },
-  { name: 'Autos y Motos' }, { name: 'Infantil y Familiar' },
-  { name: 'Networking y Negocios' }
-])
-
-// Estados
-const previewImages = ref([])
-const fileInput = ref(null)
-const showSuccessDialog = ref(false)
-const showErrorDialog = ref(false)
-const showMissingFieldsDialog = ref(false)
-const showAddressDialog = ref(false)
-
-let map, marker, geocoder
-const GOOGLE_API_KEY = 'AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0'
+  lng: null,
+});
 
 /* =====================================================
-   🖼️ Manejo de imágenes
+   Categorías
 ===================================================== */
-const onFileChange = (e) => {
-  const files = Array.from(e.target.files)
-  files.forEach((file) => {
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      previewImages.value.push(event.target.result)
-      form.value.photos.push(event.target.result)
-    }
-    reader.readAsDataURL(file)
-  })
-}
+const categories = ref([
+  { name: "Gastronomía" },
+  { name: "Cultural" },
+  { name: "Tecnología" },
+  { name: "Arte y Diseño" },
+  { name: "Moda y Belleza" },
+  { name: "Música y Conciertos" },
+  { name: "Deportes y Aventura" },
+  { name: "Emprendimiento" },
+  { name: "Educación y Capacitación" },
+  { name: "Salud y Bienestar" },
+  { name: "Medio Ambiente" },
+  { name: "Gaming y Esports" },
+  { name: "Fotografía y Cine" },
+  { name: "Ciencia e Innovación" },
+  { name: "Literatura" },
+  { name: "Mascotas" },
+  { name: "Viajes y Turismo" },
+  { name: "Autos y Motos" },
+  { name: "Infantil y Familiar" },
+  { name: "Networking y Negocios" },
+]);
 
-const handleDrop = (e) => {
-  const files = Array.from(e.dataTransfer.files)
-  files.forEach((file) => {
-    const reader = new FileReader()
-    reader.onload = (event) => {
-      previewImages.value.push(event.target.result)
-      form.value.photos.push(event.target.result)
-    }
-    reader.readAsDataURL(file)
-  })
-}
+/* =====================================================
+   Estados
+===================================================== */
+const previewImages = ref([]);
+const fileInput = ref(null);
+const showSuccessDialog = ref(false);
+const showErrorDialog = ref(false);
+const showMissingFieldsDialog = ref(false);
+const showAddressDialog = ref(false);
+
+/* =====================================================
+   Google Maps
+===================================================== */
+let map, marker, geocoder;
+const GOOGLE_API_KEY = "AIzaSyDLpIMi-V6G67TcGLcx9Z8ofJp896aYhq0";
+
+/* =====================================================
+   CLOUDINARY CONFIG
+===================================================== */
+const CLOUDINARY_UPLOAD_PRESET = "nexthappen_unsigned";   // cambia por tu preset real
+const CLOUDINARY_CLOUD_NAME = "dmdswrhah";              // cambia por tu cloud name real
+
+/* =====================================================
+   SUBIR IMAGEN A CLOUDINARY
+===================================================== */
+const uploadToCloudinary = async (file) => {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+    method: "POST",
+    body: formData,
+  });
+
+  const data = await res.json();
+  return data.secure_url; // 🔥 URL final optimizada
+};
+
+/* =====================================================
+   Manejo de imágenes
+===================================================== */
+const onFileChange = async (e) => {
+  const files = Array.from(e.target.files);
+
+  for (const file of files) {
+    const imageUrl = await uploadToCloudinary(file);
+    previewImages.value.push(imageUrl);
+    form.value.photos.push(imageUrl);
+  }
+};
+
+const handleDrop = async (e) => {
+  const files = Array.from(e.dataTransfer.files);
+
+  for (const file of files) {
+    const imageUrl = await uploadToCloudinary(file);
+    previewImages.value.push(imageUrl);
+    form.value.photos.push(imageUrl);
+  }
+};
 
 const removeImage = (index) => {
-  form.value.photos.splice(index, 1)
-  previewImages.value.splice(index, 1)
-}
+  previewImages.value.splice(index, 1);
+  form.value.photos.splice(index, 1);
+};
 
 /* =====================================================
-   🚀 Publicar evento (AGORA CON db.json)
+   Publicar evento en Backend .NET
 ===================================================== */
 const publishEvent = async () => {
-  // Validación mínima
   if (!form.value.title || !form.value.dates || !form.value.location) {
-    showMissingFieldsDialog.value = true
-    return
+    showMissingFieldsDialog.value = true;
+    return;
   }
 
   const [start, end] = Array.isArray(form.value.dates)
     ? form.value.dates
-    : [form.value.dates, form.value.dates]
+    : [form.value.dates, form.value.dates];
 
-  // 🔥 JSON QUE SE GUARDA EN db.json
   const newEvent = {
     organizer: form.value.organizer,
     title: form.value.title,
     description: form.value.description,
-    price: form.value.price,
-    quantity: form.value.quantity,
-    category: form.value.category,
+    price: parseFloat(form.value.price) || null,
+    quantity: parseInt(form.value.quantity) || null,
+    category: form.value.category?.name || "",
     address: form.value.address,
     location: form.value.location,
     photos: form.value.photos,
     startDate: new Date(start).toISOString(),
     endDate: new Date(end).toISOString(),
-    lat: form.value.lat,
-    lng: form.value.lng
-  }
+    isPublic: true 
+  };
 
   try {
-    // =============================================
-    // ❌ ENDPOINT BACKEND ORIGINAL COMENTADO
-    // const res = await fetch(`${API_URL}/events`, {
-    // =============================================
+    const res = await fetch(`${API_URL}/api/events`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(newEvent),
+    });
 
-    // ✅ db.json usa /events directo
-    const res = await fetch(`${API_URL}/events`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newEvent)
-    })
+    if (!res.ok) throw new Error("No se pudo crear el evento");
 
-    if (!res.ok) throw new Error("No se pudo crear el evento")
+    showSuccessDialog.value = true;
 
-    showSuccessDialog.value = true
-
-    // Reset form
     form.value = {
-      organizer: '',
-      title: '',
-      description: '',
+      organizer: "",
+      title: "",
+      description: "",
       price: null,
       quantity: null,
-      category: '',
+      category: "",
       photos: [],
-      address: '',
-      location: '',
+      address: "",
+      location: "",
       dates: null,
       lat: null,
-      lng: null
-    }
-    previewImages.value = []
+      lng: null,
+    };
 
-  } catch (err) {
-    console.error("Error al publicar:", err)
-    showErrorDialog.value = true
+    previewImages.value = [];
+  } catch (error) {
+    console.error("Error al publicar evento:", error);
+    showErrorDialog.value = true;
   }
-}
+};
 
 /* =====================================================
-   📍 Google Maps
+   Buscar dirección con Google Maps
 ===================================================== */
-const searchAddress = async () => {
+const searchAddress = () => {
   if (!form.value.address) {
-    showMissingFieldsDialog.value = true
-    return
+    showMissingFieldsDialog.value = true;
+    return;
   }
 
   geocoder.geocode({ address: form.value.address }, (results, status) => {
-    if (status === 'OK' && results.length > 0) {
-      const result = results[0]
-      const location = result.geometry.location
+    if (status === "OK" && results.length > 0) {
+      const result = results[0];
+      const location = result.geometry.location;
 
-      map.setCenter(location)
-      map.setZoom(17)
+      map.setCenter(location);
+      map.setZoom(17);
 
-      if (marker) marker.setMap(null)
+      if (marker) marker.setMap(null);
+
       marker = new google.maps.Marker({
         position: location,
-        map: map,
-        draggable: true
-      })
+        map,
+        draggable: true,
+      });
 
-      form.value.lat = location.lat()
-      form.value.lng = location.lng()
-      form.value.location = result.formatted_address
+      form.value.lat = location.lat();
+      form.value.lng = location.lng();
+      form.value.location = result.formatted_address;
     } else {
-      showAddressDialog.value = true
+      showAddressDialog.value = true;
     }
-  })
-}
+  });
+};
 
+/* =====================================================
+   Inicializar mapa
+===================================================== */
 const initMap = () => {
-  geocoder = new google.maps.Geocoder()
-  map = new google.maps.Map(document.getElementById('map'), {
+  geocoder = new google.maps.Geocoder();
+  map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: -12.0464, lng: -77.0428 },
-    zoom: 12
-  })
-}
+    zoom: 12,
+  });
+};
 
 onMounted(() => {
   nextTick(() => {
-    if (!window.google || !window.google.maps) {
-      const script = document.createElement('script')
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`
-      script.async = true
-      script.defer = true
-      script.onload = initMap
-      document.head.appendChild(script)
+    if (!window.google?.maps) {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_API_KEY}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = initMap;
+      document.head.appendChild(script);
     } else {
-      initMap()
+      initMap();
     }
-  })
-})
+  });
+});
 </script>
+
 
 <style scoped>
 .create-event-page {

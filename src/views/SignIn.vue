@@ -78,13 +78,15 @@
 import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useI18n } from "vue-i18n"
+import { loginUserService } from "../services/auth.js"
+import { jwtDecode } from "jwt-decode"
 
 const router = useRouter()
 const { t, locale } = useI18n()
 
 const name = ref("")
 const password = ref("")
-const userType = ref("") // Nuevo: tipo elegido
+const userType = ref("") 
 const loading = ref(false)
 const error = ref("")
 const currentLang = ref(locale.value)
@@ -97,40 +99,48 @@ function toggleLanguage() {
 
 async function loginUser() {
   error.value = ""
-  if (!userType.value) {
-    error.value =
-      currentLang.value === "es"
-        ? "Por favor selecciona tu tipo de cuenta."
-        : "Please select your account type."
-    return
-  }
 
-  if (!name.value || !password.value) {
-    error.value = t("signin.fillAll")
+  if (!userType.value) {
+    error.value = currentLang.value === "es"
+      ? "Por favor selecciona tu tipo de cuenta."
+      : "Please select your account type."
     return
   }
 
   loading.value = true
-  try {
-    const storedUser = JSON.parse(localStorage.getItem("user"))
 
-    if (!storedUser || storedUser.name !== name.value || storedUser.password !== password.value) {
-      error.value = t("signin.error")
-      loading.value = false
-      return
+  try {
+    const payload = {
+      FullName: name.value,
+      Password: password.value,
+      Role: userType.value === "user" ? "User" : "Organizer"
     }
 
-    localStorage.setItem("userName", name.value)
-    localStorage.setItem("userType", userType.value)
+    const res = await loginUserService(payload)
+    const token = res.data.accessToken
 
-    setTimeout(() => {
-      loading.value = false
-      if (userType.value === "user") router.push("/user/home")
-      else router.push("/org/entrepreneur")
-    }, 800)
+    // Decodificar token correctamente
+    const decoded = jwtDecode(token)
+
+    // Guardar valores REALES del usuario logueado
+    localStorage.setItem("token", token)
+    localStorage.setItem("userId", decoded.id)            // <---- IMPORTANTE
+    localStorage.setItem("role", decoded.role)            // <---- DEL TOKEN
+    localStorage.setItem("userName", decoded.fullName)    // <---- DEL TOKEN
+
+    console.log("UserId guardado:", decoded.id)
+
+    // Redirección según el tipo de usuario
+    if (decoded.role === "User") {
+      router.push("/user/home")
+    } else {
+      router.push("/org/dashboard")
+    }
+
   } catch (err) {
-    console.error(err)
-    error.value = t("signin.error")
+    console.error("Error login:", err)
+    error.value = "Credenciales incorrectas"
+  } finally {
     loading.value = false
   }
 }

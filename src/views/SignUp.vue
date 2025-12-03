@@ -86,6 +86,7 @@
 import { ref } from "vue"
 import { useRouter } from "vue-router"
 import { useI18n } from "vue-i18n"
+import { registerUserService } from "../services/auth.js";
 
 const router = useRouter()
 const { t, locale } = useI18n()
@@ -104,43 +105,43 @@ function toggleLanguage() {
   localStorage.setItem("lang", locale.value)
 }
 
+
 async function registerUser() {
-  error.value = ""
+  error.value = "";
+
   if (!userType.value) {
     error.value =
       currentLang.value === "es"
         ? "Por favor selecciona tu tipo de cuenta."
-        : "Please select your account type."
-    return
-  }
-  if (!name.value || !email.value || !password.value) {
-    error.value = t("signup.fillAll")
-    return
+        : "Please select your account type.";
+    return;
   }
 
-  loading.value = true
+  loading.value = true;
+
   try {
-    const newUser = {
-      id: Date.now(),
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      type: userType.value
-    }
+    const payload = {
+      FullName: name.value,       
+      Email: email.value,         
+      Password: password.value,   
+      Role: userType.value === "user" ? "User" : "Organizer" 
+    };
 
-    localStorage.setItem("user", JSON.stringify(newUser))
-    localStorage.setItem("userName", name.value)
-    localStorage.setItem("userType", userType.value)
+    await registerUserService(payload);
 
-    setTimeout(() => {
-      loading.value = false
-      if (userType.value === "user") router.push("/user/home")
-      else router.push("/org/entrepreneur")
-    }, 800)
+    loading.value = false;
+
+    // Guardar datos útiles
+    localStorage.setItem("userName", name.value);
+    localStorage.setItem("userType", payload.Role);
+
+    if (payload.Role === "User") router.push("/user/home");
+    else router.push("/org/entrepreneur");
+
   } catch (err) {
-    console.error(err)
-    error.value = t("signup.error")
-    loading.value = false
+    console.error(err);
+    error.value = t("signup.error");
+    loading.value = false;
   }
 }
 </script>

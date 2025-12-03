@@ -70,13 +70,6 @@
       <div class="edit-form">
         <div class="org-name-container">
           <div class="field">
-            <label>{{ $t('myFairs.columns.org') }}</label>
-            <div class="edit-org">
-              <pv-input-text v-model="selectedFair.org" />
-            </div>
-          </div>
-
-          <div class="field">
             <label>{{ $t('myFairs.columns.name') }}</label>
             <div class="edit-title">
               <pv-input-text v-model="selectedFair.title" />
@@ -193,363 +186,253 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue"
-import { useI18n } from "vue-i18n"
-import DataTable from "primevue/datatable"
-import Column from "primevue/column"
-import Button from "primevue/button"
+import { ref, onMounted } from "vue";
+import { useToast } from "primevue/usetoast";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import Button from "primevue/button";
 
-const { t } = useI18n()
+const toast = useToast();
 
-// // ✅ Conexión al backend real
-// const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5038/api"
+/* ============================================
+   API BACKEND (.NET)
+=============================================== */
+const API_URL = "https://nexthappen-platform.onrender.com/api/manage/events";
 
-// const fairs = ref([])
-// const showEditDialog = ref(false)
-// const selectedFair = ref({})
-// const previewImages = ref([])
-// const fileInput = ref(null)
+/* ============================================
+   STATES
+=============================================== */
+const fairs = ref([]);
+const showEditDialog = ref(false);
+const selectedFair = ref({});
+const previewImages = ref([]);
 
-// // 📚 Categorías (solo referencia visual)
-// const categories = [
-//   { name: 'Gastronomía' },
-//   { name: 'Cultural' },
-//   { name: 'Tecnología' },
-//   { name: 'Arte y Diseño' },
-//   { name: 'Moda y Belleza' },
-//   { name: 'Música y Conciertos' },
-//   { name: 'Deportes y Aventura' },
-//   { name: 'Emprendimiento' },
-//   { name: 'Educación y Capacitación' },
-//   { name: 'Salud y Bienestar' },
-//   { name: 'Medio Ambiente' },
-//   { name: 'Gaming y Esports' },
-//   { name: 'Fotografía y Cine' },
-//   { name: 'Ciencia e Innovación' },
-//   { name: 'Literatura' },
-//   { name: 'Mascotas' },
-//   { name: 'Viajes y Turismo' },
-//   { name: 'Autos y Motos' },
-//   { name: 'Infantil y Familiar' },
-//   { name: 'Networking y Negocios' }
-// ];
+/* =====================================================
+   Categorías
+===================================================== */
+const categories = ref([
+  { name: "Gastronomía" },
+  { name: "Cultural" },
+  { name: "Tecnología" },
+  { name: "Arte y Diseño" },
+  { name: "Moda y Belleza" },
+  { name: "Música y Conciertos" },
+  { name: "Deportes y Aventura" },
+  { name: "Emprendimiento" },
+  { name: "Educación y Capacitación" },
+  { name: "Salud y Bienestar" },
+  { name: "Medio Ambiente" },
+  { name: "Gaming y Esports" },
+  { name: "Fotografía y Cine" },
+  { name: "Ciencia e Innovación" },
+  { name: "Literatura" },
+  { name: "Mascotas" },
+  { name: "Viajes y Turismo" },
+  { name: "Autos y Motos" },
+  { name: "Infantil y Familiar" },
+  { name: "Networking y Negocios" },
+]);
 
-// /* =======================================================
-//    🔄 Cargar eventos desde tu API .NET
-// ======================================================= */
-// const loadFairs = async () => {
-//   try {
-//     const res = await fetch(`${API_URL}/events`);
-//     if (!res.ok) throw new Error("Error al cargar los eventos");
-
-//     const data = await res.json();
-
-//     fairs.value = data.map((event) => ({
-//       id: event.id,
-//       organizer: event.organizer,
-//       title: event.title,
-//       description: event.description,
-//       price: event.price,
-//       quantity: event.quantity,
-//       category: event.category,
-//       address: event.address,
-//       location: event.location,
-//       photos: event.photos || [],
-//       // ✅ Ahora tomamos las fechas correctamente
-//       dates: event.dateRange
-//         ? [new Date(event.dateRange.startDate), new Date(event.dateRange.endDate)]
-//         : [],
-//     }));
-//   } catch (err) {
-//     console.error("❌ Error al cargar ferias:", err);
-//   }
-// };
-
-// onMounted(loadFairs)
-
-// /* =======================================================
-//    ✏️ Abrir diálogo de edición
-// ======================================================= */
-// const editFair = (fair) => {
-//   selectedFair.value = { ...fair }
-//   previewImages.value = fair.photos ? [...fair.photos] : []
-//   showEditDialog.value = true
-// }
-
-// /* =======================================================
-//    🖼️ Manejo de imágenes
-// ======================================================= */
-// const onFileChange = (e) => {
-//   const files = Array.from(e.target.files)
-//   files.forEach((file) => {
-//     const reader = new FileReader()
-//     reader.onload = (event) => {
-//       previewImages.value.push(event.target.result)
-//       if (!selectedFair.value.photos) selectedFair.value.photos = []
-//       selectedFair.value.photos.push(event.target.result)
-//     }
-//     reader.readAsDataURL(file)
-//   })
-// }
-
-// const handleDrop = (e) => {
-//   const files = Array.from(e.dataTransfer.files)
-//   files.forEach((file) => {
-//     const reader = new FileReader()
-//     reader.onload = (event) => {
-//       previewImages.value.push(event.target.result)
-//       if (!selectedFair.value.photos) selectedFair.value.photos = []
-//       selectedFair.value.photos.push(event.target.result)
-//     }
-//     reader.readAsDataURL(file)
-//   })
-// }
-
-// const removeImage = (index) => {
-//   previewImages.value.splice(index, 1)
-//   if (selectedFair.value.photos) selectedFair.value.photos.splice(index, 1)
-// }
-
-// /* =======================================================
-//    💾 Guardar cambios (PUT /api/events/{id})
-// ======================================================= */
-// const saveEdit = async () => {
-//   try {
-//     const payload = { ...selectedFair.value };
-
-//     // ----------------------------
-//     // 🔥 1. Convertir fechas a formato backend
-//     // ----------------------------
-//     if (
-//       Array.isArray(payload.dates) &&
-//       payload.dates.length === 2 &&
-//       payload.dates[0] &&
-//       payload.dates[1]
-//     ) {
-//       payload.dateRange = {
-//         startDate: new Date(payload.dates[0]).toISOString(),
-//         endDate: new Date(payload.dates[1]).toISOString(),
-//       };
-//     }
-
-//     delete payload.dates;
-
-//     // ----------------------------
-//     // 🔥 2. Convertir category a STRING si viene como objeto
-//     // ----------------------------
-//     if (typeof payload.category === "object" && payload.category !== null) {
-//       payload.category = payload.category.name;
-//     }
-
-//     // ----------------------------
-//     // 🔥 3. Convertir location a STRING si viene como objeto
-//     // ----------------------------
-//     if (typeof payload.location === "object" && payload.location !== null) {
-//       payload.location = JSON.stringify(payload.location); 
-//       // Si tu backend solo quiere una dirección:
-//       // payload.location = `${payload.location.lat}, ${payload.location.lng}`
-//     }
-
-//     // ----------------------------
-//     // PUT al backend .NET
-//     // ----------------------------
-//     const res = await fetch(`${API_URL}/events/${payload.id}`, {
-//       method: "PUT",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(payload),
-//     });
-
-//     if (!res.ok) throw new Error("Error updating fair");
-
-//     showEditDialog.value = false;
-//     await loadFairs();
-
-//   } catch (err) {
-//     console.error("❌ Error al guardar cambios:", err);
-//   }
-// };
-
-// const formatDateRange = (dates) => {
-//   if (!Array.isArray(dates) || dates.length !== 2) return "";
-
-//   const format = (d) => {
-//     const date = new Date(d);
-//     return date.toLocaleDateString("es-PE", {
-//       day: "2-digit",
-//       month: "2-digit",
-//       year: "numeric",
-//     });
-//   };
-
-//   return `${format(dates[0])} - ${format(dates[1])}`;
-// };
-
-// const deleteFair = async (fair) => {
-//   try {
-//     const res = await fetch(`${API_URL}/manage/events/${fair.id}`, {
-//       method: "DELETE"
-//     });
-
-//     if (!res.ok) throw new Error("Error deleting fair");
-
-//     await loadFairs();
-//   } catch (err) {
-//     console.error("❌ Error:", err);
-//   }
-// };
-
-const API_URL = "https://db-server-1-66zf.onrender.com"
-
-const fairs = ref([])
-const showEditDialog = ref(false)
-const selectedFair = ref({})
-const previewImages = ref([])
-const fileInput = ref(null)
-
-// Categorías
-const categories = [
-  { name: 'Gastronomía' }, { name: 'Cultural' }, { name: 'Tecnología' },
-  { name: 'Arte y Diseño' }, { name: 'Moda y Belleza' },
-  { name: 'Música y Conciertos' }, { name: 'Deportes y Aventura' },
-  { name: 'Emprendimiento' }, { name: 'Educación y Capacitación' },
-  { name: 'Salud y Bienestar' }, { name: 'Medio Ambiente' },
-  { name: 'Gaming y Esports' }, { name: 'Fotografía y Cine' },
-  { name: 'Ciencia e Innovación' }, { name: 'Literatura' },
-  { name: 'Mascotas' }, { name: 'Viajes y Turismo' },
-  { name: 'Autos y Motos' }, { name: 'Infantil y Familiar' },
-  { name: 'Networking y Negocios' }
-]
-
-/* =======================================================
-   🔄 Cargar eventos desde JSON Server
-======================================================= */
+/* ============================================
+   LOAD EVENTS  (GET)
+=============================================== */
 const loadFairs = async () => {
   try {
-    const res = await fetch(`${API_URL}/events`)
-    const data = await res.json()
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error("Error al cargar eventos.");
 
-    fairs.value = data.map((event) => ({
-      ...event,
-      dates: event.startDate && event.endDate
-        ? [new Date(event.startDate), new Date(event.endDate)]
-        : []
-    }))
+    const data = await res.json();
+
+    fairs.value = data.map(ev => ({
+
+      
+      ...ev,
+      dates: [
+        ev.dateRange?.startDate ? new Date(ev.dateRange.startDate) : null,
+        ev.dateRange?.endDate ? new Date(ev.dateRange.endDate) : null
+      ]
+    }));
+
   } catch (err) {
-    console.error("❌ Error al cargar:", err)
+    console.error(err);
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "No se pudieron cargar los eventos.",
+      life: 2500,
+    });
   }
-}
+};
 
-onMounted(loadFairs)
+onMounted(loadFairs);
 
-/* =======================================================
-   ✏️ Abrir diálogo para editar
-======================================================= */
+/* ============================================
+   OPEN EDIT MODAL — FIXED
+=============================================== */
 const editFair = (fair) => {
-  selectedFair.value = { ...fair }
-  previewImages.value = fair.photos ? [...fair.photos] : []
-  showEditDialog.value = true
-}
+  selectedFair.value = {
+    ...fair,
+    dates: [
+      fair.dateRange?.startDate ? new Date(fair.dateRange.startDate) : null,
+      fair.dateRange?.endDate ? new Date(fair.dateRange.endDate) : null
+    ]
+  };
 
-/* =======================================================
-   🖼️ Manejo de imágenes
-======================================================= */
-const onFileChange = (e) => {
-  const files = Array.from(e.target.files)
-  files.forEach((file) => {
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      previewImages.value.push(ev.target.result)
-      if (!selectedFair.value.photos) selectedFair.value.photos = []
-      selectedFair.value.photos.push(ev.target.result)
-    }
-    reader.readAsDataURL(file)
-  })
-}
+  previewImages.value = [...(selectedFair.value.photos || [])];
+  showEditDialog.value = true;
+};
 
-const handleDrop = (e) => {
-  const files = Array.from(e.dataTransfer.files)
-  files.forEach((file) => {
-    const reader = new FileReader()
-    reader.onload = (ev) => {
-      previewImages.value.push(ev.target.result)
-      if (!selectedFair.value.photos) selectedFair.value.photos = []
-      selectedFair.value.photos.push(ev.target.result)
-    }
-    reader.readAsDataURL(file)
-  })
-}
+/* ============================================
+   IMAGE HANDLING
+=============================================== */
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dmdswrhah/image/upload";
+const UPLOAD_PRESET = "nexthappen_unsigned";
+
+const onFileChange = async (e) => {
+  const files = Array.from(e.target.files);
+
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    const res = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+
+    // URL FINAL (esto es lo que guardas en la BD)
+    const imageUrl = data.secure_url;
+
+    previewImages.value.push(imageUrl);
+
+    if (!selectedFair.value.photos) selectedFair.value.photos = [];
+    selectedFair.value.photos.push(imageUrl);
+  }
+};
+
+const handleDrop = async (e) => {
+  const files = Array.from(e.dataTransfer.files);
+
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", UPLOAD_PRESET);
+
+    const res = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    const imageUrl = data.secure_url;
+
+    previewImages.value.push(imageUrl);
+
+    if (!selectedFair.value.photos) selectedFair.value.photos = [];
+    selectedFair.value.photos.push(imageUrl);
+  }
+};
+
 
 const removeImage = (index) => {
-  previewImages.value.splice(index, 1)
-  if (selectedFair.value.photos) selectedFair.value.photos.splice(index, 1)
-}
+  previewImages.value.splice(index, 1);
+  selectedFair.value.photos.splice(index, 1);
+};
 
-/* =======================================================
-   💾 Guardar edición (PUT /events/:id)
-======================================================= */
+/* ============================================
+   SAVE EDIT (PUT) — FIXED
+=============================================== */
 const saveEdit = async () => {
   try {
-    const payload = { ...selectedFair.value }
+    const fair = { ...selectedFair.value };
 
-    // Convertir fechas para JSON Server
-    if (Array.isArray(payload.dates) && payload.dates.length === 2) {
-      payload.startDate = new Date(payload.dates[0]).toISOString()
-      payload.endDate = new Date(payload.dates[1]).toISOString()
+    if (!fair.dates || fair.dates.length !== 2 || !fair.dates[0] || !fair.dates[1]) {
+      toast.add({
+        severity: "error",
+        summary: "Fechas inválidas",
+        detail: "Debes seleccionar un rango válido.",
+        life: 2500,
+      });
+      return;
     }
 
-    delete payload.dates
+    fair.startDate = fair.dates[0].toISOString();
+    fair.endDate = fair.dates[1].toISOString();
+    delete fair.dates;
 
-    // Asegurar que category sea string
-    if (typeof payload.category === "object") {
-      payload.category = payload.category.name
-    }
-
-    const res = await fetch(`${API_URL}/events/${payload.id}`, {
+    const res = await fetch(`${API_URL}/${fair.id}`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    })
+      body: JSON.stringify(fair),
+    });
 
-    if (!res.ok) throw new Error("Error al guardar cambios")
+    if (!res.ok) throw new Error("No se pudo actualizar el evento.");
 
-    showEditDialog.value = false
-    await loadFairs()
+    toast.add({
+      severity: "success",
+      summary: "Actualizado",
+      detail: "El evento fue actualizado exitosamente.",
+      life: 2500,
+    });
+
+    showEditDialog.value = false;
+    await loadFairs();
 
   } catch (err) {
-    console.error("❌ Error:", err)
+    console.error(err);
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "No se pudo guardar la edición.",
+      life: 2500,
+    });
   }
-}
+};
 
-/* =======================================================
-   🗑️ Eliminar feria (DELETE /events/:id)
-======================================================= */
+/* ============================================
+   DELETE EVENT
+=============================================== */
 const deleteFair = async (fair) => {
+  if (!window.confirm(`¿Eliminar el evento "${fair.title}"?`)) return;
+
   try {
-    const res = await fetch(`${API_URL}/events/${fair.id}`, {
-      method: "DELETE"
-    })
+    const res = await fetch(`${API_URL}/${fair.id}`, {
+      method: "DELETE",
+    });
 
-    if (!res.ok) throw new Error("Error eliminando evento")
+    if (!res.ok && res.status !== 204)
+      throw new Error("No se pudo eliminar.");
 
-    await loadFairs()
+    toast.add({
+      severity: "success",
+      summary: "Eliminado",
+      detail: "El evento fue eliminado.",
+      life: 2000,
+    });
+
+    await loadFairs();
+
   } catch (err) {
-    console.error("❌ Error:", err)
+    console.error(err);
+    toast.add({
+      severity: "error",
+      summary: "Error",
+      detail: "No se pudo eliminar el evento.",
+      life: 2500,
+    });
   }
-}
+};
 
-/* =======================================================
-   📅 Mostrar rango de fechas
-======================================================= */
+/* ============================================
+   FORMAT DATE RANGE
+=============================================== */
 const formatDateRange = (dates) => {
-  if (!Array.isArray(dates) || dates.length !== 2) return ""
-  const format = (d) =>
-    new Date(d).toLocaleDateString("es-PE", {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    })
-  return `${format(dates[0])} - ${format(dates[1])}`
-}
+  if (!dates || dates.length !== 2) return "";
+  return `${dates[0].toLocaleDateString()} - ${dates[1].toLocaleDateString()}`;
+};
 </script>
 
 <style scoped>

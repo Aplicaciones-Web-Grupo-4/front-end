@@ -26,108 +26,72 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
-import { useSavedStore } from '../application/saved.store.js'
-import { MetricsApi } from '../metrics/infrastructure/metrics-api.js'
-import { useRouter } from 'vue-router'
+import { ref, onMounted } from "vue"
+import axios from "axios"
+import { useSavedStore } from "../application/saved.store.js"
+import { MetricsApi } from "../metrics/infrastructure/metrics-api.js"
+import { useRouter } from "vue-router"
 
+const API_URL = import.meta.env.VITE_API_URL
 const router = useRouter()
 const savedStore = useSavedStore()
-const api = new MetricsApi()
-const baseUrl = import.meta.env.VITE_API_URL || "https://db-server-1-66zf.onrender.com"
+const metricsApi = new MetricsApi()
 
 const props = defineProps({
   event: Object,
-  showSave: { type: Boolean, default: true }
+  showSave: {
+    type: Boolean,
+    default: true
+  }
 })
 
-const currentUser = 'Marquinho'
 const isSaved = ref(false)
-const savedId = ref(null) // para poder eliminarlo luego
 
-onMounted(async () => {
+// Inicializar si ya está guardado
+onMounted(() => {
   if (!props.event?.id) return
-  try {
-    const res = await fetch(`${baseUrl}/saved`)
-    const data = await res.json()
-
-    const existing = data.find(
-      e => e.user === currentUser && e.eventId === props.event.id
-    )
-
-    if (existing) {
-      isSaved.value = true
-      savedId.value = existing.id
-    }
-  } catch (err) {
-    console.error('Error verificando guardado:', err)
-  }
+  isSaved.value = savedStore.isSaved(props.event.id)
 })
 
-async function registerView() {
-  if (!props.event?.id) return
-  try {
-    await api.registerAction(props.event.id, 'view')
-  } catch (e) {
-    console.error('Error registrando view:', e)
-  }
+async function handleView() {
+  const realId = props.event.eventId || props.event.id
+  await metricsApi.registerAction(realId, "view")
+  router.push({
+    name: "user-publishment",
+    params: { id: realId }
+  })
 }
 
 async function toggleSave() {
-  if (!props.event?.id) return
+  const userId = localStorage.getItem("userId")
+  const eventId = props.event.id
+
+  if (!userId || !eventId) {
+    return console.log("userId que usa el front:", userId)
+  }
+
+  console.log("eventId:", eventId)
+
   try {
-    const res = await fetch(`${baseUrl}/saved`)
-    const allSaved = await res.json()
-
-    const existing = allSaved.find(
-      e => e.user === currentUser && e.eventId === props.event.id
-    )
-
-    if (existing) {
-      await fetch(`${baseUrl}/saved/${existing.id}`, { method: 'DELETE' })
+    // SI YA ESTÁ GUARDADO → ELIMINAR DESDE BACKEND
+    if (isSaved.value) {
+      await axios.delete(`${API_URL}/api/users/${userId}/saved-events/${eventId}`)
+      savedStore.removeSaved(eventId)
       isSaved.value = false
-      savedId.value = null
-      await api.registerAction(props.event.id, 'unsave')
-      console.log('💔 Evento desguardado')
+      console.log("Evento eliminado del backend")
       return
     }
 
-    const newSaved = {
-      id: Date.now(),
-      user: currentUser,
-      eventId: props.event.id,
-      title: props.event.title,
-      description: props.event.description,
-      image: props.event.image,
-      photos: props.event.photos || [],
-      timestamp: new Date().toISOString()
-    }
-
-    await fetch(`${baseUrl}/saved`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(newSaved)
-    })
-
-    savedStore.addSaved(newSaved)
-    await api.registerAction(props.event.id, 'save')
+    // SI NO ESTÁ GUARDADO → GUARDAR EN BACKEND
+    await axios.post(`${API_URL}/api/users/${userId}/saved-events/${eventId}`)
+    savedStore.addSaved(props.event)
     isSaved.value = true
-    savedId.value = newSaved.id
-    console.log('✅ Guardado correctamente')
+    console.log("Evento guardado en backend")
+
+    await metricsApi.registerAction(eventId, "save")
   } catch (err) {
-    console.error('Error en toggleSave:', err)
+    console.error("Error en toggleSave:", err)
   }
-}
-
-async function handleView() {
-  try {
-    await api.registerAction(props.event.id, 'view')
-  } catch (e) {
-    console.error('Error registrando vista:', e)
-  }
-
-  const realId = props.event.eventId || props.event.id
-  router.push({ name: 'user-publishment', params: { id: realId } })
 }
 </script>
 

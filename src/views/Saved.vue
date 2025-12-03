@@ -3,7 +3,7 @@
     <h1 class="page-title">Saved Events</h1>
 
     <div class="card">
-      <div v-if="savedList.length === 0" class="empty">
+      <div v-if="filteredEvents.length === 0" class="empty">
         <img src="/src/assets/mascot.png" class="mascot" alt=""/>
         <div class="empty-title">No saved events yet</div>
         <div class="empty-sub">Explore events and tap the heart icon to save them for later.</div>
@@ -12,7 +12,7 @@
 
       <div v-else class="saved-list">
         <EventCard
-            v-for="s in savedList"
+            v-for="s in filteredEvents"
             :key="s.id"
             :event="s"
             :showSave="false"

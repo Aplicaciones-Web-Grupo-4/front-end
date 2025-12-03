@@ -11,18 +11,15 @@ const CreateEvent = () => import('../organizer/pages/create-event.vue')
 const Events = () => import('../organizer/pages/events.vue')
 
 export default [
-    // Sección Emprendedor
-    { path: '/org/entrepreneur', name: 'org-entrepreneur', component: Entrepreneur },
-    { path: '/org/register-stands/:eventId?', name: 'org-register-stands', component: StandsList },
-    { path: '/org/register-stands/:eventId/new', name: 'org-stand-new', component: StandForm },
-    { path: '/org/register-stands/:eventId/:id/edit', name: 'org-stand-edit', component: StandForm },
+    { path: '/org/entrepreneur', name: 'org-entrepreneur', component: Entrepreneur, meta: { requiresAuth: true, role: "Organizer" } },
+    { path: '/org/register-stands/:eventId?', name: 'org-register-stands', component: StandsList, meta: { requiresAuth: true, role: "Organizer" } },
+    { path: '/org/register-stands/:eventId/new', name: 'org-stand-new', component: StandForm, meta: { requiresAuth: true, role: "Organizer" } },
+    { path: '/org/register-stands/:eventId/:id/edit', name: 'org-stand-edit', component: StandForm, meta: { requiresAuth: true, role: "Organizer" } },
 
-    // Sección Organizer
-    { path: '/org/dashboard', name: 'org-dashboard', component: { template: '<h1>Dashboard Organizador</h1>' } },
-    { path: '/org/create-event', name: 'org-create-event', component: CreateEvent },
-    { path: '/org/events', name: 'org-events', component: Events },
-    { path: '/org/notifications', name: 'org-notifications', component: Notifications },
-    { path: '/org/profile', name: 'org-profile', component: Profile }
-
-
+    { path: '/org/dashboard', name: 'org-dashboard', component: { template: '<h1>Dashboard Organizador</h1>' }, meta: { requiresAuth: true, role: "Organizer" }},
+    { path: '/org/create-event', name: 'org-create-event', component: CreateEvent, meta: { requiresAuth: true, role: "Organizer" }},
+    { path: '/org/events', name: 'org-events', component: Events, meta: { requiresAuth: true, role: "Organizer" }},
+    { path: '/org/notifications', name: 'org-notifications', component: Notifications, meta: { requiresAuth: true, role: "Organizer" }},
+    { path: '/org/profile', name: 'org-profile', component: Profile, meta: { requiresAuth: true, role: "Organizer" }},
 ]
+
