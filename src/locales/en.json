@@ -1,6 +1,18 @@
 {
   "nav": { "dashboard": "Dashboard", "stands": "Stands" },
-  "home": { "title": "Home", "msg": "Temporary basic landing." },
+  "home": { 
+    "title": "Home", 
+    "msg": "Welcome to NextHappen",
+    "eventsPage": {
+      "title": "Available Events",
+      "noEvents": "No events available",
+      "alerts": {
+        "saved": "Event saved successfully",
+        "alreadySaved": "This event is already saved",
+        "error": "Error saving the event"
+      }
+    }
+  },
   "entrepreneur": {
     "title": "Organizer panel",
     "summary": "Your fairs summary",
@@ -10,12 +22,8 @@
     "saved": "Saved",
     "create": "Create event"
   },
-  "common": {
-    "all": "All",
-    "save": "Save",
-    "update": "Update",
-    "cancel": "Cancel"
-  },
+  "common": { "all": "All", "save": "Save", "update": "Update", "cancel": "Cancel" },
+
   "stands": {
     "title": "Register Stands",
     "desc": "Add and manage entrepreneurs and their profiles within a specific fair.",
@@ -37,6 +45,7 @@
       "noFairForCategory": "There is no fair associated with this category yet."
     }
   },
+
   "header": {
     "logo": "NextHappen",
     "nav": {
@@ -46,9 +55,7 @@
       "tickets": "Tickets",
       "following": "Following"
     },
-    "search": {
-      "placeholder": "Search"
-    },
+    "search": { "placeholder": "Search" },
     "signup": "Sign Up"
   },
 
@@ -110,12 +117,8 @@
     "noImage": "No image",
     "edit": "Edit",
     "delete": "Delete",
-    "errors": {
-      "load": "Error loading events"
-    }, 
-    "editDialog":{
-      "title": "Edit publishment"
-    }
+    "errors": { "load": "Error loading events" },
+    "editDialog": { "title": "Edit publishment" }
   },
 
   "organizerHeader": {
@@ -128,20 +131,6 @@
     }
   },
 
-  "home": {
-    "title": "Home",
-    "msg": "Welcome to NextHappen",
-    "eventsPage": {
-      "title": "Available Events",
-      "noEvents": "No events available",
-      "alerts": {
-        "saved": "Event saved successfully",
-        "alreadySaved": "This event is already saved",
-        "error": "Error saving the event"
-      }
-    }
-  },
-
   "saved": {
     "title": "Saved Events",
     "emptyTitle": "No saved events yet",
@@ -150,63 +139,65 @@
   },
 
   "metrics": {
-  "title": "My Event Metrics",
-  "desc": "Select one of your events to view its view and save statistics.",
-  "selectEvent": "Select an event",
-  "views": "Views",
-  "saves": "Saves",
-  "noEventSelected": "Select an event to view its metrics.",
-  "table": {
-    "timestamp": "Date & Time",
-    "action": "Action"
-  }
-},
-"signup": {
-  "title": "Create Account",
-  "subtitle": "Sign up to start exploring events.",
-  "name": "Full Name",
-  "namePlaceholder": "Enter your name",
-  "email": "Email Address",
-  "emailPlaceholder": "your@email.com",
-  "password": "Password",
-  "passwordPlaceholder": "Minimum 6 characters",
-  "create": "Sign Up",
-  "creating": "Creating account...",
-  "already": "Already have an account?",
-  "signin": "Sign in",
-  "error": "An error occurred while creating your account.",
-  "fillAll": "Please fill in all fields.",
-  "userTypeTitle": "Select your account type",
-  "user": "User",
-  "organizer": "Organizer"
-},
+    "title": "My Event Metrics",
+    "desc": "Select one of your events to view its view and save statistics.",
+    "selectEvent": "Select an event",
+    "views": "Views",
+    "saves": "Saves",
+    "noEventSelected": "Select an event to view its metrics.",
+    "table": {
+      "timestamp": "Date & Time",
+      "action": "Action"
+    }
+  },
 
-"signin": {
-  "title": "Sign In",
-  "subtitle": "Sign in to keep exploring new events.",
-  "name": "Full Name",
-  "namePlaceholder": "Enter your name",
-  "password": "Password",
-  "passwordPlaceholder": "Enter your password",
-  "button": "Sign In",
-  "loading": "Signing in...",
-  "noAccount": "Don’t have an account?",
-  "create": "Create Account",
-  "error": "An error occurred while signing in.",
-  "fillAll": "Please fill in all fields.",
-  "selectType": "Select your account type",
-  "user": "User",
-  "organizer": "Organizer"
-},
-"profile": {
-  "title": "My Profile",
-  "subtitle": "Manage your personal information",
-  "name": "Full Name",
-  "email": "Email Address",
-  "changePhoto": "Click to change photo",
-  "save": "Save Changes",
-  "logout": "Log Out",
-  "fillFields": "Please fill in all fields.",
-  "saved": "Profile updated successfully."
-}
+  "signup": {
+    "title": "Create Account",
+    "subtitle": "Sign up to start exploring events.",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your name",
+    "email": "Email Address",
+    "emailPlaceholder": "your@email.com",
+    "password": "Password",
+    "passwordPlaceholder": "Minimum 6 characters",
+    "create": "Sign Up",
+    "creating": "Creating account...",
+    "already": "Already have an account?",
+    "signin": "Sign in",
+    "error": "An error occurred while creating your account.",
+    "fillAll": "Please fill in all fields.",
+    "userTypeTitle": "Select your account type",
+    "user": "User",
+    "organizer": "Organizer"
+  },
+
+  "signin": {
+    "title": "Sign In",
+    "subtitle": "Sign in to keep exploring new events.",
+    "name": "Full Name",
+    "namePlaceholder": "Enter your name",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "button": "Sign In",
+    "loading": "Signing in...",
+    "noAccount": "Don’t have an account?",
+    "create": "Create Account",
+    "error": "An error occurred while signing in.",
+    "fillAll": "Please fill in all fields.",
+    "selectType": "Select your account type",
+    "user": "User",
+    "organizer": "Organizer"
+  },
+
+  "profile": {
+    "title": "My Profile",
+    "subtitle": "Manage your personal information",
+    "name": "Full Name",
+    "email": "Email Address",
+    "changePhoto": "Click to change photo",
+    "save": "Save Changes",
+    "logout": "Log Out",
+    "fillFields": "Please fill in all fields.",
+    "saved": "Profile updated successfully."
+  }
 }

@@ -1,6 +1,23 @@
 {
-  "nav": { "dashboard": "Dashboard", "stands": "Stands" },
-  "home": { "title": "Inicio", "msg": "Landing básica temporal." },
+  "nav": { 
+    "dashboard": "Dashboard", 
+    "stands": "Stands" 
+  },
+
+  "home": { 
+    "title": "Inicio", 
+    "msg": "Bienvenido a NextHappen",
+    "eventsPage": {
+      "title": "Eventos disponibles",
+      "noEvents": "No hay eventos disponibles",
+      "alerts": {
+        "saved": "Evento guardado correctamente",
+        "alreadySaved": "Este evento ya está guardado",
+        "error": "Error al guardar el evento"
+      }
+    }
+  },
+
   "entrepreneur": {
     "title": "Panel de organizador",
     "summary": "Resumen de tus ferias",
@@ -10,12 +27,14 @@
     "saved": "Guardados",
     "create": "Crear evento"
   },
+
   "common": {
     "all": "Todas",
     "save": "Guardar",
     "update": "Actualizar",
     "cancel": "Cancelar"
   },
+
   "stands": {
     "title": "Registro de Stands",
     "desc": "Agrega y gestiona los emprendedores y sus perfiles dentro de una feria específica.",
@@ -37,6 +56,7 @@
       "noFairForCategory": "No hay una feria asociada a esta categoría aún."
     }
   },
+
   "header": {
     "logo": "NextHappen",
     "nav": {
@@ -46,11 +66,10 @@
       "tickets": "Entradas",
       "following": "Siguiendo"
     },
-    "search": {
-      "placeholder": "Buscar"
-    },
+    "search": { "placeholder": "Buscar" },
     "signup": "Registrarse"
   },
+
   "createEvent": {
     "titlePage": "Publicar Feria",
     "fields": {
@@ -91,13 +110,14 @@
     },
     "mapMarker": "📍"
   },
+
   "myFairs": {
     "title": "Mis ferias publicadas",
     "columns": {
       "image": "Imagen",
       "org": "Organización",
       "name": "Nombre",
-      "category": "Categoria",
+      "category": "Categoría",
       "price": "Precio",
       "quantity": "Cantidad",
       "status": "Estado",
@@ -108,13 +128,10 @@
     "noImage": "Sin imagen",
     "edit": "Editar",
     "delete": "Eliminar",
-    "errors": {
-      "load": "Error al cargar eventos"
-    },
-    "editDialog":{
-      "title": "Editar publicación"
-    }
+    "errors": { "load": "Error al cargar eventos" },
+    "editDialog": { "title": "Editar publicación" }
   },
+
   "organizerHeader": {
     "logo": "NextHappen",
     "nav": {
@@ -125,85 +142,73 @@
     }
   },
 
-  "home": {
-    "title": "Inicio",
-    "msg": "Bienvenido a NextHappen",
-    "eventsPage": {
-      "title": "Eventos disponibles",
-      "noEvents": "No hay eventos disponibles",
-      "alerts": {
-        "saved": "Evento guardado correctamente",
-        "alreadySaved": "Este evento ya está guardado",
-        "error": "Error al guardar el evento"
-      }
-    }
-  },
-
   "saved": {
     "title": "Eventos guardados",
     "emptyTitle": "Aún no tienes eventos guardados",
-    "emptyDesc": "Explora los eventos y toca el boton de guardar para guardarlos más tarde.",
+    "emptyDesc": "Explora los eventos y toca el botón de guardar para guardarlos más tarde.",
     "explore": "Explorar"
   },
 
   "metrics": {
-  "title": "Métricas de mis eventos",
-  "desc": "Selecciona uno de tus eventos para ver sus métricas de visualización y guardado.",
-  "selectEvent": "Selecciona un evento",
-  "views": "Visualizaciones",
-  "saves": "Guardados",
-  "noEventSelected": "Selecciona un evento para visualizar sus métricas.",
-  "table": {
-    "timestamp": "Fecha y Hora",
-    "action": "Acción"
-  }
-},
-"signup": {
-  "title": "Crear cuenta",
-  "subtitle": "Regístrate para comenzar a explorar eventos.",
-  "name": "Nombre completo",
-  "namePlaceholder": "Ingresa tu nombre",
-  "email": "Correo electrónico",
-  "emailPlaceholder": "tu@correo.com",
-  "password": "Contraseña",
-  "passwordPlaceholder": "Mínimo 6 caracteres",
-  "create": "Crear cuenta",
-  "creating": "Creando cuenta...",
-  "already": "¿Ya tienes cuenta?",
-  "signin": "Inicia sesión",
-  "error": "Ocurrió un error al crear la cuenta.",
-  "fillAll": "Por favor completa todos los campos.",
-  "userTypeTitle": "Selecciona tu tipo de cuenta",
-  "user": "Usuario",
-  "organizer": "Organizador"
-},
+    "title": "Métricas de mis eventos",
+    "desc": "Selecciona uno de tus eventos para ver sus métricas de visualización y guardado.",
+    "selectEvent": "Selecciona un evento",
+    "views": "Visualizaciones",
+    "saves": "Guardados",
+    "noEventSelected": "Selecciona un evento para visualizar sus métrricas.",
+    "table": {
+      "timestamp": "Fecha y Hora",
+      "action": "Acción"
+    }
+  },
 
-"signin": {
-  "title": "Inicia sesión",
-  "subtitle": "Inicia sesión para seguir explorando nuevos eventos.",
-  "name": "Nombre completo",
-  "namePlaceholder": "Ingresa tu nombre",
-  "password": "Contraseña",
-  "passwordPlaceholder": "Ingresa tu contraseña",
-  "button": "Iniciar sesión",
-  "loading": "Iniciando sesión...",
-  "noAccount": "¿Aún no tienes cuenta?",
-  "create": "Crear cuenta",
-  "error": "Ocurrió un error al iniciar sesión.",
-  "fillAll": "Por favor completa todos los campos.",
-  "selectType": "Selecciona tu tipo de cuenta",
-  "user": "Usuario",
-  "organizer": "Organizador"
-},
-"profile": {
-  "title": "Mi Perfil",
-  "subtitle": "Administra tu información personal",
-  "name": "Nombre completo",
-  "email": "Correo electrónico",
-  "changePhoto": "Haz clic para cambiar la foto",
-  "save": "Guardar cambios",
-  "logout": "Cerrar sesión",
-  "fillFields": "Por favor completa todos los campos.",
-  "saved": "Perfil actualizado correctamente."
-}
+  "signup": {
+    "title": "Crear cuenta",
+    "subtitle": "Regístrate para comenzar a explorar eventos.",
+    "name": "Nombre completo",
+    "namePlaceholder": "Ingresa tu nombre",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "tu@correo.com",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Mínimo 6 caracteres",
+    "create": "Crear cuenta",
+    "creating": "Creando cuenta...",
+    "already": "¿Ya tienes cuenta?",
+    "signin": "Inicia sesión",
+    "error": "Ocurrió un error al crear la cuenta.",
+    "fillAll": "Por favor completa todos los campos.",
+    "userTypeTitle": "Selecciona tu tipo de cuenta",
+    "user": "Usuario",
+    "organizer": "Organizador"
+  },
+
+  "signin": {
+    "title": "Inicia sesión",
+    "subtitle": "Inicia sesión para seguir explorando nuevos eventos.",
+    "name": "Nombre completo",
+    "namePlaceholder": "Ingresa tu nombre",
+    "password": "Contraseña",
+    "passwordPlaceholder": "Ingresa tu contraseña",
+    "button": "Iniciar sesión",
+    "loading": "Iniciando sesión...",
+    "noAccount": "¿Aún no tienes cuenta?",
+    "create": "Crear cuenta",
+    "error": "Ocurrió un error al iniciar sesión.",
+    "fillAll": "Por favor completa todos los campos.",
+    "selectType": "Selecciona tu tipo de cuenta",
+    "user": "Usuario",
+    "organizer": "Organizador"
+  },
+
+  "profile": {
+    "title": "Mi Perfil",
+    "subtitle": "Administra tu información personal",
+    "name": "Nombre completo",
+    "email": "Correo electrónico",
+    "changePhoto": "Haz clic para cambiar la foto",
+    "save": "Guardar cambios",
+    "logout": "Cerrar sesión",
+    "fillFields": "Por favor completa todos los campos.",
+    "saved": "Perfil actualizado correctamente."
+  }
 }
