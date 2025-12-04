@@ -4,7 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Events from '../views/Events.vue'
 import Search from '../views/Search.vue'
-import SignUp from '../views/SignUp.vue'
+import SignUps from '../views/SignUps.vue'
 import Publishment from '../views/Publishment.vue'
 import Tickets from '../views/Tickets.vue'
 import SignIn from '../views/SignIn.vue'
@@ -20,7 +20,7 @@ const routes = [
     { path: '/user/profile', name: 'user-profile', component: Profile, meta: { requiresAuth: true, role: "User" } },
 
     // Rutas abiertas
-    { path: '/signup', name: 'user-signup', component: SignUp },
+    { path: '/signup', name: 'user-signup', component: SignUps },
     { path: '/signin', name: 'user-signin', component: SignIn },
     { path: '/user/publishment/:id', name: 'user-publishment', component: Publishment, props: true },
 ]
